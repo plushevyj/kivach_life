@@ -3,16 +3,19 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:local_auth/local_auth.dart';
 
+import '../repository/local_authentication_repository_impl.dart';
 import '/widgets/alerts.dart';
-
 
 part 'local_authentication_event.dart';
 part 'local_authentication_state.dart';
 
 class LocalAuthenticationBloc
     extends Bloc<LocalAuthenticationEvent, LocalAuthenticationState> {
+  final _localAuthentication = const LocalAuthenticationRepositoryImpl();
+
   LocalAuthenticationBloc() : super(const LocallyNotAuthenticated()) {
     on<LogOutLocally>(_onLogOutLocally);
     on<LogInLocallyUsingBiometrics>(_onLogInLocallyUsingBiometrics);

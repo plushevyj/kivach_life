@@ -6,8 +6,8 @@ import '/core/dependencies/injector.dart';
 import 'core/pages.dart';
 import 'modules/local_authentication/bloc/local_authentication_bloc.dart';
 
-void main() {
-  initializeDependencies();
+void main() async {
+  await initializeDependencies();
   runApp(const App());
 }
 
