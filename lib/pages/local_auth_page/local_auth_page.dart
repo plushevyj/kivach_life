@@ -23,108 +23,119 @@ class LocalAuthPage extends StatelessWidget {
           } else {
             passwordController.password.clear();
             return Padding(
-              padding: EdgeInsets.symmetric(horizontal: Get.width * .15),
+              padding: EdgeInsets.symmetric(horizontal: Get.width * .18),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  TextField(
-                    controller: passwordController.password,
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                      errorBorder: InputBorder.none,
-                      disabledBorder: InputBorder.none,
-                      contentPadding: EdgeInsets.only(left: 15),
-                    ),
-                    style: const TextStyle(
-                      fontSize: 24,
-                      color: Colors.black,
-                      letterSpacing: 15,
-                    ),
-                    textAlign: TextAlign.center,
-                    obscureText: true,
-                    enableSuggestions: false,
-                    autocorrect: false,
-                    enabled: false,
-                    inputFormatters: [LengthLimitingTextInputFormatter(4)],
+                  const CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Colors.grey,
+                    child: Icon(Icons.person, size: 30, color: Colors.black),
                   ),
+                  const SizedBox(height: 30),
+/////////////////////////////////////////////////////////////////////////
+                  Obx(() {
+                    return SizedBox(
+                      width: 140,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          for (int index = 1;
+                          index <= PasswordController.maxLengthLocalPassword;
+                          index++)
+                            Container(
+                              width: 15,
+                              height: 15,
+                              decoration: BoxDecoration(
+                                color: passwordController
+                                    .localPasswordLength.value >=
+                                    index
+                                    ? Colors.green
+                                    : Colors.grey,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                        ],
+                      ),
+                    );
+                  }),
+                  const SizedBox(height: 100),
+/////////////////////////////////////////////////////////////////////////
                   Obx(
-                    () => Column(
-                      children: [
-                        ...[
-                          [1, 2, 3],
-                          [4, 5, 6],
-                          [7, 8, 9],
-                        ]
-                            .map(
-                              (list) => Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: list
-                                    .map(
-                                      (value) => IconButton(
-                                        onPressed: passwordController
-                                                .enableDialButton.value
-                                            ? () => passwordController
-                                                .enterNumberToPassword(value)
-                                            : null,
-                                        icon: Text(
-                                          '$value',
-                                          style: const TextStyle(fontSize: 20),
-                                        ),
-                                      ),
-                                    )
-                                    .toList(),
-                              ),
-                            )
-                            .toList(),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            IconButton(
-                              onPressed:
+                        () {
+                      return GridView.count(
+                        mainAxisSpacing: 1,
+                        crossAxisSpacing: 3,
+                        crossAxisCount: 3,
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        children: [
+                          ...[for (int i = 1; i <= 9; i++) i]
+                              .map(
+                                (value) =>
+                                IconButton(
+                                  onPressed:
                                   passwordController.enableDialButton.value
-                                      ? () {
-                                          Get.context!
-                                              .read<LocalAuthenticationBloc>()
-                                              .add(
-                                                  const LogInLocallyUsingBiometrics());
-                                        }
+                                      ? () =>
+                                      passwordController
+                                          .enterNumberToPassword(value)
                                       : null,
-                              icon: const Icon(
-                                Icons.fingerprint,
-                                size: 20,
-                                color: Colors.black,
+                                  icon: Text(
+                                    value.toString(),
+                                    style: const TextStyle(fontSize: 30),
+                                  ),
+                                ),
+                          )
+                              .toList(),
+                          IconButton(
+                            onPressed: passwordController.enableDialButton.value
+                                ? () => SystemNavigator.pop()
+                                : null,
+                            icon: const Text(
+                              'ВЫЙТИ',
+                              style: TextStyle(
+                                fontSize: 12,
                               ),
                             ),
-                            IconButton(
-                              onPressed:
-                                  passwordController.enableDialButton.value
-                                      ? () => passwordController
-                                          .enterNumberToPassword(0)
-                                      : null,
-                              icon: const Text('0',
-                                  style: TextStyle(fontSize: 20)),
+                          ),
+                          IconButton(
+                            onPressed: passwordController.enableDialButton.value
+                                ? () =>
+                                passwordController.enterNumberToPassword(0)
+                                : null,
+                            icon: const Text(
+                              '0',
+                              style: TextStyle(fontSize: 30),
                             ),
-                            IconButton(
-                              onPressed:
-                                  passwordController.enableDialButton.value
-                                      ? () => passwordController
-                                          .deleteNumberFromPassword()
-                                      : null,
-                              icon: const Icon(
-                                Icons.backspace,
-                                size: 20,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                          ),
+                          passwordController.showBiometricButton.value
+                              ? IconButton(
+                            onPressed: passwordController
+                                .enableDialButton.value
+                                ? () =>
+                                Get.context!
+                                    .read<LocalAuthenticationBloc>()
+                                    .add(
+                                    const LogInLocallyUsingBiometrics())
+                                : null,
+                            icon: const Icon(Icons.fingerprint, size: 30),
+                          )
+                              : IconButton(
+                            onPressed:
+                            passwordController.enableDialButton.value
+                                ? () =>
+                                passwordController
+                                    .deleteNumberFromPassword()
+                                : null,
+                            icon: const Icon(Icons.backspace),
+                          ),
+                        ],
+                      );
+                    },
                   ),
+                  const SizedBox(height: 20),
                 ],
               ),
             );

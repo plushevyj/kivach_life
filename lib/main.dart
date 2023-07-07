@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 import '/core/dependencies/injector.dart';
 import 'core/pages.dart';
+import 'core/themes/light_theme.dart';
 import 'modules/local_authentication/bloc/local_authentication_bloc.dart';
 
 void main() async {
@@ -24,12 +25,10 @@ class App extends StatelessWidget {
       ],
       child: GetMaterialApp(
         title: 'Кивач',
-        theme: ThemeData(
-          useMaterial3: true,
-        ),
-        darkTheme: ThemeData(
-          useMaterial3: true,
-        ),
+        theme: lightTheme,
+        // darkTheme: ThemeData(
+        //   useMaterial3: true,
+        // ),
         getPages: pages,
         builder: (context, child) {
           return BlocListener<LocalAuthenticationBloc,

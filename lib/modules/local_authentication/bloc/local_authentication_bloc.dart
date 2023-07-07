@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:local_auth/local_auth.dart';
 
 import '../repository/local_authentication_repository_impl.dart';
@@ -47,7 +46,7 @@ class LocalAuthenticationBloc
               availableBiometrics.contains(BiometricType.iris) ||
               availableBiometrics.contains(BiometricType.fingerprint))) {
         isLocalAuthorized = await localAuthentication.authenticate(
-          localizedReason: 'Авторизация в приложении Kivach life',
+          localizedReason: 'Аутентификация в приложении Kivach life',
           options: const AuthenticationOptions(
             useErrorDialogs: false,
             stickyAuth: true,
