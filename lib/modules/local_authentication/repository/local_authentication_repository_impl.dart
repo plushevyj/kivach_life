@@ -8,7 +8,8 @@ class LocalAuthenticationRepositoryImpl
   const LocalAuthenticationRepositoryImpl();
 
   Future<Box<dynamic>> _openStorage() async {
-    return await Hive.openBox('localAuthenticationSettings');
+    return await Hive.openBox<LocalAuthenticationSettings>(
+        'localAuthenticationSettings');
   }
 
   Future<void> _closeStorage() async {
@@ -16,12 +17,14 @@ class LocalAuthenticationRepositoryImpl
   }
 
   @override
-  Future<bool> checkSettings() async {
+  Future<LocalAuthenticationSettings> checkSettings() async {
     final storage = await _openStorage();
+    print(storage.length);
+    if (storage.length > 1) {
+      throw Exception('HiveBox \'localAuthenticationSettings\' must have a length that is 1.');
+    }
 
-    storage.add(LocalAuthenticationSettings(
-        isLocalPassword: true, isBiometricSecurity: true));
-    return storage.isEmpty;
+    return storage.getAt(0);
   }
 
   @override

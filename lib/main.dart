@@ -35,8 +35,7 @@ class App extends StatelessWidget {
               LocalAuthenticationState>(
             listener: (context, state) {
               if (state is LocallyAuthenticated) {
-                // todo: add home page here
-                Get.off(const Center(child: Text('It\'s working')));
+                Get.offNamed('/home');
               } else if (state is LocallyNotAuthenticated) {
                 Get.offNamed('/local_auth');
               } else {

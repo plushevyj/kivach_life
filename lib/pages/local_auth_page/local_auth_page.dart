@@ -19,7 +19,7 @@ class LocalAuthPage extends StatelessWidget {
       body: BlocBuilder<LocalAuthenticationBloc, LocalAuthenticationState>(
         builder: (_, state) {
           if (state is LocallyAuthenticated) {
-            return const CircularProgressIndicator();
+            return Center(child: const CircularProgressIndicator());
           } else {
             passwordController.password.clear();
             return Padding(
@@ -30,11 +30,10 @@ class LocalAuthPage extends StatelessWidget {
                 children: [
                   const CircleAvatar(
                     radius: 30,
-                    backgroundColor: Colors.grey,
-                    child: Icon(Icons.person, size: 30, color: Colors.black),
+                    backgroundColor: Color(0xFFD7D7D7),
+                    child: Icon(Icons.person, size: 30, color: Colors.grey),
                   ),
                   const SizedBox(height: 30),
-/////////////////////////////////////////////////////////////////////////
                   Obx(() {
                     return SizedBox(
                       width: 140,
@@ -42,17 +41,18 @@ class LocalAuthPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           for (int index = 1;
-                          index <= PasswordController.maxLengthLocalPassword;
-                          index++)
+                              index <=
+                                  PasswordController.maxLengthLocalPassword;
+                              index++)
                             Container(
                               width: 15,
                               height: 15,
                               decoration: BoxDecoration(
                                 color: passwordController
-                                    .localPasswordLength.value >=
-                                    index
+                                            .localPasswordLength.value >=
+                                        index
                                     ? Colors.green
-                                    : Colors.grey,
+                                    : const Color(0xFFD7D7D7),
                                 shape: BoxShape.circle,
                               ),
                             ),
@@ -61,9 +61,8 @@ class LocalAuthPage extends StatelessWidget {
                     );
                   }),
                   const SizedBox(height: 100),
-/////////////////////////////////////////////////////////////////////////
                   Obx(
-                        () {
+                    () {
                       return GridView.count(
                         mainAxisSpacing: 1,
                         crossAxisSpacing: 3,
@@ -74,20 +73,18 @@ class LocalAuthPage extends StatelessWidget {
                         children: [
                           ...[for (int i = 1; i <= 9; i++) i]
                               .map(
-                                (value) =>
-                                IconButton(
+                                (value) => IconButton(
                                   onPressed:
-                                  passwordController.enableDialButton.value
-                                      ? () =>
-                                      passwordController
-                                          .enterNumberToPassword(value)
-                                      : null,
+                                      passwordController.enableDialButton.value
+                                          ? () => passwordController
+                                              .enterNumberToPassword(value)
+                                          : null,
                                   icon: Text(
                                     value.toString(),
                                     style: const TextStyle(fontSize: 30),
                                   ),
                                 ),
-                          )
+                              )
                               .toList(),
                           IconButton(
                             onPressed: passwordController.enableDialButton.value
@@ -103,7 +100,7 @@ class LocalAuthPage extends StatelessWidget {
                           IconButton(
                             onPressed: passwordController.enableDialButton.value
                                 ? () =>
-                                passwordController.enterNumberToPassword(0)
+                                    passwordController.enterNumberToPassword(0)
                                 : null,
                             icon: const Text(
                               '0',
@@ -112,25 +109,23 @@ class LocalAuthPage extends StatelessWidget {
                           ),
                           passwordController.showBiometricButton.value
                               ? IconButton(
-                            onPressed: passwordController
-                                .enableDialButton.value
-                                ? () =>
-                                Get.context!
-                                    .read<LocalAuthenticationBloc>()
-                                    .add(
-                                    const LogInLocallyUsingBiometrics())
-                                : null,
-                            icon: const Icon(Icons.fingerprint, size: 30),
-                          )
+                                  onPressed: passwordController
+                                          .enableDialButton.value
+                                      ? () => Get.context!
+                                          .read<LocalAuthenticationBloc>()
+                                          .add(
+                                              const LogInLocallyUsingBiometrics())
+                                      : null,
+                                  icon: const Icon(Icons.fingerprint, size: 30),
+                                )
                               : IconButton(
-                            onPressed:
-                            passwordController.enableDialButton.value
-                                ? () =>
-                                passwordController
-                                    .deleteNumberFromPassword()
-                                : null,
-                            icon: const Icon(Icons.backspace),
-                          ),
+                                  onPressed:
+                                      passwordController.enableDialButton.value
+                                          ? () => passwordController
+                                              .deleteNumberFromPassword()
+                                          : null,
+                                  icon: const Icon(Icons.backspace),
+                                ),
                         ],
                       );
                     },

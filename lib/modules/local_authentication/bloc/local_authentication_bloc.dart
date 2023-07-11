@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:doctor/modules/local_authentication/models/local_authentication_settings_model/local_authentication_settings_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -13,13 +15,13 @@ part 'local_authentication_state.dart';
 
 class LocalAuthenticationBloc
     extends Bloc<LocalAuthenticationEvent, LocalAuthenticationState> {
-  final _localAuthentication = const LocalAuthenticationRepositoryImpl();
-
   LocalAuthenticationBloc() : super(const LocallyNotAuthenticated()) {
     on<LogOutLocally>(_onLogOutLocally);
     on<LogInLocallyUsingBiometrics>(_onLogInLocallyUsingBiometrics);
     on<LogInLocallyUsingDigitalPassword>(_onLogInLocallyUsingPassword);
   }
+
+  final _localAuthentication = const LocalAuthenticationRepositoryImpl();
 
   Future<void> _onLogOutLocally(
     LogOutLocally event,
@@ -78,10 +80,15 @@ class LocalAuthenticationBloc
     emit(const LoadingLocalAuthentication());
     var isLocalAuthorized = false;
     try {
+      final settings = await _localAuthentication.checkSettings();
+      print(settings.isBiometricSecurity);
       if (event.password == '4355') {
         isLocalAuthorized = true;
       }
     } catch (error) {
+      if (kDebugMode) {
+        print(error);
+      }
       showError('Ошибка аутентификации');
     } finally {
       if (isLocalAuthorized) {

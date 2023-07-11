@@ -11,6 +11,10 @@ class LogOutLocally extends LocalAuthenticationEvent {
   const LogOutLocally();
 }
 
+class CheckSettings extends LocalAuthenticationEvent{
+  const CheckSettings();
+}
+
 class LogInLocallyUsingBiometrics extends LocalAuthenticationEvent {
   const LogInLocallyUsingBiometrics();
 }
