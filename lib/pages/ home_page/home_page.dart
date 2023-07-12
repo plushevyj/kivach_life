@@ -79,7 +79,7 @@ class HomePage extends StatelessWidget {
                 case 1:
                   navBarIndexNotifier.value = index;
                   webViewController.loadRequest(
-                      Uri.parse('https://doctors.kivach.ru/schedule'));
+                      Uri.parse('https://doctors.kivach.ru/schedule/'));
                 case 2:
                   navBarIndexNotifier.value = index;
                   webViewController.loadRequest(

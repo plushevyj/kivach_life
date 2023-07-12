@@ -19,7 +19,7 @@ class LocalAuthPage extends StatelessWidget {
       body: BlocBuilder<LocalAuthenticationBloc, LocalAuthenticationState>(
         builder: (_, state) {
           if (state is LocallyAuthenticated) {
-            return Center(child: const CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else {
             passwordController.password.clear();
             return Padding(
