@@ -76,14 +76,16 @@ class LocalAuthenticationBloc
     LogInLocallyUsingDigitalPassword event,
     Emitter<LocalAuthenticationState> emit,
   ) async {
-    await Future.delayed(const Duration(milliseconds: 3000));
+    await Future.delayed(const Duration(milliseconds: 500));
     emit(const LoadingLocalAuthentication());
     var isLocalAuthorized = false;
     try {
-      final settings = await _localAuthentication.checkSettings();
-      print(settings.isBiometricSecurity);
+      // final settings = await _localAuthentication.checkSettings();
+      // print(settings.isBiometricSecurity);
       if (event.password == '4355') {
         isLocalAuthorized = true;
+      } else {
+        showError('Неверный пароль');
       }
     } catch (error) {
       if (kDebugMode) {
