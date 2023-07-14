@@ -76,7 +76,7 @@ class LocalAuthenticationBloc
     LogInLocallyUsingDigitalPassword event,
     Emitter<LocalAuthenticationState> emit,
   ) async {
-    await Future.delayed(const Duration(milliseconds: 500));
+    await Future.delayed(const Duration(milliseconds: 3000));
     emit(const LoadingLocalAuthentication());
     var isLocalAuthorized = false;
     try {

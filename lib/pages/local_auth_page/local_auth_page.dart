@@ -1,3 +1,5 @@
+import 'package:doctor/widgets/digital_input/digital_field.dart';
+import 'package:doctor/widgets/digital_input/digital_input_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -34,101 +36,26 @@ class LocalAuthPage extends StatelessWidget {
                     child: Icon(Icons.person, size: 30, color: Colors.grey),
                   ),
                   const SizedBox(height: 30),
-                  Obx(() {
-                    return SizedBox(
-                      width: 140,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          for (int index = 1;
-                              index <=
-                                  PasswordController.maxLengthLocalPassword;
-                              index++)
-                            Container(
-                              width: 15,
-                              height: 15,
-                              decoration: BoxDecoration(
-                                color: passwordController
-                                            .localPasswordLength.value >=
-                                        index
-                                    ? Colors.green
-                                    : const Color(0xFFD7D7D7),
-                                shape: BoxShape.circle,
-                              ),
-                            ),
-                        ],
-                      ),
-                    );
-                  }),
-                  const SizedBox(height: 100),
+                  SizedBox(
+                    width: 150,
+                    child: DigitalField(
+                      controller: passwordController.password,
+                      maxLength: PasswordController.maxLengthLocalPassword,
+                    ),
+                  ),
+                  const SizedBox(height: 150),
                   Obx(
-                    () {
-                      return GridView.count(
-                        mainAxisSpacing: 1,
-                        crossAxisSpacing: 3,
-                        crossAxisCount: 3,
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        children: [
-                          ...[for (int i = 1; i <= 9; i++) i]
-                              .map(
-                                (value) => IconButton(
-                                  onPressed:
-                                      passwordController.enableDialButton.value
-                                          ? () => passwordController
-                                              .enterNumberToPassword(value)
-                                          : null,
-                                  icon: Text(
-                                    value.toString(),
-                                    style: const TextStyle(fontSize: 30),
-                                  ),
-                                ),
-                              )
-                              .toList(),
-                          IconButton(
-                            onPressed: passwordController.enableDialButton.value
-                                ? () => SystemNavigator.pop()
-                                : null,
-                            icon: const Text(
-                              'ВЫЙТИ',
-                              style: TextStyle(
-                                fontSize: 12,
-                              ),
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: passwordController.enableDialButton.value
-                                ? () =>
-                                    passwordController.enterNumberToPassword(0)
-                                : null,
-                            icon: const Text(
-                              '0',
-                              style: TextStyle(fontSize: 30),
-                            ),
-                          ),
-                          passwordController.showBiometricButton.value
-                              ? IconButton(
-                                  onPressed: passwordController
-                                          .enableDialButton.value
-                                      ? () => Get.context!
-                                          .read<LocalAuthenticationBloc>()
-                                          .add(
-                                              const LogInLocallyUsingBiometrics())
-                                      : null,
-                                  icon: const Icon(Icons.fingerprint, size: 30),
-                                )
-                              : IconButton(
-                                  onPressed:
-                                      passwordController.enableDialButton.value
-                                          ? () => passwordController
-                                              .deleteNumberFromPassword()
-                                          : null,
-                                  icon: const Icon(Icons.backspace),
-                                ),
-                        ],
-                      );
-                    },
+                    () => DigitalInput(
+                      controller: passwordController.password,
+                      maxLength: PasswordController.maxLengthLocalPassword,
+                      isEnabled: passwordController.enableDialButtons.value,
+                      leftWidget: const Text('ВЫЙТИ'),
+                      leftWidgetAction: SystemNavigator.pop,
+                      rightWidget: const Icon(Icons.fingerprint),
+                      rightWidgetAction: () => Get.context!
+                          .read<LocalAuthenticationBloc>()
+                          .add(const LogInLocallyUsingBiometrics()),
+                    ),
                   ),
                   const SizedBox(height: 20),
                 ],

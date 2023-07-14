@@ -8,5 +8,7 @@ void showError(String errorMessage) {
     backgroundColor: Colors.red,
     colorText: Colors.white,
     snackPosition: SnackPosition.BOTTOM,
+    margin: EdgeInsets.zero,
+    borderRadius: 0,
   );
 }

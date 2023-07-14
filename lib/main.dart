@@ -6,7 +6,6 @@ import '/core/dependencies/injector.dart';
 import 'core/pages.dart';
 import 'core/themes/light_theme.dart';
 import 'modules/local_authentication/bloc/local_authentication_bloc.dart';
-import 'pages/text_page/test_page.dart';
 
 void main() async {
   await initializeDependencies();
@@ -38,13 +37,9 @@ class App extends StatelessWidget {
               if (state is LocallyAuthenticated) {
                 Get.offNamed('/home');
               } else if (state is LocallyNotAuthenticated) {
-                //todo: delete this string
-                Get.off(const TestPage());
-                // Get.offNamed('/local_auth');
+                Get.offNamed('/local_auth');
               } else {
-                //todo: delete this string
-                Get.off(const TestPage());
-                // Get.offNamed('/local_auth');
+                Get.offNamed('/local_auth');
               }
             },
             child: child,
