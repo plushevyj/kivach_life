@@ -1,4 +1,4 @@
-import 'package:doctor/pages/%20home_page/home_page.dart';
+import 'package:doctor/pages/home_page/home_page.dart';
 import 'package:doctor/pages/settings_page/settings_page.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 
