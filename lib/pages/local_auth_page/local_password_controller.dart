@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 
 import '/modules/local_authentication/bloc/local_authentication_bloc.dart';
 
-class PasswordController extends GetxController {
+class LocalPasswordController extends GetxController {
   late final TextEditingController password;
 
   final enableDialButtons = true.obs;

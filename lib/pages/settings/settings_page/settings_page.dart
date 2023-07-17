@@ -19,7 +19,7 @@ class SettingsPage extends StatelessWidget {
           _SettingButton(
             title: 'По цифровому паролю',
             icon: Icons.lock_outline,
-            onPressed: () {},
+            onPressed: () => Get.toNamed('/settings/new_local_password'),
           ),
           _SettingButton(
             title: 'По отпечатку пальца или скану лица',
@@ -58,7 +58,7 @@ class _SettingButton extends StatelessWidget {
             const RoundedRectangleBorder(borderRadius: BorderRadius.zero)),
       ),
       clipBehavior: Clip.antiAlias,
-      onPressed: () {},
+      onPressed: onPressed,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

@@ -1,19 +1,19 @@
-import 'package:doctor/widgets/digital_input/digital_field.dart';
-import 'package:doctor/widgets/digital_input/digital_input_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 import '/modules/local_authentication/bloc/local_authentication_bloc.dart';
-import 'password_controller.dart';
+import 'local_password_controller.dart';
+import '/widgets/digital_input/digital_field.dart';
+import '/widgets/digital_input/digital_input_widget.dart';
 
 class LocalAuthPage extends StatelessWidget {
   const LocalAuthPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final passwordController = Get.put(PasswordController());
+    final passwordController = Get.put(LocalPasswordController());
     Get.context!
         .read<LocalAuthenticationBloc>()
         .add(const LogInLocallyUsingBiometrics());
@@ -40,14 +40,14 @@ class LocalAuthPage extends StatelessWidget {
                     width: 150,
                     child: DigitalField(
                       controller: passwordController.password,
-                      maxLength: PasswordController.maxLengthLocalPassword,
+                      maxLength: LocalPasswordController.maxLengthLocalPassword,
                     ),
                   ),
                   const SizedBox(height: 150),
                   Obx(
                     () => DigitalInput(
                       controller: passwordController.password,
-                      maxLength: PasswordController.maxLengthLocalPassword,
+                      maxLength: LocalPasswordController.maxLengthLocalPassword,
                       isEnabled: passwordController.enableDialButtons.value,
                       leftWidget: const Text('ВЫЙТИ'),
                       leftWidgetAction: SystemNavigator.pop,

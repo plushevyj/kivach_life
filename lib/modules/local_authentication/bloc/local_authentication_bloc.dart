@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:doctor/modules/local_authentication/models/local_authentication_settings_model/local_authentication_settings_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +8,8 @@ import 'package:local_auth/local_auth.dart';
 
 import '../repository/local_authentication_repository_impl.dart';
 import '/widgets/alerts.dart';
+import '/modules/local_authentication/models/local_authentication_settings_model/local_authentication_settings_model.dart';
+
 
 part 'local_authentication_event.dart';
 part 'local_authentication_state.dart';
