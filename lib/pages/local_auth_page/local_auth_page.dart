@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
+import '../../core/constants.dart';
 import '/modules/local_authentication/bloc/local_authentication_bloc.dart';
 import 'local_password_controller.dart';
 import '/widgets/digital_input/digital_field.dart';
@@ -40,14 +41,14 @@ class LocalAuthPage extends StatelessWidget {
                     width: 150,
                     child: DigitalField(
                       controller: passwordController.password,
-                      maxLength: LocalPasswordController.maxLengthLocalPassword,
+                      maxLength: maxLengthLocalPassword,
                     ),
                   ),
                   const SizedBox(height: 150),
                   Obx(
                     () => DigitalInput(
                       controller: passwordController.password,
-                      maxLength: LocalPasswordController.maxLengthLocalPassword,
+                      maxLength: maxLengthLocalPassword,
                       isEnabled: passwordController.enableDialButtons.value,
                       leftWidget: const Text('ВЫЙТИ'),
                       leftWidgetAction: SystemNavigator.pop,

@@ -3,45 +3,51 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
+import '../../../core/constants.dart';
 import '../../local_auth_page/local_password_controller.dart';
 
 class NewLocalPasswordController extends GetxController {
-  late final TextEditingController password;
-  late final TextEditingController confirmedPassword;
+  late final TextEditingController firstPassword;
+  late final TextEditingController secondPassword;
 
   final enableDialButtonsOfPassword = true.obs;
   final enableDialButtonsOfConfirmedPassword = true.obs;
 
+  final onFirstPage = true.obs;
+
   @override
   void onInit() {
     super.onInit();
-    password = TextEditingController();
-    confirmedPassword = TextEditingController();
+    firstPassword = TextEditingController();
+    secondPassword = TextEditingController();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Get.context!
           .read<NewLocalPasswordBloc>()
           .add(const NewLocalPasswordInitialEvent());
-      password.addListener(
+      firstPassword.addListener(
         () {
-          enableDialButtonsOfPassword(password.text.length <
-              LocalPasswordController.maxLengthLocalPassword);
-          if (password.text.length ==
-              LocalPasswordController.maxLengthLocalPassword) {
+          print(firstPassword.text);
+          enableDialButtonsOfPassword(firstPassword.text.length <
+              maxLengthLocalPassword);
+          if (firstPassword.text.length ==
+              maxLengthLocalPassword) {
+            print('kek');
             Get.context!
                 .read<NewLocalPasswordBloc>()
-                .add(EnterNewLocalPassword(password.text));
+                .add(EnterFirstLocalPassword(firstPassword.text));
           }
         },
       );
-      confirmedPassword.addListener(
+      secondPassword.addListener(
         () {
-          enableDialButtonsOfConfirmedPassword(confirmedPassword.text.length <
-              LocalPasswordController.maxLengthLocalPassword);
-          if (confirmedPassword.text.length ==
-              LocalPasswordController.maxLengthLocalPassword) {
+          print(secondPassword.text);
+          enableDialButtonsOfConfirmedPassword(secondPassword.text.length <
+              maxLengthLocalPassword);
+          if (secondPassword.text.length ==
+              maxLengthLocalPassword) {
             Get.context!
                 .read<NewLocalPasswordBloc>()
-                .add(ConfirmLocalPassword(confirmedPassword.text));
+                .add(EnterSecondLocalPassword(secondPassword.text));
           }
         },
       );
@@ -50,7 +56,8 @@ class NewLocalPasswordController extends GetxController {
 
   @override
   void dispose() {
-    password.dispose();
+    firstPassword.dispose();
+    secondPassword.dispose();
     super.dispose();
   }
 }

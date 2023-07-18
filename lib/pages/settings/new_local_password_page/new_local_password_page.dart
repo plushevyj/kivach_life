@@ -1,68 +1,71 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-// import 'package:get/get.dart';
 
+import '../../../core/constants.dart';
 import '/modules/new_local_password/bloc/new_local_password_bloc.dart';
 import '/widgets/digital_input/digital_input_widget.dart';
-import '../../local_auth_page/local_password_controller.dart';
 import '/widgets/digital_input/digital_field.dart';
 import '/pages/settings/new_local_password_page/new_password_controller.dart';
+import 'package:animations/animations.dart';
 
 class NewLocalPasswordPage extends StatelessWidget {
   const NewLocalPasswordPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-        create: (context) => NewLocalPasswordBloc(),
-        child: const _NewLocalPasswordPageView());
-  }
-}
-
-class _NewLocalPasswordPageView extends StatelessWidget {
-  const _NewLocalPasswordPageView({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Builder(
-      builder: (_) {
-        final newLocalPasswordController = Get.put(NewLocalPasswordController());
-        return Scaffold(
-          extendBodyBehindAppBar: true,
-          appBar: AppBar(
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back_sharp),
-              onPressed: () => Get.back(),
-            ),
-          ),
-          body: BlocBuilder<NewLocalPasswordBloc, NewLocalPasswordState>(
-            builder: (context, state) {
-              if (state is NewLocalPasswordInitialState) {
-                return Obx(() {
-                  return _LocalPasswordSettingBody(
-                    controller: newLocalPasswordController.password,
+    final newLocalPasswordController = Get.put(NewLocalPasswordController());
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_sharp),
+          onPressed: () => Get.back(),
+        ),
+      ),
+      body: BlocConsumer<NewLocalPasswordBloc, NewLocalPasswordState>(
+        listener: (_, state) {
+          newLocalPasswordController.firstPassword.clear();
+          newLocalPasswordController.secondPassword.clear();
+          if (state is NewLocalPasswordInitialState ||
+              state is InvalidConfirmedNewLocalPassword) {
+            newLocalPasswordController.onFirstPage(false);
+          } else if (state is GotFirstLocalPassword) {
+            newLocalPasswordController.onFirstPage(true);
+          }
+        },
+        builder: (context, state) {
+          return PageTransitionSwitcher(
+            duration: const Duration(milliseconds: 300),
+            reverse: !newLocalPasswordController.onFirstPage.value,
+            transitionBuilder: (child, animation, secondaryAnimation) {
+              return SharedAxisTransition(
+                  animation: animation,
+                  secondaryAnimation: secondaryAnimation,
+                  transitionType: SharedAxisTransitionType.horizontal,
+                  child: child);
+            },
+            child: state is NewLocalPasswordInitialState ||
+                    state is InvalidConfirmedNewLocalPassword
+                ? _LocalPasswordSettingBody(
+                    key: UniqueKey(),
+                    controller: newLocalPasswordController.firstPassword,
                     idEnabled: newLocalPasswordController
                         .enableDialButtonsOfPassword.value,
                     title: 'ПРИДУМАЙТЕ ПАРОЛЬ',
-                  );
-                });
-              } else if (state is GotNewLocalPassword) {
-                return Obx(() {
-                  return _LocalPasswordSettingBody(
-                    controller: newLocalPasswordController.confirmedPassword,
-                    idEnabled: newLocalPasswordController
-                        .enableDialButtonsOfConfirmedPassword.value,
-                    title: 'ПОДТВЕРДИТЕ ПАРОЛЬ',
-                  );
-                });
-              } else {
-                return const Center(child: CircularProgressIndicator());
-              }
-            },
-          ),
-        );
-      }
+                  )
+                : state is GotFirstLocalPassword
+                    ? _LocalPasswordSettingBody(
+                        key: UniqueKey(),
+                        controller: newLocalPasswordController.secondPassword,
+                        idEnabled: newLocalPasswordController
+                            .enableDialButtonsOfConfirmedPassword.value,
+                        title: 'ПОДТВЕРДИТЕ ПАРОЛЬ',
+                      )
+                    : const Center(child: CircularProgressIndicator()),
+          );
+        },
+      ),
     );
   }
 }
@@ -99,13 +102,13 @@ class _LocalPasswordSettingBody extends StatelessWidget {
             width: 150,
             child: DigitalField(
               controller: controller,
-              maxLength: LocalPasswordController.maxLengthLocalPassword,
+              maxLength: maxLengthLocalPassword,
             ),
           ),
           const SizedBox(height: 150),
           DigitalInput(
             controller: controller,
-            maxLength: LocalPasswordController.maxLengthLocalPassword,
+            maxLength: maxLengthLocalPassword,
             isEnabled: idEnabled,
           ),
           const SizedBox(height: 20),

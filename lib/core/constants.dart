@@ -1,0 +1,1 @@
+const maxLengthLocalPassword = 4;

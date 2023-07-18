@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
+import '../../core/constants.dart';
 import '/modules/local_authentication/bloc/local_authentication_bloc.dart';
 
 class LocalPasswordController extends GetxController {
   late final TextEditingController password;
 
   final enableDialButtons = true.obs;
-
-  static const maxLengthLocalPassword = 4;
 
   @override
   void onInit() {

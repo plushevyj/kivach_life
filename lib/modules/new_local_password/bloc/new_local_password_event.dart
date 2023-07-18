@@ -11,8 +11,8 @@ class NewLocalPasswordInitialEvent extends NewLocalPasswordEvent {
   const NewLocalPasswordInitialEvent();
 }
 
-class EnterNewLocalPassword extends NewLocalPasswordEvent {
-  const EnterNewLocalPassword(this.password);
+class EnterFirstLocalPassword extends NewLocalPasswordEvent {
+  const EnterFirstLocalPassword(this.password);
 
   final String password;
 
@@ -20,8 +20,8 @@ class EnterNewLocalPassword extends NewLocalPasswordEvent {
   List<Object?> get props => [password];
 }
 
-class ConfirmLocalPassword extends NewLocalPasswordEvent {
-  const ConfirmLocalPassword(this.confirmedPassword);
+class EnterSecondLocalPassword extends NewLocalPasswordEvent {
+  const EnterSecondLocalPassword(this.confirmedPassword);
 
   final String confirmedPassword;
 

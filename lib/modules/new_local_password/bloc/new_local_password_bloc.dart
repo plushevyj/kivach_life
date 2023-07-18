@@ -12,45 +12,45 @@ class NewLocalPasswordBloc
     extends Bloc<NewLocalPasswordEvent, NewLocalPasswordState> {
   NewLocalPasswordBloc() : super(const NewLocalPasswordInitialState()) {
     on<NewLocalPasswordInitialEvent>(_onNewLocalPasswordEventInitial);
-    on<EnterNewLocalPassword>(_onEnterNewLocalPassword);
-    on<ConfirmLocalPassword>(_onGotConfirmedNewLocalPassword);
+    on<EnterFirstLocalPassword>(_onEnterNewLocalPassword);
+    on<EnterSecondLocalPassword>(_onGotConfirmedNewLocalPassword);
   }
 
-  String? _passwordSaver;
+  String? _firstPassword;
 
   void _onNewLocalPasswordEventInitial(
     NewLocalPasswordInitialEvent event,
     Emitter<NewLocalPasswordState> emit,
   ) {
-    _passwordSaver = null;
+    _firstPassword = null;
     emit(const NewLocalPasswordInitialState());
   }
 
   void _onEnterNewLocalPassword(
-    EnterNewLocalPassword event,
+    EnterFirstLocalPassword event,
     Emitter<NewLocalPasswordState> emit,
   ) async {
-    await Future.delayed(const Duration(seconds: 500));
-    _passwordSaver = event.password;
-    emit(const GotNewLocalPassword());
+    await Future.delayed(const Duration(milliseconds: 500));
+    _firstPassword = event.password;
+    emit(const GotFirstLocalPassword());
   }
 
   void _onGotConfirmedNewLocalPassword(
-    ConfirmLocalPassword event,
+    EnterSecondLocalPassword event,
     Emitter<NewLocalPasswordState> emit,
   ) async {
     try {
-      await Future.delayed(const Duration(seconds: 500));
-      if (event.confirmedPassword == _passwordSaver) {
-        print('${event.confirmedPassword} $_passwordSaver');
+      await Future.delayed(const Duration(milliseconds: 500));
+      if (event.confirmedPassword == _firstPassword) {
+        print('${event.confirmedPassword} $_firstPassword');
         emit(const SuccessfulPasswordChange());
       } else {
         emit(const InvalidConfirmedNewLocalPassword());
       }
     } catch (error) {
       print(error);
-      showError('Ошибка обновления локального пароля');
-      emit(const ErrorLocalPasswordState('Ошибка обновления локального пароля'));
+      showError('Ошибка добавления локального пароля');
+      emit(const ErrorLocalPasswordState('Ошибка добавления локального пароля'));
     }
   }
 }

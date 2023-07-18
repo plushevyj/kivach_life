@@ -11,12 +11,12 @@ class NewLocalPasswordInitialState extends NewLocalPasswordState {
   const NewLocalPasswordInitialState();
 }
 
-class GotNewLocalPassword extends NewLocalPasswordState {
-  const GotNewLocalPassword();
+class GotFirstLocalPassword extends NewLocalPasswordState {
+  const GotFirstLocalPassword();
 }
 
-class GotConfirmedNewLocalPassword extends NewLocalPasswordState {
-  const GotConfirmedNewLocalPassword();
+class GotSecondLocalPassword extends NewLocalPasswordState {
+  const GotSecondLocalPassword();
 }
 
 class SuccessfulPasswordChange extends NewLocalPasswordState {
