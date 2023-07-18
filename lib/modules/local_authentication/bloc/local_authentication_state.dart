@@ -14,7 +14,7 @@ class LocallyNotAuthenticated extends LocalAuthenticationState {
 class GotSettings extends LocalAuthenticationState {
   const GotSettings({required this.settings});
 
-  final LocalAuthenticationSettings settings;
+  final BiometricSettings settings;
 
   @override
   List<Object> get props => [settings];

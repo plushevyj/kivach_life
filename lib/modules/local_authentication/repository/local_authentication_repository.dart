@@ -1,7 +1,7 @@
-import '../models/local_authentication_settings_model/local_authentication_settings_model.dart';
+import '/models/local_authentication_settings_model/biometric_setting_model.dart';
 
 abstract class LocalAuthenticationRepository {
-  Future<LocalAuthenticationSettings> checkSettings();
+  Future<BiometricSettings> checkSettings();
 
-  Future<LocalAuthenticationSettings> getSettings();
+  Future<BiometricSettings> getSettings();
 }

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+
+import '../../../modules/biometric_settings/biometric_settings_bloc.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -24,7 +27,9 @@ class SettingsPage extends StatelessWidget {
           _SettingButton(
             title: 'По отпечатку пальца или скану лица',
             icon: Icons.fingerprint,
-            onPressed: () {},
+            onPressed: () => Get.context!
+                .read<BiometricSettingsBloc>()
+                .add(const CheckUser()),
           ),
         ],
       ),

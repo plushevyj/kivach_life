@@ -1,6 +1,6 @@
 import 'package:hive_flutter/hive_flutter.dart';
 
-import '../models/local_authentication_settings_model/local_authentication_settings_model.dart';
+import '/models/local_authentication_settings_model/biometric_setting_model.dart';
 import 'local_authentication_repository.dart';
 
 class LocalAuthenticationRepositoryImpl
@@ -8,7 +8,7 @@ class LocalAuthenticationRepositoryImpl
   const LocalAuthenticationRepositoryImpl();
 
   Future<Box<dynamic>> _openStorage() async {
-    return await Hive.openBox<LocalAuthenticationSettings>(
+    return await Hive.openBox<BiometricSettings>(
         'localAuthenticationSettings');
   }
 
@@ -17,7 +17,7 @@ class LocalAuthenticationRepositoryImpl
   }
 
   @override
-  Future<LocalAuthenticationSettings> checkSettings() async {
+  Future<BiometricSettings> checkSettings() async {
     final storage = await _openStorage();
     print(storage.length);
     if (storage.length > 1) {
@@ -28,7 +28,7 @@ class LocalAuthenticationRepositoryImpl
   }
 
   @override
-  Future<LocalAuthenticationSettings> getSettings() async {
+  Future<BiometricSettings> getSettings() async {
     final storage = await _openStorage();
     return storage.getAt(0);
   }

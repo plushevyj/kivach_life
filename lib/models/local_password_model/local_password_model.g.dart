@@ -17,7 +17,7 @@ class LocalPasswordAdapter extends TypeAdapter<LocalPassword> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return LocalPassword(
-      localPasswordHash: fields[0] as String?,
+      hash: fields[0] as String?,
     );
   }
 
@@ -26,7 +26,7 @@ class LocalPasswordAdapter extends TypeAdapter<LocalPassword> {
     writer
       ..writeByte(1)
       ..writeByte(0)
-      ..write(obj.localPasswordHash);
+      ..write(obj.hash);
   }
 
   @override

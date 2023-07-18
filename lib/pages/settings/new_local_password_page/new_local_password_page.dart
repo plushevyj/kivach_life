@@ -1,9 +1,10 @@
+import 'package:doctor/widgets/alerts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
-import '../../../core/constants.dart';
-import '/modules/new_local_password/bloc/new_local_password_bloc.dart';
+import '../../../modules/local_password_settings/bloc/local_password_settings_bloc.dart';
+import '/core/constants.dart';
 import '/widgets/digital_input/digital_input_widget.dart';
 import '/widgets/digital_input/digital_field.dart';
 import '/pages/settings/new_local_password_page/new_password_controller.dart';
@@ -23,20 +24,25 @@ class NewLocalPasswordPage extends StatelessWidget {
           onPressed: () => Get.back(),
         ),
       ),
-      body: BlocConsumer<NewLocalPasswordBloc, NewLocalPasswordState>(
+      body: BlocConsumer<LocalPasswordSettingsBloc, NewLocalPasswordState>(
         listener: (_, state) {
           newLocalPasswordController.firstPassword.clear();
           newLocalPasswordController.secondPassword.clear();
-          if (state is NewLocalPasswordInitialState ||
-              state is InvalidConfirmedNewLocalPassword) {
+          if (state is InvalidConfirmedNewLocalPassword) {
             newLocalPasswordController.onFirstPage(false);
           } else if (state is GotFirstLocalPassword) {
             newLocalPasswordController.onFirstPage(true);
+          } else if (state is SuccessfulPasswordChange) {
+            Get.back();
+            showSuccessAlert('Локальный пароль изменен');
+          } else if (state is ErrorLocalPasswordState) {
+            Get.back();
+            showErrorAlert(state.error);
           }
         },
         builder: (context, state) {
           return PageTransitionSwitcher(
-            duration: const Duration(milliseconds: 300),
+            duration: const Duration(milliseconds: 500),
             reverse: !newLocalPasswordController.onFirstPage.value,
             transitionBuilder: (child, animation, secondaryAnimation) {
               return SharedAxisTransition(
@@ -45,24 +51,36 @@ class NewLocalPasswordPage extends StatelessWidget {
                   transitionType: SharedAxisTransitionType.horizontal,
                   child: child);
             },
-            child: state is NewLocalPasswordInitialState ||
-                    state is InvalidConfirmedNewLocalPassword
-                ? _LocalPasswordSettingBody(
-                    key: UniqueKey(),
-                    controller: newLocalPasswordController.firstPassword,
-                    idEnabled: newLocalPasswordController
-                        .enableDialButtonsOfPassword.value,
-                    title: 'ПРИДУМАЙТЕ ПАРОЛЬ',
-                  )
-                : state is GotFirstLocalPassword
-                    ? _LocalPasswordSettingBody(
-                        key: UniqueKey(),
-                        controller: newLocalPasswordController.secondPassword,
+            child: (() {
+              if (state is LocalPasswordInitialSettingsState ||
+                  state is InvalidConfirmedNewLocalPassword) {
+                return SizedBox(
+                  key: UniqueKey(),
+                  child: Obx(
+                    () {
+                      return _LocalPasswordSettingBody(
+                        controller: newLocalPasswordController.firstPassword,
                         idEnabled: newLocalPasswordController
-                            .enableDialButtonsOfConfirmedPassword.value,
-                        title: 'ПОДТВЕРДИТЕ ПАРОЛЬ',
-                      )
-                    : const Center(child: CircularProgressIndicator()),
+                            .enableDialButtonsOfPassword.value,
+                        title: 'ПРИДУМАЙТЕ ПАРОЛЬ',
+                      );
+                    },
+                  ),
+                );
+              } else if (state is GotFirstLocalPassword) {
+                return SizedBox(
+                  key: UniqueKey(),
+                  child: Obx(() {
+                    return _LocalPasswordSettingBody(
+                      controller: newLocalPasswordController.secondPassword,
+                      idEnabled: newLocalPasswordController
+                          .enableDialButtonsOfConfirmedPassword.value,
+                      title: 'ПОДТВЕРДИТЕ ПАРОЛЬ',
+                    );
+                  }),
+                );
+              }
+            })(),
           );
         },
       ),

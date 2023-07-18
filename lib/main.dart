@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
-import '/core/dependencies/injector.dart';
+import 'core/dependencies/injector.dart';
 import 'core/pages.dart';
 import 'core/themes/light_theme.dart';
+import 'modules/biometric_settings/biometric_settings_bloc.dart';
 import 'modules/local_authentication/bloc/local_authentication_bloc.dart';
-import 'modules/new_local_password/bloc/new_local_password_bloc.dart';
+import 'modules/local_password_settings/bloc/local_password_settings_bloc.dart';
 
 void main() async {
   await initializeDependencies();
@@ -23,7 +24,8 @@ class App extends StatelessWidget {
         BlocProvider(
             create: (_) =>
                 LocalAuthenticationBloc()..add(const LogOutLocally())),
-        BlocProvider(create: (_) => NewLocalPasswordBloc()),
+        BlocProvider(create: (_) => LocalPasswordSettingsBloc()),
+        BlocProvider(create: (_) => BiometricSettingsBloc())
       ],
       child: GetMaterialApp(
         title: 'Кивач',

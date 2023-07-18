@@ -1,4 +1,4 @@
-part of 'new_local_password_bloc.dart';
+part of 'local_password_settings_bloc.dart';
 
 abstract class NewLocalPasswordState extends Equatable {
   const NewLocalPasswordState();
@@ -7,16 +7,12 @@ abstract class NewLocalPasswordState extends Equatable {
   List<Object?> get props => [];
 }
 
-class NewLocalPasswordInitialState extends NewLocalPasswordState {
-  const NewLocalPasswordInitialState();
+class LocalPasswordInitialSettingsState extends NewLocalPasswordState {
+  const LocalPasswordInitialSettingsState();
 }
 
 class GotFirstLocalPassword extends NewLocalPasswordState {
   const GotFirstLocalPassword();
-}
-
-class GotSecondLocalPassword extends NewLocalPasswordState {
-  const GotSecondLocalPassword();
 }
 
 class SuccessfulPasswordChange extends NewLocalPasswordState {

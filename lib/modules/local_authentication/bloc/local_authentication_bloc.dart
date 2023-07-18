@@ -6,9 +6,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:local_auth/local_auth.dart';
 
+import '../../../models/local_authentication_settings_model/biometric_setting_model.dart';
 import '../repository/local_authentication_repository_impl.dart';
 import '/widgets/alerts.dart';
-import '/modules/local_authentication/models/local_authentication_settings_model/local_authentication_settings_model.dart';
 
 
 part 'local_authentication_event.dart';
@@ -60,10 +60,10 @@ class LocalAuthenticationBloc
       }
     } on PlatformException catch (error) {
       print('Ошибка аутентификации: $error');
-      showError('Ошибка аутентификации');
+      showErrorAlert('Ошибка аутентификации');
     } catch (error) {
       print('Ошибка аутентификации: $error');
-      showError('Ошибка аутентификации');
+      showErrorAlert('Ошибка аутентификации');
     } finally {
       if (isLocalAuthorized) {
         emit(const LocallyAuthenticated());
@@ -86,13 +86,13 @@ class LocalAuthenticationBloc
       if (event.password == '4355') {
         isLocalAuthorized = true;
       } else {
-        showError('Неверный пароль');
+        showErrorAlert('Неверный пароль');
       }
     } catch (error) {
       if (kDebugMode) {
         print(error);
       }
-      showError('Ошибка аутентификации');
+      showErrorAlert('Ошибка аутентификации');
     } finally {
       if (isLocalAuthorized) {
         emit(const LocallyAuthenticated());
