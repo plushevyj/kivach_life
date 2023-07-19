@@ -1,9 +1,12 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:local_auth/local_auth.dart';
 
+import '../../models/biometric_settings_model/biometric_setting_model.dart';
 import '../../widgets/alerts.dart';
+import '../local_authentication/repository/local_authentication_repository_impl.dart';
 
 part 'biometric_settings_event.dart';
 part 'biometric_settings_state.dart';
@@ -14,6 +17,8 @@ class BiometricSettingsBloc
     on<CheckUser>(_onCheckUser);
   }
 
+  final _localAuthenticationRepository = const LocalAuthenticationRepository();
+
   Future<void> _onCheckUser(
     CheckUser event,
     Emitter<BiometricSettingsState> emit,
@@ -22,6 +27,11 @@ class BiometricSettingsBloc
     var availableBiometrics = <BiometricType>[];
     var isLocalAuthorized = false;
     try {
+      final localAuthenticationSetting =
+          await _localAuthenticationRepository.checkAuthenticationSettings();
+      if (localAuthenticationSetting.$1 == false) {
+        throw 'Необходимо создать пароль для входа в приложение';
+      }
       final localAuthentication = LocalAuthentication();
       canCheckBiometric = await localAuthentication.canCheckBiometrics;
       availableBiometrics = await localAuthentication.getAvailableBiometrics();
@@ -38,13 +48,21 @@ class BiometricSettingsBloc
             biometricOnly: true,
           ),
         );
+        if (isLocalAuthorized) {
+          await _localAuthenticationRepository.saveBiometricSetting(
+              BiometricSettings(isBiometricSecurity: true));
+        }
       }
     } on PlatformException catch (error) {
-      print('Биометрические данные не подтверждены: $error');
+      if (kDebugMode) {
+        print('Биометрические данные не подтверждены: $error');
+      }
       showErrorAlert('Биометрические данные не подтверждены');
     } catch (error) {
-      print('Биометрические данные не подтверждены: $error');
-      showErrorAlert('Биометрические данные не подтверждены');
+      if (kDebugMode) {
+        print('Биометрические данные не подтверждены: $error');
+      }
+      showErrorAlert(error.toString());
     } finally {
       if (isLocalAuthorized) {
         emit(const ValidUserBiometricData());

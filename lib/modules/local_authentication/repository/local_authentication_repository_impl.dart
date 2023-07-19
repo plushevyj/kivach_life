@@ -1,35 +1,69 @@
 import 'package:hive_flutter/hive_flutter.dart';
 
-import '/models/local_authentication_settings_model/biometric_setting_model.dart';
-import 'local_authentication_repository.dart';
+import '../../../models/biometric_settings_model/biometric_setting_model.dart';
+import '../../../models/local_password_model/local_password_model.dart';
 
-class LocalAuthenticationRepositoryImpl
-    implements LocalAuthenticationRepository {
-  const LocalAuthenticationRepositoryImpl();
+class LocalAuthenticationRepository {
+  const LocalAuthenticationRepository();
 
-  Future<Box<dynamic>> _openStorage() async {
-    return await Hive.openBox<BiometricSettings>(
-        'localAuthenticationSettings');
+  Future<Box<dynamic>> _openLocalPasswordStorage() async {
+    return await Hive.openBox<LocalPassword>('localAuthenticationSettings');
   }
 
-  Future<void> _closeStorage() async {
-    await Hive.box('localAuthenticationSettings').close();
+  Future<Box<dynamic>> _openBiometricSettingStorage() async {
+    return await Hive.openBox<BiometricSettings>('biometricSetting');
   }
 
-  @override
-  Future<BiometricSettings> checkSettings() async {
-    final storage = await _openStorage();
-    print(storage.length);
-    if (storage.length > 1) {
-      throw Exception('HiveBox \'localAuthenticationSettings\' must have a length that is 1.');
+  Future<(bool, bool)> checkAuthenticationSettings() async {
+    final localPasswordBox = await _openLocalPasswordStorage();
+    final isLocalPassword = (() {
+      if (localPasswordBox.isNotEmpty) {
+        final localPasswordSetting = localPasswordBox.getAt(0) as LocalPassword;
+        return localPasswordSetting.hash != null;
+      } else {
+        return false;
+      }
+    }());
+    final biometricSettingBox = await _openBiometricSettingStorage();
+    final isBiometricSetting = (() {
+      if (biometricSettingBox.isNotEmpty) {
+        final biometricSetting =
+            biometricSettingBox.getAt(0) as BiometricSettings;
+        return biometricSetting.isBiometricSecurity;
+      } else {
+        return false;
+      }
+    }());
+    return (isLocalPassword, isBiometricSetting);
+  }
+
+  Future<LocalPassword> getLocalPasswordSetting() async {
+    final box = await _openLocalPasswordStorage();
+    final localPasswordSetting = await box.getAt(0) as LocalPassword;
+    return localPasswordSetting;
+  }
+
+  Future<BiometricSettings> getBiometricSetting() async {
+    final box = await _openBiometricSettingStorage();
+    final biometricSettings = await box.getAt(0) as BiometricSettings;
+    return biometricSettings;
+  }
+
+  Future<void> savePassword(LocalPassword localPassword) async {
+    final box = await _openLocalPasswordStorage();
+    if (box.isEmpty) {
+      await box.add(localPassword);
+    } else {
+      await box.putAt(0, localPassword);
     }
-
-    return storage.getAt(0);
   }
 
-  @override
-  Future<BiometricSettings> getSettings() async {
-    final storage = await _openStorage();
-    return storage.getAt(0);
+  Future<void> saveBiometricSetting(BiometricSettings biometricSettings) async {
+    final box = await _openBiometricSettingStorage();
+    if (box.isEmpty) {
+      await box.add(biometricSettings);
+    } else {
+      await box.putAt(0, biometricSettings);
+    }
   }
 }

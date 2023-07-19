@@ -8,6 +8,8 @@ import '/modules/local_authentication/bloc/local_authentication_bloc.dart';
 class LocalPasswordController extends GetxController {
   late final TextEditingController password;
 
+  final firstRenderer = true.obs;
+
   final enableDialButtons = true.obs;
 
   @override

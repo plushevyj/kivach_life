@@ -4,8 +4,9 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../models/local_password_model/local_password_model.dart';
-import '../repository/local_authentication_repository_impl.dart';
+import '/models/local_password_model/local_password_model.dart';
+import '/modules/local_authentication/repository/local_authentication_repository_impl.dart';
+
 
 part 'local_password_settings_event.dart';
 part 'local_password_settings_state.dart';
@@ -18,7 +19,7 @@ class LocalPasswordSettingsBloc
     on<EnterSecondLocalPassword>(_onEnterSecondLocalPassword);
   }
 
-  final _repository = const NewLocalPasswordRepositoryImpl();
+  final _repository = const LocalAuthenticationRepository();
 
   String? _firstPassword;
 
@@ -47,11 +48,11 @@ class LocalPasswordSettingsBloc
       await Future.delayed(const Duration(milliseconds: 500));
       if (event.secondPassword == _firstPassword) {
         var hash = sha256.convert(utf8.encode(_firstPassword!)).toString();
-        print('hash = $hash');
         final localPasswordLocalPassword = LocalPassword(hash: hash);
         _repository.savePassword(localPasswordLocalPassword);
         emit(const SuccessfulPasswordChange());
       } else {
+        _firstPassword = null;
         emit(const InvalidConfirmedNewLocalPassword());
       }
     } catch (error) {

@@ -10,21 +10,30 @@ import '/widgets/digital_input/digital_field.dart';
 import '/widgets/digital_input/digital_input_widget.dart';
 
 class LocalAuthPage extends StatelessWidget {
-  const LocalAuthPage({Key? key}) : super(key: key);
+  const LocalAuthPage({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final passwordController = Get.put(LocalPasswordController());
-    Get.context!
-        .read<LocalAuthenticationBloc>()
-        .add(const LogInLocallyUsingBiometrics());
     return Scaffold(
-      body: BlocBuilder<LocalAuthenticationBloc, LocalAuthenticationState>(
+      body: BlocConsumer<LocalAuthenticationBloc, LocalAuthenticationState>(
+        listener: (_, state) {
+          if (state is LocallyNotAuthenticated) {
+            passwordController.password.clear();
+            if (passwordController.firstRenderer.value && state.localAuthenticationSetting.$2) {
+              Get.context!
+                  .read<LocalAuthenticationBloc>()
+                  .add(const LogInLocallyUsingBiometrics());
+              passwordController.firstRenderer(false);
+            }
+          }
+        },
         builder: (_, state) {
           if (state is LocallyAuthenticated) {
             return const Center(child: CircularProgressIndicator());
-          } else {
-            passwordController.password.clear();
+          } else if (state is LocallyNotAuthenticated) {
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: Get.width * .18),
               child: Column(
@@ -52,16 +61,22 @@ class LocalAuthPage extends StatelessWidget {
                       isEnabled: passwordController.enableDialButtons.value,
                       leftWidget: const Text('ВЫЙТИ'),
                       leftWidgetAction: SystemNavigator.pop,
-                      rightWidget: const Icon(Icons.fingerprint),
-                      rightWidgetAction: () => Get.context!
-                          .read<LocalAuthenticationBloc>()
-                          .add(const LogInLocallyUsingBiometrics()),
+                      rightWidget: state.localAuthenticationSetting.$2
+                          ? const Icon(Icons.fingerprint)
+                          : null,
+                      rightWidgetAction: state.localAuthenticationSetting.$2
+                          ? () => Get.context!
+                              .read<LocalAuthenticationBloc>()
+                              .add(const LogInLocallyUsingBiometrics())
+                          : null,
                     ),
                   ),
                   const SizedBox(height: 20),
                 ],
               ),
             );
+          } else {
+            return const Center(child: CircularProgressIndicator());
           }
         },
       ),

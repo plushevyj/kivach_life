@@ -7,23 +7,28 @@ abstract class LocalAuthenticationState extends Equatable {
   List<Object> get props => [];
 }
 
-class LocallyNotAuthenticated extends LocalAuthenticationState {
-  const LocallyNotAuthenticated();
+class LocalAuthenticationInitialState extends LocalAuthenticationState {
+  const LocalAuthenticationInitialState();
 }
 
-class GotSettings extends LocalAuthenticationState {
-  const GotSettings({required this.settings});
+class LoadingLocalAuthentication extends LocalAuthenticationState {
+  const LoadingLocalAuthentication(this.localAuthenticationSetting);
 
-  final BiometricSettings settings;
+  final (bool, bool) localAuthenticationSetting;
 
   @override
-  List<Object> get props => [settings];
+  List<Object> get props => [localAuthenticationSetting];
+}
+
+class LocallyNotAuthenticated extends LocalAuthenticationState {
+  const LocallyNotAuthenticated(this.localAuthenticationSetting);
+
+  final (bool, bool) localAuthenticationSetting;
+
+  @override
+  List<Object> get props => [localAuthenticationSetting];
 }
 
 class LocallyAuthenticated extends LocalAuthenticationState {
   const LocallyAuthenticated();
-}
-
-class LoadingLocalAuthentication extends LocalAuthenticationState {
-  const LoadingLocalAuthentication();
 }

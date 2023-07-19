@@ -1,41 +1,46 @@
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:local_auth/local_auth.dart';
 
-import '../../../models/local_authentication_settings_model/biometric_setting_model.dart';
 import '../repository/local_authentication_repository_impl.dart';
 import '/widgets/alerts.dart';
-
 
 part 'local_authentication_event.dart';
 part 'local_authentication_state.dart';
 
 class LocalAuthenticationBloc
     extends Bloc<LocalAuthenticationEvent, LocalAuthenticationState> {
-  LocalAuthenticationBloc() : super(const LocallyNotAuthenticated()) {
+  LocalAuthenticationBloc() : super(const LocalAuthenticationInitialState()) {
     on<LogOutLocally>(_onLogOutLocally);
     on<LogInLocallyUsingBiometrics>(_onLogInLocallyUsingBiometrics);
     on<LogInLocallyUsingDigitalPassword>(_onLogInLocallyUsingPassword);
   }
 
-  final _localAuthentication = const LocalAuthenticationRepositoryImpl();
+  final _localAuthentication = const LocalAuthenticationRepository();
 
   Future<void> _onLogOutLocally(
     LogOutLocally event,
     Emitter<LocalAuthenticationState> emit,
   ) async {
-    emit(const LocallyNotAuthenticated());
+    final authenticationSetting =
+        await _localAuthentication.checkAuthenticationSettings();
+    if (authenticationSetting.$1) {
+      emit(LocallyNotAuthenticated(authenticationSetting));
+    } else {
+      emit(const LocallyAuthenticated());
+    }
   }
 
   Future<void> _onLogInLocallyUsingBiometrics(
     LogInLocallyUsingBiometrics event,
     Emitter<LocalAuthenticationState> emit,
   ) async {
-    emit(const LoadingLocalAuthentication());
     var canCheckBiometric = false;
     var availableBiometrics = <BiometricType>[];
     var isLocalAuthorized = false;
@@ -59,16 +64,22 @@ class LocalAuthenticationBloc
         );
       }
     } on PlatformException catch (error) {
-      print('Ошибка аутентификации: $error');
+      if (kDebugMode) {
+        print('Ошибка аутентификации: $error');
+      }
       showErrorAlert('Ошибка аутентификации');
     } catch (error) {
-      print('Ошибка аутентификации: $error');
+      if (kDebugMode) {
+        print('Ошибка аутентификации: $error');
+      }
       showErrorAlert('Ошибка аутентификации');
     } finally {
       if (isLocalAuthorized) {
         emit(const LocallyAuthenticated());
       } else {
-        emit(const LocallyNotAuthenticated());
+        final authenticationSetting =
+            await _localAuthentication.checkAuthenticationSettings();
+        emit(LocallyNotAuthenticated(authenticationSetting));
       }
     }
   }
@@ -78,12 +89,13 @@ class LocalAuthenticationBloc
     Emitter<LocalAuthenticationState> emit,
   ) async {
     await Future.delayed(const Duration(milliseconds: 500));
-    emit(const LoadingLocalAuthentication());
     var isLocalAuthorized = false;
     try {
-      // final settings = await _localAuthentication.checkSettings();
-      // print(settings.isBiometricSecurity);
-      if (event.password == '4355') {
+      var enteredPasswordHash =
+          sha256.convert(utf8.encode(event.password)).toString();
+      final passwordSetting =
+          await _localAuthentication.getLocalPasswordSetting();
+      if (enteredPasswordHash == passwordSetting.hash) {
         isLocalAuthorized = true;
       } else {
         showErrorAlert('Неверный пароль');
@@ -92,12 +104,15 @@ class LocalAuthenticationBloc
       if (kDebugMode) {
         print(error);
       }
-      showErrorAlert('Ошибка аутентификации');
+      showErrorAlert(error.toString());
     } finally {
       if (isLocalAuthorized) {
         emit(const LocallyAuthenticated());
       } else {
-        emit(const LocallyNotAuthenticated());
+        final authenticationSetting =
+            await _localAuthentication.checkAuthenticationSettings();
+        emit(LoadingLocalAuthentication(authenticationSetting));
+        emit(LocallyNotAuthenticated(authenticationSetting));
       }
     }
   }
