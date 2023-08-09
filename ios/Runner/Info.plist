@@ -49,12 +49,9 @@
 	<true/>
 	<key>NSFaceIDUsageDescription</key>
     <string>Аутентификация в приложении Кивач</string>
-
     <key>NSCameraUsageDescription</key>
     <string>This app needs camera access to scan QR codes</string>
     <key>io.flutter.embedded_views_preview</key>
     <true/>
-    <key>NSCameraUsageDescription</key>
-    <string>This app needs camera access to scan QR codes</string>
 </dict>
 </plist>
