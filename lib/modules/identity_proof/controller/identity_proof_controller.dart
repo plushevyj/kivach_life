@@ -20,7 +20,6 @@ class IdentityProofController extends GetxController {
       if (value) {
         Navigator.pop(Get.context!);
       }
-      print('result = $value; ${result.value}');
     });
     password.addListener(() {
       enableDialButtons(password.text.length < maxLengthLocalPassword);
