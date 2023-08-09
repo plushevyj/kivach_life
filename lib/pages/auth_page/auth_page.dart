@@ -1,8 +1,10 @@
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../widgets/inputs/auth_button.dart';
-import '../../widgets/inputs/auth_text_field.dart';
+import '../../widgets/inputs/button_for_form.dart';
+import '../../widgets/inputs/text_field_for_form.dart';
+import '/core/themes/light_theme.dart';
 
 class AuthorizationPage extends StatelessWidget {
   const AuthorizationPage({Key? key}) : super(key: key);
@@ -15,31 +17,36 @@ class AuthorizationPage extends StatelessWidget {
       persistentFooterAlignment: AlignmentDirectional.center,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: pagePadding,
           child: Center(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                AuthTextField(
+                SvgPicture.asset(
+                  'assets/images/logo.svg',
+                  width: 75,
+                ),
+                const SizedBox(height: 20),
+                TextFieldForForm(
                   controller: loginController,
                   hint: 'Логин',
                 ),
                 const SizedBox(height: 20),
-                AuthTextField(
+                TextFieldForForm(
                   controller: passwordController,
                   hint: 'Пароль',
                   isPassword: true,
                 ),
                 const SizedBox(height: 20),
-                AuthButton(
+                ButtonForForm(
                   text: 'ВОЙТИ',
-                  onPressed: () => Get.toNamed('registration'),
+                  onPressed: () {},
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () => Get.toNamed('/registration/qr'),
                   child: const Text(
                     'Зарегистрироваться',
-                    style: TextStyle(color: Colors.green, fontSize: 16),
+                    style: TextStyle(color: KivachColors.green),
                   ),
                 ),
               ],

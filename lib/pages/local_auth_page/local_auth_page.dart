@@ -1,5 +1,6 @@
+import 'dart:io' show Platform;
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
@@ -22,12 +23,13 @@ class LocalAuthPage extends StatelessWidget {
         listener: (_, state) {
           if (state is LocallyNotAuthenticated) {
             passwordController.password.clear();
-            if (passwordController.firstRenderer.value && state.localAuthenticationSetting.$2) {
-              Get.context!
-                  .read<LocalAuthenticationBloc>()
-                  .add(const LogInLocallyUsingBiometrics());
-              passwordController.firstRenderer(false);
-            }
+            // if (passwordController.firstRenderer.value &&
+            //     state.localAuthenticationSetting.$2) {
+            //   Get.context!
+            //       .read<LocalAuthenticationBloc>()
+            //       .add(const LogInLocallyUsingBiometrics());
+            //   passwordController.firstRenderer(false);
+            // }
           }
         },
         builder: (_, state) {
@@ -35,7 +37,7 @@ class LocalAuthPage extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           } else if (state is LocallyNotAuthenticated) {
             return Padding(
-              padding: EdgeInsets.symmetric(horizontal: Get.width * .18),
+              padding: EdgeInsets.symmetric(horizontal: Get.width * 0.18),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -59,12 +61,11 @@ class LocalAuthPage extends StatelessWidget {
                       controller: passwordController.password,
                       maxLength: maxLengthLocalPassword,
                       isEnabled: passwordController.enableDialButtons.value,
-                      leftWidget: const Text('ВЫЙТИ'),
-                      leftWidgetAction: SystemNavigator.pop,
-                      rightWidget: state.localAuthenticationSetting.$2
-                          ? const Icon(Icons.fingerprint)
+                      leftWidget: state.localAuthenticationSetting.$2
+                          ? Icon(
+                              Platform.isIOS ? Icons.face : Icons.fingerprint)
                           : null,
-                      rightWidgetAction: state.localAuthenticationSetting.$2
+                      leftWidgetAction: state.localAuthenticationSetting.$2
                           ? () => Get.context!
                               .read<LocalAuthenticationBloc>()
                               .add(const LogInLocallyUsingBiometrics())

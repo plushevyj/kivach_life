@@ -12,7 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   get: ^4.6.5
-  dio: ^5.2.1+1
+  dio: ^5.3.1
   flutter_bloc: ^8.1.3
   get_it: ^7.6.0
   hive: ^2.2.3
@@ -26,7 +26,13 @@ dependencies:
   animations: ^2.0.7
   local_auth_android: ^1.0.32
   local_auth_ios: ^1.1.3
-  flutter_barcode_scanner: ^2.0.0
+#  qr_mobile_vision: ^4.1.3
+  qr_code_scanner: ^1.0.1
+#  el_tooltip: ^1.0.8
+  flutter_svg: ^2.0.7
+  smooth_page_indicator: ^1.1.0
+  logger: ^2.0.1
+
 
 dev_dependencies:
   flutter_test:
@@ -40,3 +46,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/images/

@@ -1,7 +1,11 @@
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:local_auth/local_auth.dart';
+import 'package:local_auth_android/local_auth_android.dart';
+import 'package:local_auth_ios/types/auth_messages_ios.dart';
 
 import '../../../models/biometric_settings_model/biometric_setting_model.dart';
 import '../../../models/local_password_model/local_password_model.dart';
+import '../../../widgets/alerts.dart';
 
 class LocalAuthenticationRepository {
   const LocalAuthenticationRepository();
@@ -14,7 +18,7 @@ class LocalAuthenticationRepository {
     return await Hive.openBox<BiometricSettings>('biometricSetting');
   }
 
-  Future<(bool, bool)> checkAuthenticationSettings() async {
+  Future<(bool, bool)> checkLocalAuthenticationSettings() async {
     final localPasswordBox = await _openLocalPasswordStorage();
     final isLocalPassword = (() {
       if (localPasswordBox.isNotEmpty) {
@@ -64,6 +68,51 @@ class LocalAuthenticationRepository {
       await box.add(biometricSettings);
     } else {
       await box.putAt(0, biometricSettings);
+    }
+  }
+
+  Future<bool> authenticateByBiometric() async {
+    var canCheckBiometric = false;
+    var availableBiometrics = <BiometricType>[];
+    var isLocalAuthenticated = false;
+    final localAuthentication = LocalAuthentication();
+    canCheckBiometric = await localAuthentication.canCheckBiometrics;
+    availableBiometrics = await localAuthentication.getAvailableBiometrics();
+    if (canCheckBiometric &&
+        (availableBiometrics.contains(BiometricType.strong) ||
+            availableBiometrics.contains(BiometricType.face) ||
+            availableBiometrics.contains(BiometricType.iris) ||
+            availableBiometrics.contains(BiometricType.fingerprint))) {
+      isLocalAuthenticated = await localAuthentication.authenticate(
+        localizedReason: 'Приложение KivachLive',
+        authMessages: [
+          const AndroidAuthMessages(
+            biometricHint: '',
+            signInTitle: 'Подтвердите личность',
+          ),
+        ],
+        options: const AuthenticationOptions(
+          useErrorDialogs: false,
+          stickyAuth: true,
+          sensitiveTransaction: false,
+          biometricOnly: true,
+        ),
+      );
+    }
+    return isLocalAuthenticated;
+  }
+
+  Future<void> deleteLocalPassword() async {
+    final box = await _openLocalPasswordStorage();
+    if (box.isNotEmpty) {
+      await box.deleteAt(0);
+    }
+  }
+
+  Future<void> deleteBiometricSetting() async {
+    final box = await _openBiometricSettingStorage();
+    if (box.isNotEmpty) {
+      await box.deleteAt(0);
     }
   }
 }

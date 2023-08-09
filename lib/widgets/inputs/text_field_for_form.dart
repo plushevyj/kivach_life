@@ -5,8 +5,8 @@ class VisibilityTextController extends GetxController {
   final visibilityText = true.obs;
 }
 
-class AuthTextField extends StatelessWidget {
-  const AuthTextField({
+class TextFieldForForm extends StatelessWidget {
+  const TextFieldForForm({
     super.key,
     required this.controller,
     required this.hint,
@@ -19,13 +19,6 @@ class AuthTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final outlineInputBorder = OutlineInputBorder(
-      borderRadius: BorderRadius.circular(10),
-      borderSide: const BorderSide(
-        width: 2,
-        color: Colors.green,
-      ),
-    );
     return SizedBox(
       height: 60,
       child: isPassword
@@ -36,15 +29,8 @@ class AuthTextField extends StatelessWidget {
                 return TextField(
                   obscureText: logic.visibilityText.value,
                   controller: controller,
-                  cursorColor: Colors.green,
                   decoration: InputDecoration(
-                    border: outlineInputBorder,
-                    focusedBorder: outlineInputBorder,
-                    focusedErrorBorder: outlineInputBorder,
-                    disabledBorder: outlineInputBorder,
-                    enabledBorder: outlineInputBorder,
                     labelText: hint,
-                    labelStyle: const TextStyle(color: Colors.green),
                     suffixIcon: isPassword
                         ? IconButton(
                             icon: Icon(logic.visibilityText.value
@@ -53,7 +39,6 @@ class AuthTextField extends StatelessWidget {
                             onPressed: () {
                               logic.visibilityText(!logic.visibilityText.value);
                             },
-                            color: Colors.green,
                           )
                         : null,
                   ),
@@ -63,15 +48,8 @@ class AuthTextField extends StatelessWidget {
             )
           : TextField(
               controller: controller,
-              cursorColor: Colors.green,
               decoration: InputDecoration(
-                border: outlineInputBorder,
-                focusedBorder: outlineInputBorder,
-                focusedErrorBorder: outlineInputBorder,
-                disabledBorder: outlineInputBorder,
-                enabledBorder: outlineInputBorder,
                 labelText: hint,
-                labelStyle: const TextStyle(color: Colors.green),
               ),
               autocorrect: false,
             ),

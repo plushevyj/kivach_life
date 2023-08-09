@@ -1,4 +1,3 @@
-import 'package:doctor/widgets/alerts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -9,6 +8,7 @@ import '/widgets/digital_input/digital_input_widget.dart';
 import '/widgets/digital_input/digital_field.dart';
 import '/pages/settings/new_local_password_page/new_password_controller.dart';
 import 'package:animations/animations.dart';
+import '/widgets/alerts.dart';
 
 class NewLocalPasswordPage extends StatelessWidget {
   const NewLocalPasswordPage({Key? key}) : super(key: key);
@@ -24,18 +24,22 @@ class NewLocalPasswordPage extends StatelessWidget {
           onPressed: () => Get.back(),
         ),
       ),
-      body: BlocConsumer<LocalPasswordSettingsBloc, NewLocalPasswordState>(
+      body: BlocConsumer<LocalPasswordSettingBloc, LocalPasswordSettingState>(
         listener: (_, state) {
-          newLocalPasswordController.firstPassword.clear();
-          newLocalPasswordController.secondPassword.clear();
+          newLocalPasswordController
+            ..firstPassword.clear()
+            ..secondPassword.clear();
           if (state is InvalidConfirmedNewLocalPassword) {
-            newLocalPasswordController.onFirstPage(false);
+            showErrorAlert('Введенные пароли не совпадают');
+            newLocalPasswordController.reverse(false);
           } else if (state is GotFirstLocalPassword) {
-            newLocalPasswordController.onFirstPage(true);
+            newLocalPasswordController.reverse(true);
           } else if (state is SuccessfulPasswordChange) {
             Get.back();
             showSuccessAlert('Локальный пароль изменен');
-          } else if (state is ErrorLocalPasswordState) {
+          } else if (state is InvalidConfirmedNewLocalPassword) {
+            showErrorAlert('Неверный пароль');
+          } else if (state is ErrorNewLocalPasswordState) {
             Get.back();
             showErrorAlert(state.error);
           }
@@ -43,20 +47,21 @@ class NewLocalPasswordPage extends StatelessWidget {
         builder: (context, state) {
           return PageTransitionSwitcher(
             duration: const Duration(milliseconds: 500),
-            reverse: !newLocalPasswordController.onFirstPage.value,
+            reverse: !newLocalPasswordController.reverse.value,
             transitionBuilder: (child, animation, secondaryAnimation) {
               return SharedAxisTransition(
-                  animation: animation,
-                  secondaryAnimation: secondaryAnimation,
-                  transitionType: SharedAxisTransitionType.horizontal,
-                  child: child);
+                animation: animation,
+                secondaryAnimation: secondaryAnimation,
+                transitionType: SharedAxisTransitionType.horizontal,
+                child: child,
+              );
             },
             child: (() {
-              if (state is LocalPasswordInitialSettingsState ||
+              if (state is ProofedOfIdentity ||
                   state is InvalidConfirmedNewLocalPassword) {
-                return SizedBox(
+                return Scaffold(
                   key: UniqueKey(),
-                  child: Obx(
+                  body: Obx(
                     () {
                       return _LocalPasswordSettingBody(
                         controller: newLocalPasswordController.firstPassword,
@@ -68,9 +73,9 @@ class NewLocalPasswordPage extends StatelessWidget {
                   ),
                 );
               } else if (state is GotFirstLocalPassword) {
-                return SizedBox(
+                return Scaffold(
                   key: UniqueKey(),
-                  child: Obx(() {
+                  body: Obx(() {
                     return _LocalPasswordSettingBody(
                       controller: newLocalPasswordController.secondPassword,
                       idEnabled: newLocalPasswordController
@@ -103,7 +108,7 @@ class _LocalPasswordSettingBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: Get.width * .18),
+      padding: EdgeInsets.symmetric(horizontal: Get.width * 0.18),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.center,

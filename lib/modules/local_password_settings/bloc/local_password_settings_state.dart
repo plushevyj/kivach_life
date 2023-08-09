@@ -1,30 +1,42 @@
 part of 'local_password_settings_bloc.dart';
 
-abstract class NewLocalPasswordState extends Equatable {
-  const NewLocalPasswordState();
+abstract class LocalPasswordSettingState extends Equatable {
+  const LocalPasswordSettingState();
 
   @override
   List<Object?> get props => [];
 }
 
-class LocalPasswordInitialSettingsState extends NewLocalPasswordState {
-  const LocalPasswordInitialSettingsState();
+class LocalPasswordSettingsInitialState extends LocalPasswordSettingState {
+  const LocalPasswordSettingsInitialState();
 }
 
-class GotFirstLocalPassword extends NewLocalPasswordState {
+class ProofedOfIdentity extends LocalPasswordSettingState {
+  const ProofedOfIdentity();
+}
+
+class NotProofedOfIdentity extends LocalPasswordSettingState {
+  const NotProofedOfIdentity();
+}
+
+class GotFirstLocalPassword extends LocalPasswordSettingState {
   const GotFirstLocalPassword();
 }
 
-class SuccessfulPasswordChange extends NewLocalPasswordState {
+class SuccessfulPasswordChange extends LocalPasswordSettingState {
   const SuccessfulPasswordChange();
 }
 
-class InvalidConfirmedNewLocalPassword extends NewLocalPasswordState {
+class InvalidConfirmedNewLocalPassword extends LocalPasswordSettingState {
   const InvalidConfirmedNewLocalPassword();
 }
 
-class ErrorLocalPasswordState extends NewLocalPasswordState {
-  const ErrorLocalPasswordState(this.error);
+class DeletedLocalPassword extends LocalPasswordSettingState {
+  const DeletedLocalPassword();
+}
+
+class ErrorNewLocalPasswordState extends LocalPasswordSettingState {
+  const ErrorNewLocalPasswordState(this.error);
 
   final String error;
 

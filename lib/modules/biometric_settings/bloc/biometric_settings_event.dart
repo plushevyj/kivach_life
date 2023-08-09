@@ -7,6 +7,11 @@ abstract class BiometricSettingsEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class CheckUser extends BiometricSettingsEvent {
-  const CheckUser();
+class EnableBiometricsLogin extends BiometricSettingsEvent {
+  const EnableBiometricsLogin(this.state);
+
+  final bool state;
+
+  @override
+  List<Object?> get props => [state];
 }

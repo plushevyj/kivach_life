@@ -11,8 +11,13 @@ class BiometricSettingsInitial extends BiometricSettingsState {
   const BiometricSettingsInitial();
 }
 
-class InvalidUserBiometricData extends BiometricSettingsState {
-  const InvalidUserBiometricData();
+class ChangedUserBiometricSetting extends BiometricSettingsState {
+  const ChangedUserBiometricSetting(this.isEnable);
+
+  final bool isEnable;
+
+  @override
+  List<Object> get props => [isEnable];
 }
 
 class ValidUserBiometricData extends BiometricSettingsState {

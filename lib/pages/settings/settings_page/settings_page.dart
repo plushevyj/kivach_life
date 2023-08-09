@@ -1,37 +1,107 @@
+import 'package:doctor/modules/local_password_settings/bloc/local_password_settings_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
-import '../../../modules/biometric_settings/biometric_settings_bloc.dart';
+import '../../../core/themes/light_theme.dart';
+import '../../../modules/biometric_settings/bloc/biometric_settings_bloc.dart';
+import 'settings_page_controller.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);
 
-  static const _horizontalPadding = 20.0;
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Настройки'),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const _TitleWidget(title: 'ВХОД В ПРИЛОЖЕНИЕ'),
-          _SettingButton(
-            title: 'По цифровому паролю',
-            icon: Icons.lock_outline,
-            onPressed: () => Get.toNamed('/settings/new_local_password'),
-          ),
-          _SettingButton(
-            title: 'По отпечатку пальца или скану лица',
-            icon: Icons.fingerprint,
-            onPressed: () => Get.context!
-                .read<BiometricSettingsBloc>()
-                .add(const CheckUser()),
-          ),
-        ],
+    final settingsPageController = Get.put(SettingsPageController());
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<LocalPasswordSettingBloc, LocalPasswordSettingState>(
+          listener: (_, state) {
+            if (state is ProofedOfIdentity) {
+              Get.toNamed('/settings/new_local_password');
+            } else if (state is DeletedLocalPassword) {
+              settingsPageController.enableLocalPassword(false);
+            } else if (state is SuccessfulPasswordChange) {
+              settingsPageController.enableLocalPassword(true);
+            }
+          },
+        ),
+        BlocListener<BiometricSettingsBloc, BiometricSettingsState>(
+          listener: (_, state) {
+            if (state is ChangedUserBiometricSetting) {
+              settingsPageController.enableBiometric(state.isEnable);
+            }
+          },
+        ),
+      ],
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Настройки'),
+        ),
+        body: Obx(
+          () => settingsPageController.isPageLoading.value
+              ? const Center(child: CircularProgressIndicator())
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const _TitleWidget(title: 'ВХОД В ПРИЛОЖЕНИЕ'),
+                    if (!settingsPageController.enableLocalPassword.value)
+                      _SettingButton(
+                        title: 'По цифровому паролю',
+                        icon: Icons.lock,
+                        onPressed: () =>
+                            Get.toNamed('/settings/new_local_password'),
+                      )
+                    else ...[
+                      _SettingButton(
+                        title: 'Изменить цифровой пароль',
+                        icon: Icons.lock_outlined,
+                        onPressed: () =>
+                            Get.toNamed('/settings/new_local_password'),
+                      ),
+                      _SettingButton(
+                        title: 'Удалить цифровой пароль',
+                        icon: Icons.lock_open_outlined,
+                        onPressed: () => Get.context!
+                            .read<LocalPasswordSettingBloc>()
+                            .add(const DeleteLocalPassword()),
+                      ),
+                    ],
+                    _SettingButton(
+                      title: 'По отпечатку пальца или скану лица',
+                      icon: Icons.fingerprint,
+                      onPressed: () => Get.context!
+                          .read<BiometricSettingsBloc>()
+                          .add(EnableBiometricsLogin(
+                              !settingsPageController.enableBiometric.value)),
+                      comment: Transform.scale(
+                        scale: 0.8,
+                        alignment: Alignment.centerRight,
+                        child: Switch(
+                          activeColor: Colors.green,
+                          inactiveThumbColor: Colors.white,
+                          inactiveTrackColor: Colors.grey,
+                          trackOutlineColor:
+                              MaterialStateProperty.all(Colors.transparent),
+                          value: settingsPageController.enableBiometric.value,
+                          onChanged: (_) => Get.context!
+                              .read<BiometricSettingsBloc>()
+                              .add(EnableBiometricsLogin(!settingsPageController
+                                  .enableBiometric.value)),
+                        ),
+                      ),
+                    ),
+                    const _TitleWidget(title: 'ПРОФИЛЬ'),
+                    _SettingButton(
+                      title: 'Настройки профиля',
+                      icon: Icons.person,
+                      iconBackgroundColor: Colors.green,
+                      onPressed: () =>
+                          Get.toNamed('/settings/new_local_password'),
+                    ),
+                  ],
+                ),
+        ),
       ),
     );
   }
@@ -43,24 +113,28 @@ class _SettingButton extends StatelessWidget {
     required this.title,
     required this.onPressed,
     required this.icon,
+    this.iconBackgroundColor = Colors.red,
+    this.comment,
   }) : super(key: key);
 
   final String title;
   final IconData icon;
-  final VoidCallback onPressed;
+  final Color iconBackgroundColor;
+  final VoidCallback? onPressed;
+  final Widget? comment;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ButtonStyle(
         padding: MaterialStateProperty.all(
-          const EdgeInsets.symmetric(
-              horizontal: SettingsPage._horizontalPadding, vertical: 10),
+          const EdgeInsets.symmetric(vertical: 10).add(pagePadding),
         ),
         overlayColor: MaterialStateProperty.all(Colors.black.withOpacity(0.1)),
         elevation: MaterialStateProperty.all(0),
         shape: MaterialStateProperty.all(
             const RoundedRectangleBorder(borderRadius: BorderRadius.zero)),
+        backgroundColor: MaterialStateProperty.all(Colors.white),
       ),
       clipBehavior: Clip.antiAlias,
       onPressed: onPressed,
@@ -72,9 +146,9 @@ class _SettingButton extends StatelessWidget {
             children: [
               Container(
                 padding: const EdgeInsets.all(8),
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.red,
+                  color: iconBackgroundColor,
                 ),
                 child: Icon(
                   icon,
@@ -84,7 +158,7 @@ class _SettingButton extends StatelessWidget {
               ),
               const SizedBox(width: 15),
               SizedBox(
-                width: Get.width * 0.7,
+                width: Get.width * 0.6,
                 child: Text(
                   title,
                   style: const TextStyle(
@@ -95,10 +169,13 @@ class _SettingButton extends StatelessWidget {
               ),
             ],
           ),
-          Icon(
-            Icons.arrow_forward_ios_rounded,
-            size: 16,
-            color: Colors.black.withOpacity(0.5),
+          Flexible(
+            child: comment ??
+                Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  size: 16,
+                  color: Colors.black.withOpacity(0.5),
+                ),
           ),
         ],
       ),
@@ -115,9 +192,8 @@ class _TitleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(
-        horizontal: SettingsPage._horizontalPadding,
         vertical: 8,
-      ),
+      ).add(pagePadding),
       child: Text(
         title,
         style: TextStyle(

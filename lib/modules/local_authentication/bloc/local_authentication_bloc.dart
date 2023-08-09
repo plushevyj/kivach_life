@@ -2,13 +2,11 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:local_auth/local_auth.dart';
 
-import '../repository/local_authentication_repository_impl.dart';
+import '../repository/local_authentication_repository.dart';
 import '/widgets/alerts.dart';
 
 part 'local_authentication_event.dart';
@@ -22,14 +20,14 @@ class LocalAuthenticationBloc
     on<LogInLocallyUsingDigitalPassword>(_onLogInLocallyUsingPassword);
   }
 
-  final _localAuthentication = const LocalAuthenticationRepository();
+  final _localAuthenticationRepository = const LocalAuthenticationRepository();
 
   Future<void> _onLogOutLocally(
     LogOutLocally event,
     Emitter<LocalAuthenticationState> emit,
   ) async {
     final authenticationSetting =
-        await _localAuthentication.checkAuthenticationSettings();
+        await _localAuthenticationRepository.checkLocalAuthenticationSettings();
     if (authenticationSetting.$1) {
       emit(LocallyNotAuthenticated(authenticationSetting));
     } else {
@@ -41,44 +39,24 @@ class LocalAuthenticationBloc
     LogInLocallyUsingBiometrics event,
     Emitter<LocalAuthenticationState> emit,
   ) async {
-    var canCheckBiometric = false;
-    var availableBiometrics = <BiometricType>[];
     var isLocalAuthorized = false;
     try {
-      final localAuthentication = LocalAuthentication();
-      canCheckBiometric = await localAuthentication.canCheckBiometrics;
-      availableBiometrics = await localAuthentication.getAvailableBiometrics();
-      if (canCheckBiometric &&
-          (availableBiometrics.contains(BiometricType.strong) ||
-              availableBiometrics.contains(BiometricType.face) ||
-              availableBiometrics.contains(BiometricType.iris) ||
-              availableBiometrics.contains(BiometricType.fingerprint))) {
-        isLocalAuthorized = await localAuthentication.authenticate(
-          localizedReason: 'Авторизация в приложение Kivach Life',
-          options: const AuthenticationOptions(
-            useErrorDialogs: false,
-            stickyAuth: true,
-            sensitiveTransaction: false,
-            biometricOnly: true,
-          ),
-        );
+      final biometricSetting =
+          await _localAuthenticationRepository.getBiometricSetting();
+      if (biometricSetting.isBiometricSecurity) {
+        isLocalAuthorized =
+            await _localAuthenticationRepository.authenticateByBiometric();
       }
     } on PlatformException catch (error) {
-      if (kDebugMode) {
-        print('Ошибка аутентификации: $error');
-      }
       showErrorAlert('Ошибка аутентификации');
     } catch (error) {
-      if (kDebugMode) {
-        print('Ошибка аутентификации: $error');
-      }
       showErrorAlert('Ошибка аутентификации');
     } finally {
       if (isLocalAuthorized) {
         emit(const LocallyAuthenticated());
       } else {
-        final authenticationSetting =
-            await _localAuthentication.checkAuthenticationSettings();
+        final authenticationSetting = await _localAuthenticationRepository
+            .checkLocalAuthenticationSettings();
         emit(LocallyNotAuthenticated(authenticationSetting));
       }
     }
@@ -91,26 +69,23 @@ class LocalAuthenticationBloc
     await Future.delayed(const Duration(milliseconds: 500));
     var isLocalAuthorized = false;
     try {
-      var enteredPasswordHash =
+      final enteredPasswordHash =
           sha256.convert(utf8.encode(event.password)).toString();
       final passwordSetting =
-          await _localAuthentication.getLocalPasswordSetting();
+          await _localAuthenticationRepository.getLocalPasswordSetting();
       if (enteredPasswordHash == passwordSetting.hash) {
         isLocalAuthorized = true;
       } else {
         showErrorAlert('Неверный пароль');
       }
     } catch (error) {
-      if (kDebugMode) {
-        print(error);
-      }
       showErrorAlert(error.toString());
     } finally {
       if (isLocalAuthorized) {
         emit(const LocallyAuthenticated());
       } else {
-        final authenticationSetting =
-            await _localAuthentication.checkAuthenticationSettings();
+        final authenticationSetting = await _localAuthenticationRepository
+            .checkLocalAuthenticationSettings();
         emit(LoadingLocalAuthentication(authenticationSetting));
         emit(LocallyNotAuthenticated(authenticationSetting));
       }

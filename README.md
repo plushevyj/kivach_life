@@ -1,6 +1,6 @@
 # doctor
 
-Мобильное приложение Кивач
+A new Flutter project.
 
 ## Getting Started
 

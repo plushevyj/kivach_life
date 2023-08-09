@@ -1,30 +1,38 @@
 part of 'local_password_settings_bloc.dart';
 
-abstract class NewLocalPasswordEvent extends Equatable {
-  const NewLocalPasswordEvent();
+abstract class LocalPasswordSettingEvent extends Equatable {
+  const LocalPasswordSettingEvent();
 
   @override
   List<Object?> get props => [];
 }
 
-class LocalPasswordInitialSettingsEvent extends NewLocalPasswordEvent {
-  const LocalPasswordInitialSettingsEvent();
+class LocalPasswordSettingsInitialEvent extends LocalPasswordSettingEvent {
+  const LocalPasswordSettingsInitialEvent();
 }
 
-class EnterFirstLocalPassword extends NewLocalPasswordEvent {
-  const EnterFirstLocalPassword(this.firstPassword);
+// class ProofOfIdentity extends LocalPasswordSettingEvent {
+//   const ProofOfIdentity();
+// }
 
-  final String firstPassword;
+class EnterFirstLocalPassword extends LocalPasswordSettingEvent {
+  const EnterFirstLocalPassword(this.password);
+
+  final String password;
 
   @override
-  List<Object?> get props => [firstPassword];
+  List<Object?> get props => [password];
 }
 
-class EnterSecondLocalPassword extends NewLocalPasswordEvent {
-  const EnterSecondLocalPassword(this.secondPassword);
+class DeleteLocalPassword extends LocalPasswordSettingEvent {
+  const DeleteLocalPassword();
+}
 
-  final String secondPassword;
+class EnterSecondLocalPassword extends LocalPasswordSettingEvent {
+  const EnterSecondLocalPassword(this.password);
+
+  final String password;
 
   @override
-  List<Object?> get props => [secondPassword];
+  List<Object?> get props => [password];
 }
