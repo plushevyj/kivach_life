@@ -1,11 +1,9 @@
 import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
-import 'package:doctor/modules/biometric_settings/bloc/biometric_settings_bloc.dart';
 import 'package:doctor/modules/identity_proof/ui/identity_proof_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:get/get.dart';
 
 import '/models/local_password_model/local_password_model.dart';
 import '/modules/local_authentication/repository/local_authentication_repository.dart';
@@ -19,7 +17,7 @@ class LocalPasswordSettingBloc
   LocalPasswordSettingBloc()
       : super(const LocalPasswordSettingsInitialState()) {
     on<LocalPasswordSettingsInitialEvent>(_onNewLocalPasswordEventInitial);
-    // on<ProofOfIdentity>(_onProofOfIdentity);
+    on<ProofOfIdentity>(_onProofOfIdentity);
     on<EnterFirstLocalPassword>(_onEnterFirstLocalPassword);
     on<EnterSecondLocalPassword>(_onEnterSecondLocalPassword);
     on<DeleteLocalPassword>(_onDeleteLocalPassword);
@@ -32,18 +30,22 @@ class LocalPasswordSettingBloc
   void _onNewLocalPasswordEventInitial(
     LocalPasswordSettingsInitialEvent event,
     Emitter<LocalPasswordSettingState> emit,
+  ) {
+    emit(const LocalPasswordSettingsInitialState());
+  }
+
+  void _onProofOfIdentity(
+    ProofOfIdentity event,
+    Emitter<LocalPasswordSettingState> emit,
   ) async {
-    _firstPassword = null;
-    final authenticationSetting =
-        await _localAuthenticationRepository.checkLocalAuthenticationSettings();
-    if (authenticationSetting.$1) {
-      if (await identityProof()) {
+    try {
+      _firstPassword = null;
+      final isProofed = await identityProof();
+      if (isProofed) {
         emit(const ProofedOfIdentity());
-      } else {
-        emit(const NotProofedOfIdentity());
       }
-    } else {
-      emit(const ProofedOfIdentity());
+    } catch (error) {
+      showErrorAlert(error.toString());
     }
   }
 

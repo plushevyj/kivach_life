@@ -19,10 +19,6 @@ class NewLocalPasswordPage extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_sharp),
-          onPressed: () => Get.back(),
-        ),
       ),
       body: BlocConsumer<LocalPasswordSettingBloc, LocalPasswordSettingState>(
         listener: (_, state) {
@@ -83,6 +79,10 @@ class NewLocalPasswordPage extends StatelessWidget {
                       title: 'ПОДТВЕРДИТЕ ПАРОЛЬ',
                     );
                   }),
+                );
+              } else {
+                return Scaffold(
+                  key: UniqueKey(),
                 );
               }
             })(),

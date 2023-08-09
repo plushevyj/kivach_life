@@ -15,10 +15,6 @@ class ProofedOfIdentity extends LocalPasswordSettingState {
   const ProofedOfIdentity();
 }
 
-class NotProofedOfIdentity extends LocalPasswordSettingState {
-  const NotProofedOfIdentity();
-}
-
 class GotFirstLocalPassword extends LocalPasswordSettingState {
   const GotFirstLocalPassword();
 }

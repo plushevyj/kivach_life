@@ -22,9 +22,7 @@ class BiometricSettingsBloc
     passwordSettingSubscription =
         localPasswordSettingBloc.stream.listen((state) {
       if (state is DeletedLocalPassword) {
-        print('kekekekekekekke');
         add(const EnableBiometricsLogin(false));
-        print('kekekekekekekke');
       }
     });
   }

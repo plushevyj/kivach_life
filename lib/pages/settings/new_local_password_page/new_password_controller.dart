@@ -9,7 +9,6 @@ class NewLocalPasswordController extends GetxController {
   late final TextEditingController firstPassword;
   late final TextEditingController secondPassword;
 
-  final enableDialButtonsOfOldPassword = true.obs;
   final enableDialButtonsOfPassword = true.obs;
   final enableDialButtonsOfConfirmedPassword = true.obs;
 
@@ -18,9 +17,6 @@ class NewLocalPasswordController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    Get.context!
-        .read<LocalPasswordSettingBloc>()
-        .add(const LocalPasswordSettingsInitialEvent());
     firstPassword = TextEditingController();
     secondPassword = TextEditingController();
     WidgetsBinding.instance.addPostFrameCallback((_) {

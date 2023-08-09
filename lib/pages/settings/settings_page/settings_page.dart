@@ -49,15 +49,17 @@ class SettingsPage extends StatelessWidget {
                       _SettingButton(
                         title: 'По цифровому паролю',
                         icon: Icons.lock,
-                        onPressed: () =>
-                            Get.toNamed('/settings/new_local_password'),
+                        onPressed: () => Get.context!
+                            .read<LocalPasswordSettingBloc>()
+                            .add(const ProofOfIdentity()),
                       )
                     else ...[
                       _SettingButton(
                         title: 'Изменить цифровой пароль',
                         icon: Icons.lock_outlined,
-                        onPressed: () =>
-                            Get.toNamed('/settings/new_local_password'),
+                        onPressed: () => Get.context!
+                            .read<LocalPasswordSettingBloc>()
+                            .add(const ProofOfIdentity()),
                       ),
                       _SettingButton(
                         title: 'Удалить цифровой пароль',
@@ -96,8 +98,7 @@ class SettingsPage extends StatelessWidget {
                       title: 'Настройки профиля',
                       icon: Icons.person,
                       iconBackgroundColor: Colors.green,
-                      onPressed: () =>
-                          Get.toNamed('/settings/new_local_password'),
+                      onPressed: () {},
                     ),
                   ],
                 ),

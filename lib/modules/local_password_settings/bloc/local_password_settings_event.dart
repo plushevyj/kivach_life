@@ -11,9 +11,9 @@ class LocalPasswordSettingsInitialEvent extends LocalPasswordSettingEvent {
   const LocalPasswordSettingsInitialEvent();
 }
 
-// class ProofOfIdentity extends LocalPasswordSettingEvent {
-//   const ProofOfIdentity();
-// }
+class ProofOfIdentity extends LocalPasswordSettingEvent {
+  const ProofOfIdentity();
+}
 
 class EnterFirstLocalPassword extends LocalPasswordSettingEvent {
   const EnterFirstLocalPassword(this.password);
