@@ -441,7 +441,7 @@ packages:
     source: hosted
     version: "1.0.32"
   local_auth_ios:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: local_auth_ios
       sha256: edc2977c5145492f3451db9507a2f2f284ee4f408950b3e16670838726761940
