@@ -17,7 +17,7 @@ class RegistrationController extends GetxController {
 
   @override
   void onInit() {
-    token = Get.parameters['_token'] ?? 'unknown';
+    token = Get.parameters['token'] ?? 'unknown';
     print('token = $token');
     super.onInit();
   }
