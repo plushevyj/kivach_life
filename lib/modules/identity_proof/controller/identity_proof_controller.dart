@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
+import 'package:doctor/widgets/alerts.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -32,6 +33,8 @@ class IdentityProofController extends GetxController {
                   .hash;
           if (enteredPasswordHash == currentPasswordHash) {
             result(true);
+          } else {
+            showErrorAlert('Неверный пароль');
           }
           password.clear();
         });
