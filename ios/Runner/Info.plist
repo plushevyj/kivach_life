@@ -47,7 +47,9 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
-	<key>NSFaceIDUsageDescription</key>
+    <key>NSFaceIDUsageDescription</key>
     <string>Аутентификация в приложении Кивач</string>
+    <key>NSCameraUsageDescription</key>
+    <string>Мы используем камеру для сканирования QR-кода</string>
 </dict>
 </plist>
