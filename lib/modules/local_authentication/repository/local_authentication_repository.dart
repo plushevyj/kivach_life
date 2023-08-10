@@ -1,11 +1,10 @@
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:local_auth_android/local_auth_android.dart';
-import 'package:local_auth_ios/types/auth_messages_ios.dart';
 
 import '../../../models/biometric_settings_model/biometric_setting_model.dart';
 import '../../../models/local_password_model/local_password_model.dart';
-import '../../../widgets/alerts.dart';
+
 
 class LocalAuthenticationRepository {
   const LocalAuthenticationRepository();

@@ -28,4 +28,6 @@ class QRScannerPageController extends GetxController {
         (status) => flashlight(status),
       );
   }
+
+
 }

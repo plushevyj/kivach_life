@@ -14,7 +14,6 @@ class LocalPasswordController extends GetxController {
 
   @override
   void onInit() {
-    super.onInit();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Get.context!
           .read<LocalAuthenticationBloc>()
@@ -29,6 +28,7 @@ class LocalPasswordController extends GetxController {
               .add(LogInLocallyUsingDigitalPassword(password.text));
         }
       });
+    super.onInit();
   }
 
   @override

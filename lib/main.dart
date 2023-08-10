@@ -42,13 +42,13 @@ class App extends StatelessWidget {
           return BlocListener<LocalAuthenticationBloc,
               LocalAuthenticationState>(
             listener: (context, state) {
-              if (state is LocallyAuthenticated) {
-                Get.offNamed('/home');
-              } else if (state is LocallyNotAuthenticated) {
-                Get.offNamed('/local_auth');
-              } else {
-                Get.offNamed('/local_auth');
-              }
+              // if (state is LocallyAuthenticated) {
+              //   Get.offNamed('/home');
+              // } else if (state is LocallyNotAuthenticated) {
+              //   Get.offNamed('/local_auth');
+              // } else {
+              //   Get.offNamed('/local_auth');
+              // }
             },
             child: child,
           );

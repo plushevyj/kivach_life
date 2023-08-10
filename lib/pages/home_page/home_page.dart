@@ -22,7 +22,7 @@ class HomePage extends StatelessWidget {
           onPageFinished: (url) {},
           onWebResourceError: (error) {},
           onNavigationRequest: (request) {
-            if (request.url.startsWith('https://doctors.kivach.ru/')) {
+            if (request.url.startsWith('https://dev-doctors.kivach.ru/')) {
               urlTitleNotifier.value = request.url;
               return NavigationDecision.navigate;
             }
@@ -117,4 +117,11 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
+
+
+  // todo: delete this method
+  void kek(WebViewController controller) {
+
+  }
+
 }
