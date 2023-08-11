@@ -27,8 +27,8 @@ class QRScannerPageController extends GetxController {
           Future.delayed(const Duration(seconds: 1), () {
             print('scanData.code = ${scanData.code}');
             if (scanData.code!.contains(pattern)) {
-              // Get.offNamed('/registration/${scanData.code!.split(pattern)}');
-              showErrorAlert('QR-код неверный');
+              Get.offNamed('/registration/${scanData.code}');
+              // showErrorAlert('QR-код неверный');
             }
           });
         }

@@ -1,3 +1,5 @@
+import 'package:doctor/modules/authentication/bloc/authentication_bloc.dart';
+import 'package:doctor/modules/authentication/repository/login_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -26,6 +28,9 @@ class App extends StatelessWidget {
         BlocProvider(
             create: (_) =>
                 LocalAuthenticationBloc()..add(const LogOutLocally())),
+        BlocProvider(
+            create: (_) =>
+                AuthenticationBloc()..add(const AuthenticationAppStarted())),
         BlocProvider(create: (_) => localPasswordSettingBloc),
         BlocProvider(
             create: (_) => BiometricSettingsBloc(
@@ -39,21 +44,30 @@ class App extends StatelessWidget {
         theme: lightTheme,
         getPages: pages,
         builder: (context, child) {
-          return BlocListener<LocalAuthenticationBloc,
-              LocalAuthenticationState>(
+          return BlocListener<AuthenticationBloc, AuthenticationState>(
             listener: (context, state) {
-              if (state is LocallyAuthenticated) {
-                Get.offNamed('/home');
-              } else if (state is LocallyNotAuthenticated) {
-                Get.offNamed('/local_auth');
+              if (state is AuthenticationLoading) {
+                Get.offNamed('/loading');
+              } else if (state is Authenticated) {
+                Get.offNamed('/loading');
               } else {
-                Get.offNamed('/local_auth');
+                Get.offNamed('/auth');
               }
             },
-            child: child,
+            child:
+                BlocListener<LocalAuthenticationBloc, LocalAuthenticationState>(
+              listener: (context, state) {
+                if (state is LocallyAuthenticated) {
+                  Get.offNamed('/home');
+                } else {
+                  Get.offNamed('/local_auth');
+                }
+              },
+              child: child,
+            ),
           );
         },
-        initialRoute: initialRoute,
+        initialRoute: '/loading',
       ),
     );
   }
