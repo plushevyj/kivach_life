@@ -7,8 +7,8 @@ abstract class LocalAuthenticationEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class LogOutLocally extends LocalAuthenticationEvent {
-  const LogOutLocally();
+class LocallyAuthStarted extends LocalAuthenticationEvent {
+  const LocallyAuthStarted();
 }
 
 class CheckSettings extends LocalAuthenticationEvent{

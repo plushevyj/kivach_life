@@ -1,3 +1,4 @@
+import 'package:doctor/core/themes/light_theme.dart';
 import 'package:flutter/material.dart';
 
 class LoadingPage extends StatelessWidget {
@@ -7,7 +8,7 @@ class LoadingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-        child: CircleAvatar(),
+        child: CircularProgressIndicator(color: KivachColors.green,),
       ),
     );
   }

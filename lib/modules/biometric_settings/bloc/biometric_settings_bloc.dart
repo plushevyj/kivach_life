@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:doctor/modules/local_password_settings/bloc/local_password_settings_bloc.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -36,11 +35,11 @@ class BiometricSettingsBloc
     Emitter<BiometricSettingsState> emit,
   ) async {
     try {
+      final localAuthenticationSetting = await _localAuthenticationRepository
+          .checkLocalAuthenticationSettings();
       if (event.state) {
-        final localAuthenticationSetting = await _localAuthenticationRepository
-            .checkLocalAuthenticationSettings();
         if (!localAuthenticationSetting.$1) {
-          throw 'Необходимо создать пароль для входа в приложение';
+          showErrorAlert('Необходимо создать пароль для входа в приложение');
         }
         if (await identityProof()) {
           final isLocalAuthorized =
@@ -53,20 +52,18 @@ class BiometricSettingsBloc
           }
         }
       } else {
-        if (await identityProof()) {
+        if (await identityProof() && localAuthenticationSetting.$2) {
           await _localAuthenticationRepository.saveBiometricSetting(
               BiometricSettings(isBiometricSecurity: false));
           showSuccessAlert('Вход в приложение по биометрии выключен');
           emit(const ChangedUserBiometricSetting(false));
         }
       }
-    } on PlatformException catch (error) {
-      if (kDebugMode) {
-        print(error);
-      }
-      // showErrorAlert('Биометрические данные не подтверждены');
     } catch (error) {
-      showErrorAlert(error.toString());
+      if (kDebugMode) {
+        print('error: ${error.toString()}');
+      }
+      showErrorAlert('Произошла неизвесная ошибка');
     }
   }
 

@@ -27,22 +27,23 @@ class AuthenticationBloc
     AuthenticationAppStarted event,
     Emitter<AuthenticationState> emit,
   ) async {
-    // try {
-    //   emit(const AuthenticationLoading());
-    //   final token = await tokenRepository.getToken();
-    //   if (token == null) {
-    //     emit(const Unauthenticated());
-    //     return;
-    //   }
-    //   tokenRepository.addToken(token);
-    //   final player = await loginRepository.loginByToken();
-    //   // Get.put(AuthController(), permanent: true).account.value = player;
-    //   emit(const Authenticated());
-    //   tokenRepository.saveToken(player.sessionToken);
-    // } catch (error) {
-    //   emit(AuthenticationError(error.toString()));
-    //   emit(const Unauthenticated());
-    // }
+    try {
+      emit(const Authenticated());
+      // emit(const AuthenticationLoading());
+      // final token = await tokenRepository.getAccessToken();
+      // if (token == null) {
+      //   emit(const Unauthenticated());
+      //   return;
+      // }
+      // tokenRepository.addAccessToken(token);
+      // final player = await loginRepository.loginByToken();
+      // Get.put(AuthController(), permanent: true).account.value = player;
+      // emit(const Authenticated());
+      // tokenRepository.saveToken(player.sessionToken);
+    } catch (error) {
+      emit(AuthenticationError(error.toString()));
+      emit(const Unauthenticated());
+    }
   }
 
   Future<void> _onLogIn(
@@ -56,8 +57,8 @@ class AuthenticationBloc
       );
       emit(const Authenticated());
       // Get.put(AuthController(), permanent: true).account.value = player;
-      tokenRepository.addToken(token.token);
-      tokenRepository.saveToken(token.token);
+      // tokenRepository.addToken(token.token);
+      // tokenRepository.saveToken(token.token);
     } catch (error) {
       print(error);
       emit(AuthenticationError(error.toString()));
@@ -69,7 +70,7 @@ class AuthenticationBloc
 
   Future<void> _onLogOut(
       LogOut event, Emitter<AuthenticationState> emit) async {
-    await tokenRepository.clearToken();
+    await tokenRepository.clearTokens();
     emit(const Unauthenticated());
   }
 }

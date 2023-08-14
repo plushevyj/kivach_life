@@ -1,16 +1,25 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import '../../core/http/http.dart';
+
+String accessToken =
+    'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2OTIwMjQwMDAsImV4cCI6MTY5MjAyNzYwMCwicm9sZXMiOlsiUk9MRV9QQVRJRU5UIiwiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoiZmx5Y29kZSJ9.h5sS10e7IvdThDWggnClDEWchiinu5ULrLSf9raCvYLavjIiBANoGeepWA-76AFWl6LI-pO7Ch3hTD7jNzTkGtJpYIkwVEwZqd4SgYt5k4U-dm3Hzj3TkZVH9_jt37CvUPWSiJLmAdvXGD7F8dQz53RwFRH_cEleg-imnxdNbD0fBRv6I94wLFlbVL143ptMct0GtGXPIsFmBv1xgKVXt9NAJVux7kNdstdqxcjZkz5_PGiPUaMwijCzswZO5NgywhXqA9ufQZpXbSpiwZJJcZHspihHUSTntN6SyR6zle46oWj2LD6yaOK0SRf8dsjuNGE05zRRLs055dGo6amWIQ';
+
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  HomePage({Key? key}) : super(key: key);
+
+  final webViewController = WebViewController();
 
   @override
   Widget build(BuildContext context) {
     final urlTitleNotifier = ValueNotifier('');
     final navBarIndexNotifier = ValueNotifier(0);
     final loadingNotifier = ValueNotifier<int?>(null);
-    final webViewController = WebViewController()
+    webViewController
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x00000000))
       ..setNavigationDelegate(
@@ -22,16 +31,16 @@ class HomePage extends StatelessWidget {
           onPageFinished: (url) {},
           onWebResourceError: (error) {},
           onNavigationRequest: (request) {
-            if (request.url.startsWith('https://dev-doctors.kivach.ru/')) {
+            if (request.url.startsWith('https://dev-doctors.kivach.ru')) {
               urlTitleNotifier.value = request.url;
               return NavigationDecision.navigate;
             }
             return NavigationDecision.prevent;
           },
         ),
-      )
-      ..loadRequest(Uri.parse('https://doctors.kivach.ru/'));
-    urlTitleNotifier.value = 'https://doctors.kivach.ru/';
+      );
+    load(route: '/');
+    urlTitleNotifier.value = 'https://dev-doctors.kivach.ru/';
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -52,7 +61,9 @@ class HomePage extends StatelessWidget {
         ),
         leading: IconButton(
           onPressed: () => webViewController.goBack(),
-          icon: const Icon(Icons.arrow_back_outlined),
+          icon: Icon(Platform.isIOS
+              ? Icons.arrow_back_ios
+              : Icons.arrow_back_outlined),
         ),
         title: ValueListenableBuilder(
           valueListenable: urlTitleNotifier,
@@ -74,26 +85,33 @@ class HomePage extends StatelessWidget {
               switch (index) {
                 case 0:
                   navBarIndexNotifier.value = index;
-                  webViewController
-                      .loadRequest(Uri.parse('https://doctors.kivach.ru/'));
+                  load(route: '/');
                 case 1:
                   navBarIndexNotifier.value = index;
-                  webViewController.loadRequest(
-                      Uri.parse('https://doctors.kivach.ru/schedule/'));
+                  load(route: '/schedule');
+                  webViewController
+                      .runJavaScriptReturningResult('document.cookie')
+                      .then((value) => print('value : $value'));
+                  webViewController
+                      .runJavaScriptReturningResult(
+                          "window.document.getElementsByTagName('html')[0].outerHTML;")
+                      .then((value) => print(value));
+                  webViewController.getTitle().then((value) => print(value));
                 case 2:
                   navBarIndexNotifier.value = index;
-                  webViewController.loadRequest(
-                      Uri.parse('https://doctors.kivach.ru/chat/'));
+                  load(route: '/chat');
                 case 3:
                   Get.toNamed('/settings');
               }
             },
+            enableFeedback: false,
             selectedIconTheme: const IconThemeData(size: 24),
             unselectedIconTheme: const IconThemeData(size: 24),
             selectedLabelStyle: const TextStyle(fontSize: 12),
             unselectedLabelStyle: const TextStyle(fontSize: 12),
             selectedItemColor: const Color(0xFF38A381),
             unselectedItemColor: const Color(0xFFAEB2BA),
+            type: BottomNavigationBarType.fixed,
             items: const [
               BottomNavigationBarItem(
                 icon: Icon(Icons.home_outlined),
@@ -118,10 +136,13 @@ class HomePage extends StatelessWidget {
     );
   }
 
-
-  // todo: delete this method
-  void kek(WebViewController controller) {
-
+  void load({required String route}) {
+    final headers = {
+      'Authorization': basicAuth(),
+      'X-Auth': 'Bearer $accessToken',
+    };
+    webViewController.loadRequest(
+        Uri.parse('https://dev-doctors.kivach.ru$route'),
+        headers: headers);
   }
-
 }

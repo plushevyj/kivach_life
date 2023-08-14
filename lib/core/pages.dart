@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 
+import '/pages/local_auth_page/loading_local_page.dart';
 import '/pages/auth_page/auth_page.dart';
 import '/pages/auth_page/loading_page.dart';
 import '/pages/onboarding_page/onboarding_page.dart';
@@ -19,7 +20,8 @@ final pages = [
   GetPage(
       name: '/registration/register', page: () => const RegistrationPage()),
   GetPage(name: '/local_auth', page: () => const LocalAuthPage()),
-  GetPage(name: '/home', page: () => const HomePage()),
+  // GetPage(name: '/loading_local', page: () => const LoadingLocalPage()),
+  GetPage(name: '/home', page: () => HomePage()),
   GetPage(name: '/settings', page: () => const SettingsPage()),
   GetPage(
       name: '/settings/new_local_password',

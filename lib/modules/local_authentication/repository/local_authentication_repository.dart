@@ -5,7 +5,6 @@ import 'package:local_auth_android/local_auth_android.dart';
 import '../../../models/biometric_settings_model/biometric_setting_model.dart';
 import '../../../models/local_password_model/local_password_model.dart';
 
-
 class LocalAuthenticationRepository {
   const LocalAuthenticationRepository();
 
@@ -40,13 +39,13 @@ class LocalAuthenticationRepository {
     return (isLocalPassword, isBiometricSetting);
   }
 
-  Future<LocalPassword> getLocalPasswordSetting() async {
+  Future<LocalPassword?> getLocalPasswordSetting() async {
     final box = await _openLocalPasswordStorage();
     final localPasswordSetting = await box.getAt(0) as LocalPassword;
     return localPasswordSetting;
   }
 
-  Future<BiometricSettings> getBiometricSetting() async {
+  Future<BiometricSettings?> getBiometricSetting() async {
     final box = await _openBiometricSettingStorage();
     final biometricSettings = await box.getAt(0) as BiometricSettings;
     return biometricSettings;
@@ -77,11 +76,7 @@ class LocalAuthenticationRepository {
     final localAuthentication = LocalAuthentication();
     canCheckBiometric = await localAuthentication.canCheckBiometrics;
     availableBiometrics = await localAuthentication.getAvailableBiometrics();
-    if (canCheckBiometric &&
-        (availableBiometrics.contains(BiometricType.strong) ||
-            availableBiometrics.contains(BiometricType.face) ||
-            availableBiometrics.contains(BiometricType.iris) ||
-            availableBiometrics.contains(BiometricType.fingerprint))) {
+    if (canCheckBiometric && availableBiometrics.isNotEmpty) {
       isLocalAuthenticated = await localAuthentication.authenticate(
         localizedReason: 'Приложение KivachLive',
         authMessages: [
@@ -113,5 +108,13 @@ class LocalAuthenticationRepository {
     if (box.isNotEmpty) {
       await box.deleteAt(0);
     }
+  }
+
+  Future<bool> canAuthenticateByBiometric() async {
+    final localAuthentication = LocalAuthentication();
+    final canCheckBiometric = await localAuthentication.canCheckBiometrics;
+    final availableBiometrics =
+        await localAuthentication.getAvailableBiometrics();
+    return canCheckBiometric && availableBiometrics.isNotEmpty;
   }
 }

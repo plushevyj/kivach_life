@@ -30,7 +30,7 @@ class IdentityProofController extends GetxController {
               sha256.convert(utf8.encode(password.text)).toString();
           final currentPasswordHash =
               (await localAuthenticationRepository.getLocalPasswordSetting())
-                  .hash;
+                  ?.hash;
           if (enteredPasswordHash == currentPasswordHash) {
             result(true);
           } else {
@@ -44,7 +44,9 @@ class IdentityProofController extends GetxController {
   }
 
   void biometricAction() async {
-    result(await localAuthenticationRepository.authenticateByBiometric());
+    try {
+      result(await localAuthenticationRepository.authenticateByBiometric());
+    } catch (_) {}
   }
 
   @override

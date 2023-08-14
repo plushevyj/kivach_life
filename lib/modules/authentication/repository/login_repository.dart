@@ -56,4 +56,20 @@ class LoginRepository {
     final res = await handleRequest(() => http.post('/api/login', data: data));
     return ConvertTo<TokenModel>().item(res.data, TokenModel.fromJson);
   }
+
+  Future<TokenModel> refresh({required String refreshToken}) async {
+    final http = Dio();
+    http.options
+      ..baseUrl = 'https://dev-doctors.kivach.ru/'
+      ..headers = ({
+        'Authorization': basicAuth(),
+        'Content-Type': 'application/json',
+      });
+    final query = {'refresh_token': refreshToken};
+    final res = await handleRequest(() => http.post(
+          '/api/token/refresh',
+          queryParameters: query,
+        ));
+    return ConvertTo<TokenModel>().item(res.data, TokenModel.fromJson);
+  }
 }

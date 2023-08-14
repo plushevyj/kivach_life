@@ -15,21 +15,27 @@ part 'local_authentication_state.dart';
 class LocalAuthenticationBloc
     extends Bloc<LocalAuthenticationEvent, LocalAuthenticationState> {
   LocalAuthenticationBloc() : super(const LocalAuthenticationInitialState()) {
-    on<LogOutLocally>(_onLogOutLocally);
+    on<LocallyAuthStarted>(_onLocallyAuthStarted);
     on<LogInLocallyUsingBiometrics>(_onLogInLocallyUsingBiometrics);
     on<LogInLocallyUsingDigitalPassword>(_onLogInLocallyUsingPassword);
   }
 
   final _localAuthenticationRepository = const LocalAuthenticationRepository();
 
-  Future<void> _onLogOutLocally(
-    LogOutLocally event,
+  Future<void> _onLocallyAuthStarted(
+    LocallyAuthStarted event,
     Emitter<LocalAuthenticationState> emit,
   ) async {
-    final authenticationSetting =
+    final canAuthenticateByBiometric =
+        await _localAuthenticationRepository.canAuthenticateByBiometric();
+    var localAuthSettings =
         await _localAuthenticationRepository.checkLocalAuthenticationSettings();
-    if (authenticationSetting.$1) {
-      emit(LocallyNotAuthenticated(authenticationSetting));
+    if (!canAuthenticateByBiometric && localAuthSettings.$2) {
+      _localAuthenticationRepository.deleteBiometricSetting();
+      localAuthSettings = (localAuthSettings.$1, false);
+    }
+    if (localAuthSettings.$1) {
+      emit(LocallyNotAuthenticated(localAuthSettings));
     } else {
       emit(const LocallyAuthenticated());
     }
@@ -43,14 +49,12 @@ class LocalAuthenticationBloc
     try {
       final biometricSetting =
           await _localAuthenticationRepository.getBiometricSetting();
-      if (biometricSetting.isBiometricSecurity) {
+      if (biometricSetting?.isBiometricSecurity ?? false) {
         isLocalAuthorized =
             await _localAuthenticationRepository.authenticateByBiometric();
       }
-    } on PlatformException catch (error) {
-      showErrorAlert('Ошибка аутентификации');
-    } catch (error) {
-      showErrorAlert('Ошибка аутентификации');
+    } on PlatformException catch (_) {
+    } catch (_) {
     } finally {
       if (isLocalAuthorized) {
         emit(const LocallyAuthenticated());
@@ -73,7 +77,7 @@ class LocalAuthenticationBloc
           sha256.convert(utf8.encode(event.password)).toString();
       final passwordSetting =
           await _localAuthenticationRepository.getLocalPasswordSetting();
-      if (enteredPasswordHash == passwordSetting.hash) {
+      if (enteredPasswordHash == passwordSetting?.hash) {
         isLocalAuthorized = true;
       } else {
         showErrorAlert('Неверный пароль');

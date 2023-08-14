@@ -9,16 +9,10 @@ class LocalPasswordController extends GetxController {
   late final TextEditingController password;
 
   final firstRenderer = true.obs;
-
   final enableDialButtons = true.obs;
 
   @override
   void onInit() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Get.context!
-          .read<LocalAuthenticationBloc>()
-          .add(const LogInLocallyUsingBiometrics());
-    });
     password = TextEditingController()
       ..addListener(() {
         enableDialButtons(password.text.length < maxLengthLocalPassword);

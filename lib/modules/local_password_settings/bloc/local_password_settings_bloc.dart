@@ -85,7 +85,10 @@ class LocalPasswordSettingBloc
       if (await identityProof()) {
         _localAuthenticationRepository.deleteLocalPassword();
         emit(const DeletedLocalPassword());
+        showSuccessAlert('Вход в приложение по код-паролю выключен.');
       }
-    } catch (_) {}
+    } catch (error) {
+      emit(ErrorNewLocalPasswordState(error.toString()));
+    }
   }
 }

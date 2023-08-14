@@ -7,21 +7,32 @@ import 'token_repository.dart';
 class TokenRepository {
   const TokenRepository();
 
-  Future<String?> getToken() async {
+  Future<Box> _openStorage() async => await Hive.openBox('token');
+
+  Future<String?> getAccessToken() async {
     final box = await _openStorage();
     return box.get('token') as String?;
   }
 
-  void addToken(String token) {
+  Future<String?> getRefreshToken() async {
+    final box = await _openStorage();
+    return box.get('token') as String?;
+  }
+
+  void addAccessToken(String token) {
     GetIt.I.get<Dio>().options.headers['Authorization'] = 'Bearer $token';
   }
 
-  Future<void> saveToken(String token) async {
+  Future<void> saveTokens({
+    required String accessToken,
+    required String refreshTokens,
+  }) async {
     final box = await _openStorage();
-    box.put('token', token);
+    box.put('accessToken', accessToken);
+    box.put('refreshToken', accessToken);
   }
 
-  Future<void> clearToken() async => await (await _openStorage()).clear();
-
-  Future<Box> _openStorage() async => await Hive.openBox('token');
+  Future<void> clearTokens() async {
+    await (await _openStorage()).clear();
+  }
 }

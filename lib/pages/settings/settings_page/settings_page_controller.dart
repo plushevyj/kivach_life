@@ -7,11 +7,16 @@ class SettingsPageController extends GetxController {
 
   late final RxBool enableLocalPassword;
   late final RxBool enableBiometric;
+  late final RxBool canAuthByBiometric;
+
+  final localAuthenticationRepository = const LocalAuthenticationRepository();
 
   @override
   void onInit() async {
-    final localAuthSetting = await const LocalAuthenticationRepository()
-        .checkLocalAuthenticationSettings();
+    canAuthByBiometric =
+        (await localAuthenticationRepository.canAuthenticateByBiometric()).obs;
+    final localAuthSetting =
+        await localAuthenticationRepository.checkLocalAuthenticationSettings();
     enableLocalPassword = localAuthSetting.$1.obs;
     enableBiometric = localAuthSetting.$2.obs;
     isPageLoading(false);

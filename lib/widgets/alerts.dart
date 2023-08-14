@@ -9,9 +9,7 @@ void showSuccessAlert(String message,
     duration: duration,
     backgroundColor: Colors.green,
     colorText: Colors.white,
-    snackPosition: SnackPosition.BOTTOM,
-    margin: EdgeInsets.zero,
-    borderRadius: 0,
+    snackPosition: SnackPosition.TOP,
   );
 }
 
@@ -23,8 +21,6 @@ void showErrorAlert(String message,
     duration: duration,
     backgroundColor: Colors.red,
     colorText: Colors.white,
-    snackPosition: SnackPosition.BOTTOM,
-    margin: EdgeInsets.zero,
-    borderRadius: 0,
+    snackPosition: SnackPosition.TOP,
   );
 }

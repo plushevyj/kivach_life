@@ -1,5 +1,6 @@
 import 'dart:io' show Platform;
 
+import 'package:doctor/core/themes/light_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -21,20 +22,27 @@ class LocalAuthPage extends StatelessWidget {
     return Scaffold(
       body: BlocConsumer<LocalAuthenticationBloc, LocalAuthenticationState>(
         listener: (_, state) {
-          if (state is LocallyNotAuthenticated) {
+          if (state is LocallyAuthenticated) {
+            Get.offNamed('/home');
+          } else if (state is LocallyNotAuthenticated) {
+            if (passwordController.firstRenderer.value &&
+                state.localAuthenticationSetting.$2) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                Get.context!
+                    .read<LocalAuthenticationBloc>()
+                    .add(const LogInLocallyUsingBiometrics());
+                passwordController.firstRenderer(false);
+              });
+            }
             passwordController.password.clear();
-            // if (passwordController.firstRenderer.value &&
-            //     state.localAuthenticationSetting.$2) {
-            //   Get.context!
-            //       .read<LocalAuthenticationBloc>()
-            //       .add(const LogInLocallyUsingBiometrics());
-            //   passwordController.firstRenderer(false);
-            // }
           }
         },
         builder: (_, state) {
           if (state is LocallyAuthenticated) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(
+                child: CircularProgressIndicator(
+              color: KivachColors.green,
+            ));
           } else if (state is LocallyNotAuthenticated) {
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: Get.width * 0.18),
@@ -77,7 +85,10 @@ class LocalAuthPage extends StatelessWidget {
               ),
             );
           } else {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(
+                child: CircularProgressIndicator(
+              color: KivachColors.green,
+            ));
           }
         },
       ),

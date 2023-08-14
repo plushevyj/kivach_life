@@ -11,11 +11,19 @@ import '/widgets/digital_input/digital_input_widget.dart';
 
 Future<bool> identityProof() async {
   final identityProofController = Get.put(IdentityProofController());
-  final localAuthSettings = await identityProofController
+  var localAuthSettings = await identityProofController
       .localAuthenticationRepository
       .checkLocalAuthenticationSettings();
   if (!localAuthSettings.$1) {
     return true;
+  }
+  final canAuthenticateByBiometric = await identityProofController
+      .localAuthenticationRepository
+      .canAuthenticateByBiometric();
+  if (!canAuthenticateByBiometric && localAuthSettings.$2) {
+    identityProofController
+        .localAuthenticationRepository.deleteBiometricSetting();
+    localAuthSettings = (localAuthSettings.$1, false);
   }
   await Get.bottomSheet(
     Container(

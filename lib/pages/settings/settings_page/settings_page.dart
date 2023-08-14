@@ -40,7 +40,11 @@ class SettingsPage extends StatelessWidget {
         ),
         body: Obx(
           () => settingsPageController.isPageLoading.value
-              ? const Center(child: CircularProgressIndicator())
+              ? const Center(
+                  child: CircularProgressIndicator(
+                    color: KivachColors.green,
+                  ),
+                )
               : Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -69,30 +73,32 @@ class SettingsPage extends StatelessWidget {
                             .add(const DeleteLocalPassword()),
                       ),
                     ],
-                    _SettingButton(
-                      title: 'По отпечатку пальца или скану лица',
-                      icon: Icons.fingerprint,
-                      onPressed: () => Get.context!
-                          .read<BiometricSettingsBloc>()
-                          .add(EnableBiometricsLogin(
-                              !settingsPageController.enableBiometric.value)),
-                      comment: Transform.scale(
-                        scale: 0.8,
-                        alignment: Alignment.centerRight,
-                        child: Switch(
-                          activeColor: Colors.green,
-                          inactiveThumbColor: Colors.white,
-                          inactiveTrackColor: Colors.grey,
-                          trackOutlineColor:
-                              MaterialStateProperty.all(Colors.transparent),
-                          value: settingsPageController.enableBiometric.value,
-                          onChanged: (_) => Get.context!
-                              .read<BiometricSettingsBloc>()
-                              .add(EnableBiometricsLogin(!settingsPageController
-                                  .enableBiometric.value)),
+                    if (settingsPageController.canAuthByBiometric.value)
+                      _SettingButton(
+                        title: 'По отпечатку пальца или скану лица',
+                        icon: Icons.fingerprint,
+                        onPressed: () => Get.context!
+                            .read<BiometricSettingsBloc>()
+                            .add(EnableBiometricsLogin(
+                                !settingsPageController.enableBiometric.value)),
+                        comment: Transform.scale(
+                          scale: 0.8,
+                          alignment: Alignment.centerRight,
+                          child: Switch(
+                            activeColor: Colors.green,
+                            inactiveThumbColor: Colors.white,
+                            inactiveTrackColor: Colors.grey,
+                            trackOutlineColor:
+                                MaterialStateProperty.all(Colors.transparent),
+                            value: settingsPageController.enableBiometric.value,
+                            onChanged: (_) => Get.context!
+                                .read<BiometricSettingsBloc>()
+                                .add(EnableBiometricsLogin(
+                                    !settingsPageController
+                                        .enableBiometric.value)),
+                          ),
                         ),
                       ),
-                    ),
                     const _TitleWidget(title: 'ПРОФИЛЬ'),
                     _SettingButton(
                       title: 'Настройки профиля',

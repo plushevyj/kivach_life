@@ -27,10 +27,10 @@ class App extends StatelessWidget {
       providers: [
         BlocProvider(
             create: (_) =>
-                LocalAuthenticationBloc()..add(const LogOutLocally())),
+                AuthenticationBloc()..add(const AuthenticationAppStarted())),
         BlocProvider(
             create: (_) =>
-                AuthenticationBloc()..add(const AuthenticationAppStarted())),
+                LocalAuthenticationBloc()..add(const LocallyAuthStarted())),
         BlocProvider(create: (_) => localPasswordSettingBloc),
         BlocProvider(
             create: (_) => BiometricSettingsBloc(
@@ -49,22 +49,12 @@ class App extends StatelessWidget {
               if (state is AuthenticationLoading) {
                 Get.offNamed('/loading');
               } else if (state is Authenticated) {
-                Get.offNamed('/loading');
+                Get.offNamed('/local_auth');
               } else {
                 Get.offNamed('/auth');
               }
             },
-            child:
-                BlocListener<LocalAuthenticationBloc, LocalAuthenticationState>(
-              listener: (context, state) {
-                if (state is LocallyAuthenticated) {
-                  Get.offNamed('/home');
-                } else {
-                  Get.offNamed('/local_auth');
-                }
-              },
-              child: child,
-            ),
+            child: child,
           );
         },
         initialRoute: '/loading',
