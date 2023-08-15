@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../../core/http/request_handler.dart';
-import '../../../models/profile_model/profile_preview_model.dart';
 
 class RegistrationRepository {
   const RegistrationRepository();
@@ -60,22 +59,4 @@ class RegistrationRepository {
     );
   }
 
-  Future<ProfilePreview> checkToken({required String token}) async {
-    final dio = Dio();
-    String username = 'dev-doctor';
-    String password = 'u8uySN26F*4u';
-    String basicAuth =
-        'Basic ${base64.encode(utf8.encode('$username:$password'))}';
-    final query = {'_token': token};
-    final response = await dio.get(
-      'https://dev-doctors.kivach.ru/api/register',
-      queryParameters: query,
-      // data: data,
-      options: Options(headers: {
-        'Authorization': basicAuth,
-        'Content-Type': 'application/x-www-form-urlencoded',
-      }),
-    );
-    return ProfilePreview.fromJson(response.data);
-  }
 }

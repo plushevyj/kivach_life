@@ -29,18 +29,19 @@ class AuthenticationBloc
   ) async {
     try {
       emit(const Authenticated());
-      // emit(const AuthenticationLoading());
-      // final token = await tokenRepository.getAccessToken();
-      // if (token == null) {
-      //   emit(const Unauthenticated());
-      //   return;
-      // }
-      // tokenRepository.addAccessToken(token);
-      // final player = await loginRepository.loginByToken();
+      return;
+      emit(const AuthenticationLoading());
+      final token = await tokenRepository.getAccessToken();
+      if (token == null) {
+        emit(const Unauthenticated());
+        return;
+      }
+      tokenRepository.addAccessToken(token);
+      final player = await loginRepository.logInByToken();
       // Get.put(AuthController(), permanent: true).account.value = player;
-      // emit(const Authenticated());
-      // tokenRepository.saveToken(player.sessionToken);
+      emit(const Authenticated());
     } catch (error) {
+      print(error);
       emit(AuthenticationError(error.toString()));
       emit(const Unauthenticated());
     }

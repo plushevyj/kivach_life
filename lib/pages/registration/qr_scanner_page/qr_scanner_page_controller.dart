@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:doctor/widgets/alerts.dart';
 import 'package:get/get.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
+import '/widgets/alerts.dart';
 import '../../../modules/registration/repository/registration_repository.dart';
 
 class QRScannerPageController extends GetxController {

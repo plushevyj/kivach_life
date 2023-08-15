@@ -1,5 +1,4 @@
-import 'package:doctor/modules/authentication/bloc/authentication_bloc.dart';
-import 'package:doctor/modules/authentication/repository/login_repository.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -11,6 +10,8 @@ import 'modules/biometric_settings/bloc/biometric_settings_bloc.dart';
 import 'modules/first_opening_of_app/bloc/first_opening_of_app_bloc.dart';
 import 'modules/local_authentication/bloc/local_authentication_bloc.dart';
 import 'modules/local_password_settings/bloc/local_password_settings_bloc.dart';
+import '/modules/authentication/bloc/authentication_bloc.dart';
+import '/modules/authentication/repository/login_repository.dart';
 
 void main() async {
   await initializeDependencies();

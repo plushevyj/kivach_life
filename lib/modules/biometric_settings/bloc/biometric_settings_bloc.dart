@@ -1,12 +1,12 @@
 import 'dart:async';
 
-import 'package:doctor/modules/local_password_settings/bloc/local_password_settings_bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../models/biometric_settings_model/biometric_setting_model.dart';
-import '../../../widgets/alerts.dart';
+import '/modules/local_password_settings/bloc/local_password_settings_bloc.dart';
+import '/models/biometric_settings_model/biometric_setting_model.dart';
+import '/widgets/alerts.dart';
 import '../../identity_proof/ui/identity_proof_ui.dart';
 import '../../local_authentication/repository/local_authentication_repository.dart';
 
@@ -40,6 +40,7 @@ class BiometricSettingsBloc
       if (event.state) {
         if (!localAuthenticationSetting.$1) {
           showErrorAlert('Необходимо создать пароль для входа в приложение');
+          return;
         }
         if (await identityProof()) {
           final isLocalAuthorized =

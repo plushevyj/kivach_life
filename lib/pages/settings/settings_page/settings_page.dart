@@ -1,10 +1,12 @@
-import 'package:doctor/modules/local_password_settings/bloc/local_password_settings_bloc.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
-import '../../../core/themes/light_theme.dart';
-import '../../../modules/biometric_settings/bloc/biometric_settings_bloc.dart';
+import '/modules/local_password_settings/bloc/local_password_settings_bloc.dart';
+import '/core/themes/light_theme.dart';
+import '/modules/biometric_settings/bloc/biometric_settings_bloc.dart';
 import 'settings_page_controller.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -76,7 +78,7 @@ class SettingsPage extends StatelessWidget {
                     if (settingsPageController.canAuthByBiometric.value)
                       _SettingButton(
                         title: 'По отпечатку пальца или скану лица',
-                        icon: Icons.fingerprint,
+                        icon: Platform.isIOS ? Icons.face : Icons.fingerprint,
                         onPressed: () => Get.context!
                             .read<BiometricSettingsBloc>()
                             .add(EnableBiometricsLogin(
@@ -104,7 +106,7 @@ class SettingsPage extends StatelessWidget {
                       title: 'Настройки профиля',
                       icon: Icons.person,
                       iconBackgroundColor: Colors.green,
-                      onPressed: () {},
+                      onPressed: () => Get.toNamed('/profile_setting'),
                     ),
                   ],
                 ),

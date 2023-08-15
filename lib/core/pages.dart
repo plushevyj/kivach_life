@@ -1,3 +1,4 @@
+import 'package:doctor/pages/settings/profile_setting_page/profile_setting_page.dart';
 import 'package:get/get.dart';
 
 import '/pages/local_auth_page/loading_local_page.dart';
@@ -17,8 +18,7 @@ final pages = [
   GetPage(name: '/loading', page: () => const LoadingPage()),
   GetPage(name: '/auth', page: () => const AuthorizationPage()),
   GetPage(name: '/registration/qr', page: () => const QRScannerPage()),
-  GetPage(
-      name: '/registration/register', page: () => const RegistrationPage()),
+  GetPage(name: '/registration/register', page: () => const RegistrationPage()),
   GetPage(name: '/local_auth', page: () => const LocalAuthPage()),
   // GetPage(name: '/loading_local', page: () => const LoadingLocalPage()),
   GetPage(name: '/home', page: () => HomePage()),
@@ -27,4 +27,5 @@ final pages = [
       name: '/settings/new_local_password',
       page: () => const NewLocalPasswordPage()),
   GetPage(name: '/hello_onboarding', page: () => HelloOnboardingPage()),
+  GetPage(name: '/profile_setting', page: () => const ProfileSettingPage()),
 ];

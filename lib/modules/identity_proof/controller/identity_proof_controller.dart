@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
-import 'package:doctor/widgets/alerts.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '/widgets/alerts.dart';
 import '../../../core/constants.dart';
 import '../../local_authentication/repository/local_authentication_repository.dart';
 

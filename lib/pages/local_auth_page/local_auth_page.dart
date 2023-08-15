@@ -1,11 +1,11 @@
 import 'dart:io' show Platform;
 
-import 'package:doctor/core/themes/light_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
-import '../../core/constants.dart';
+import '/core/themes/light_theme.dart';
+import '/core/constants.dart';
 import '/modules/local_authentication/bloc/local_authentication_bloc.dart';
 import 'local_password_controller.dart';
 import '/widgets/digital_input/digital_field.dart';

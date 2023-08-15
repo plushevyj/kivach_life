@@ -11,16 +11,16 @@ class TokenRepository {
 
   Future<String?> getAccessToken() async {
     final box = await _openStorage();
-    return box.get('token') as String?;
+    return box.get('accessToken') as String?;
   }
 
   Future<String?> getRefreshToken() async {
     final box = await _openStorage();
-    return box.get('token') as String?;
+    return box.get('accessToken') as String?;
   }
 
-  void addAccessToken(String token) {
-    GetIt.I.get<Dio>().options.headers['Authorization'] = 'Bearer $token';
+  void addAccessToken(String accessToken) {
+    GetIt.I.get<Dio>().options.headers['Authorization'] = 'Bearer $accessToken';
   }
 
   Future<void> saveTokens({

@@ -89,13 +89,6 @@ class HomePage extends StatelessWidget {
                 case 1:
                   navBarIndexNotifier.value = index;
                   load(route: '/schedule');
-                  webViewController
-                      .runJavaScriptReturningResult('document.cookie')
-                      .then((value) => print('value : $value'));
-                  webViewController
-                      .runJavaScriptReturningResult(
-                          "window.document.getElementsByTagName('html')[0].outerHTML;")
-                      .then((value) => print(value));
                   webViewController.getTitle().then((value) => print(value));
                 case 2:
                   navBarIndexNotifier.value = index;

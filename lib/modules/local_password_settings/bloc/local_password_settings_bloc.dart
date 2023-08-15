@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
-import 'package:doctor/modules/identity_proof/ui/identity_proof_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 
+import '/modules/identity_proof/ui/identity_proof_ui.dart';
 import '/models/local_password_model/local_password_model.dart';
 import '/modules/local_authentication/repository/local_authentication_repository.dart';
 import '/widgets/alerts.dart';

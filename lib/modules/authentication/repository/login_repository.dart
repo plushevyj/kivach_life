@@ -1,17 +1,10 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
-import 'package:doctor/models/token_model/token_model.dart';
-import 'package:flutter/foundation.dart';
-import 'package:get_it/get_it.dart';
 
-import '../../../core/http/http.dart';
-import '../../../core/http/request_handler.dart';
-import '../../../core/utils/convert_to.dart';
-
-// import '../../../core/utils/convert_to.dart';
-// import '../../../core/http/request_handler.dart';
-// import '../../account/model/player_account.dart';
+import '../../../models/profile/profile_model.dart';
+import '/models/token_model/token_model.dart';
+import '/core/http/http.dart';
+import '/core/http/request_handler.dart';
+import '/core/utils/convert_to.dart';
 
 class LoginRepository {
   const LoginRepository();
@@ -52,7 +45,7 @@ class LoginRepository {
         'Authorization': basicAuth(),
         'Content-Type': 'application/json',
       });
-    final data = {"username": "flycode", "password": "flycode"};
+    final data = {"username": username, "password": password};
     final res = await handleRequest(() => http.post('/api/login', data: data));
     return ConvertTo<TokenModel>().item(res.data, TokenModel.fromJson);
   }
@@ -71,5 +64,17 @@ class LoginRepository {
           queryParameters: query,
         ));
     return ConvertTo<TokenModel>().item(res.data, TokenModel.fromJson);
+  }
+
+  Future<Profile> logInByToken() async {
+    final http = Dio();
+    http.options
+      ..baseUrl = 'https://dev-doctors.kivach.ru/'
+      ..headers = ({
+        'Authorization': basicAuth(),
+        'Content-Type': 'application/json',
+      });
+    final res = await handleRequest(() => http.post('/api/profile'));
+    return ConvertTo<Profile>().item(res.data, Profile.fromJson);
   }
 }
