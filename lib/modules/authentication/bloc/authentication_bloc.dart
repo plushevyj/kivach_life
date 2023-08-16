@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:get/get.dart';
 
+import '../../first_opening_app/controller/first_opening_app_controller.dart';
 import '../repository/login_repository.dart';
 import '../repository/token_repository.dart';
 
@@ -28,8 +30,8 @@ class AuthenticationBloc
     Emitter<AuthenticationState> emit,
   ) async {
     try {
-      emit(const Authenticated());
-      return;
+      // emit(const Authenticated());
+      // return;
       emit(const AuthenticationLoading());
       final token = await tokenRepository.getAccessToken();
       if (token == null) {

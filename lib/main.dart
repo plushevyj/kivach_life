@@ -1,4 +1,4 @@
-
+import 'package:doctor/modules/first_opening_app/controller/first_opening_app_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -7,7 +7,6 @@ import 'core/dependencies/injector.dart';
 import 'core/pages.dart';
 import 'core/themes/light_theme.dart';
 import 'modules/biometric_settings/bloc/biometric_settings_bloc.dart';
-import 'modules/first_opening_of_app/bloc/first_opening_of_app_bloc.dart';
 import 'modules/local_authentication/bloc/local_authentication_bloc.dart';
 import 'modules/local_password_settings/bloc/local_password_settings_bloc.dart';
 import '/modules/authentication/bloc/authentication_bloc.dart';
@@ -36,9 +35,6 @@ class App extends StatelessWidget {
         BlocProvider(
             create: (_) => BiometricSettingsBloc(
                 localPasswordSettingBloc: localPasswordSettingBloc)),
-        BlocProvider(
-            create: (_) =>
-                FirstOpeningOfAppBloc()..add(const CheckFirstOpeningOfApp())),
       ],
       child: GetMaterialApp(
         title: 'Kivach Life',
@@ -47,18 +43,19 @@ class App extends StatelessWidget {
         builder: (context, child) {
           return BlocListener<AuthenticationBloc, AuthenticationState>(
             listener: (context, state) {
-              if (state is AuthenticationLoading) {
-                Get.offNamed('/loading');
-              } else if (state is Authenticated) {
-                Get.offNamed('/local_auth');
-              } else {
-                Get.offNamed('/auth');
-              }
+              // if (state is AuthenticationLoading) {
+              //   Get.offNamed('/loading');
+              // } else if (state is Authenticated) {
+              //   Get.offNamed('/local_auth');
+              // } else {
+              //   Get.offNamed('/auth');
+              // }
             },
             child: child,
           );
         },
-        initialRoute: '/loading',
+        // initialRoute: '/loading',
+        initialRoute: '/greeting_onboarding',
       ),
     );
   }

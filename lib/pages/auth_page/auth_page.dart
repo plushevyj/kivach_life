@@ -2,6 +2,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../modules/first_opening_app/controller/first_opening_app_controller.dart';
 import '../../widgets/inputs/button_for_form.dart';
 import '../../widgets/inputs/text_field_for_form.dart';
 import '/core/themes/light_theme.dart';

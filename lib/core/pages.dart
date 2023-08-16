@@ -20,12 +20,11 @@ final pages = [
   GetPage(name: '/registration/qr', page: () => const QRScannerPage()),
   GetPage(name: '/registration/register', page: () => const RegistrationPage()),
   GetPage(name: '/local_auth', page: () => const LocalAuthPage()),
-  // GetPage(name: '/loading_local', page: () => const LoadingLocalPage()),
   GetPage(name: '/home', page: () => HomePage()),
   GetPage(name: '/settings', page: () => const SettingsPage()),
   GetPage(
       name: '/settings/new_local_password',
       page: () => const NewLocalPasswordPage()),
-  GetPage(name: '/hello_onboarding', page: () => HelloOnboardingPage()),
+  GetPage(name: '/greeting_onboarding', page: () => const GreetingOnboardingPage()),
   GetPage(name: '/profile_setting', page: () => const ProfileSettingPage()),
 ];
