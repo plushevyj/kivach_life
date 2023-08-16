@@ -30,7 +30,7 @@ class OnboardingController extends GetxController {
   @override
   void onInit() {
     pageController.addListener(() {
-      isLastPage(pageController.page! > onboardingPagesList.length - 1.5);
+      isLastPage(pageController.page! >= onboardingPagesList.length - 1.5);
     });
     super.onInit();
   }

@@ -80,7 +80,7 @@ class GreetingOnboardingPage extends StatelessWidget {
                       onboardingController.onboardingPagesList[index].title,
                       textAlign: TextAlign.center,
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: 18,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
