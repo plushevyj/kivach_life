@@ -10,8 +10,12 @@ import '../../../core/constants.dart';
 import '../../local_authentication/repository/local_authentication_repository.dart';
 
 class IdentityProofController extends GetxController {
+  IdentityProofController({this.password});
+
+  final String? password;
+
   final localAuthenticationRepository = const LocalAuthenticationRepository();
-  final password = TextEditingController();
+  final inputController = TextEditingController();
   final enableDialButtons = true.obs;
   var result = false.obs;
 
@@ -22,25 +26,31 @@ class IdentityProofController extends GetxController {
         Navigator.pop(Get.context!);
       }
     });
-    password.addListener(() {
-      enableDialButtons(password.text.length < maxLengthLocalPassword);
-      if (password.text.length == maxLengthLocalPassword) {
+    inputController.addListener(() {
+      enableDialButtons(inputController.text.length < maxLengthLocalPassword);
+      if (inputController.text.length == maxLengthLocalPassword) {
         Timer(const Duration(milliseconds: 500), () async {
           final enteredPasswordHash =
-              sha256.convert(utf8.encode(password.text)).toString();
-          final currentPasswordHash =
-              (await localAuthenticationRepository.getLocalPasswordSetting())
-                  ?.hash;
-          if (enteredPasswordHash == currentPasswordHash) {
+              sha256.convert(utf8.encode(inputController.text)).toString();
+          if (await checkPassword(enteredPasswordHash)) {
             result(true);
           } else {
             showErrorAlert('Неверный пароль');
           }
-          password.clear();
+          inputController.clear();
         });
       }
     });
+    if (await checkPassword(password)) {
+      result(true);
+    }
     super.onInit();
+  }
+
+  Future<bool> checkPassword(enteredPassword) async {
+    final currentPasswordHash =
+        (await localAuthenticationRepository.getLocalPasswordSetting())?.hash;
+    return enteredPassword == currentPasswordHash;
   }
 
   void biometricAction() async {
@@ -52,7 +62,7 @@ class IdentityProofController extends GetxController {
   @override
   void dispose() {
     result.close();
-    password.dispose();
+    inputController.dispose();
     super.dispose();
   }
 }

@@ -17,7 +17,7 @@ class LocalPasswordSettingBloc
   LocalPasswordSettingBloc()
       : super(const LocalPasswordSettingsInitialState()) {
     on<LocalPasswordSettingsInitialEvent>(_onNewLocalPasswordEventInitial);
-    on<ProofOfIdentity>(_onProofOfIdentity);
+    on<CreatePassword>(_onCreatePassword);
     on<EnterFirstLocalPassword>(_onEnterFirstLocalPassword);
     on<EnterSecondLocalPassword>(_onEnterSecondLocalPassword);
     on<DeleteLocalPassword>(_onDeleteLocalPassword);
@@ -34,8 +34,8 @@ class LocalPasswordSettingBloc
     emit(const LocalPasswordSettingsInitialState());
   }
 
-  void _onProofOfIdentity(
-    ProofOfIdentity event,
+  void _onCreatePassword(
+    CreatePassword event,
     Emitter<LocalPasswordSettingState> emit,
   ) async {
     try {

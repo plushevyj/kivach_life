@@ -4,13 +4,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../widgets/local_password/digital_field.dart';
+import '../../../widgets/local_password/digital_input_widget.dart';
 import '../controller/identity_proof_controller.dart';
 import '/core/constants.dart';
-import '/widgets/digital_input/digital_field.dart';
-import '/widgets/digital_input/digital_input_widget.dart';
 
-Future<bool> identityProof() async {
-  final identityProofController = Get.put(IdentityProofController());
+Future<bool> identityProof({String? password}) async {
+  final identityProofController =
+      Get.put(IdentityProofController(password: password));
   var localAuthSettings = await identityProofController
       .localAuthenticationRepository
       .checkLocalAuthenticationSettings();
@@ -21,8 +22,8 @@ Future<bool> identityProof() async {
       .localAuthenticationRepository
       .canAuthenticateByBiometric();
   if (!canAuthenticateByBiometric && localAuthSettings.$2) {
-    identityProofController
-        .localAuthenticationRepository.deleteBiometricSetting();
+    identityProofController.localAuthenticationRepository
+        .deleteBiometricSetting();
     localAuthSettings = (localAuthSettings.$1, false);
   }
   await Get.bottomSheet(
@@ -64,13 +65,13 @@ Future<bool> identityProof() async {
                   SizedBox(
                     width: 150,
                     child: DigitalField(
-                      controller: controller.password,
+                      controller: controller.inputController,
                       maxLength: maxLengthLocalPassword,
                     ),
                   ),
                   const SizedBox(height: 150),
                   DigitalInput(
-                    controller: controller.password,
+                    controller: controller.inputController,
                     maxLength: maxLengthLocalPassword,
                     isEnabled: controller.enableDialButtons.value,
                     leftWidget: localAuthSettings.$2

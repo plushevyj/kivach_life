@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
+import '../../widgets/local_password/digital_field.dart';
+import '../../widgets/local_password/digital_input_widget.dart';
 import '/core/themes/light_theme.dart';
 import '/core/constants.dart';
 import '/modules/local_authentication/bloc/local_authentication_bloc.dart';
 import 'local_password_controller.dart';
-import '/widgets/digital_input/digital_field.dart';
-import '/widgets/digital_input/digital_input_widget.dart';
 
 class LocalAuthPage extends StatelessWidget {
   const LocalAuthPage({

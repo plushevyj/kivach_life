@@ -1,4 +1,5 @@
 import 'package:doctor/modules/first_opening_app/controller/first_opening_app_controller.dart';
+import 'package:doctor/modules/local_authentication/repository/local_authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -10,7 +11,6 @@ import 'modules/biometric_settings/bloc/biometric_settings_bloc.dart';
 import 'modules/local_authentication/bloc/local_authentication_bloc.dart';
 import 'modules/local_password_settings/bloc/local_password_settings_bloc.dart';
 import '/modules/authentication/bloc/authentication_bloc.dart';
-import '/modules/authentication/repository/login_repository.dart';
 
 void main() async {
   await initializeDependencies();
@@ -55,7 +55,8 @@ class App extends StatelessWidget {
           );
         },
         // initialRoute: '/loading',
-        initialRoute: '/greeting_onboarding',
+        initialRoute: '/onboarding_settings',
+        // initialRoute: '/greeting_onboarding',
       ),
     );
   }

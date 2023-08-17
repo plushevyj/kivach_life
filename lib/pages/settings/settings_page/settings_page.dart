@@ -57,7 +57,7 @@ class SettingsPage extends StatelessWidget {
                         icon: Icons.lock,
                         onPressed: () => Get.context!
                             .read<LocalPasswordSettingBloc>()
-                            .add(const ProofOfIdentity()),
+                            .add(const CreatePassword()),
                       )
                     else ...[
                       _SettingButton(
@@ -65,7 +65,7 @@ class SettingsPage extends StatelessWidget {
                         icon: Icons.lock_outlined,
                         onPressed: () => Get.context!
                             .read<LocalPasswordSettingBloc>()
-                            .add(const ProofOfIdentity()),
+                            .add(const CreatePassword()),
                       ),
                       _SettingButton(
                         title: 'Удалить цифровой пароль',

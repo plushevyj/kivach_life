@@ -2,6 +2,17 @@ import 'package:flutter/material.dart';
 
 const pagePadding = EdgeInsets.symmetric(horizontal: 20);
 
+final onboardingButtonStyle = ButtonStyle(
+  textStyle: MaterialStateProperty.all(
+    const TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
+    ),
+  ),
+  foregroundColor: MaterialStateProperty.all(KivachColors.green),
+  overlayColor: MaterialStateProperty.all(KivachColors.green.withOpacity(0.2)),
+);
+
 abstract final class KivachColors {
   static const green = Color(0xFF016836);
   static const lightGreen = Color(0xFF66A67E);

@@ -3,9 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 import '../../../modules/local_password_settings/bloc/local_password_settings_bloc.dart';
-import '/core/constants.dart';
-import '/widgets/digital_input/digital_input_widget.dart';
-import '/widgets/digital_input/digital_field.dart';
+import '../../../widgets/local_password/local_password_settings_body.dart';
 import '/pages/settings/new_local_password_page/new_password_controller.dart';
 import 'package:animations/animations.dart';
 import '/widgets/alerts.dart';
@@ -18,8 +16,7 @@ class NewLocalPasswordPage extends StatelessWidget {
     final newLocalPasswordController = Get.put(NewLocalPasswordController());
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-      ),
+      appBar: AppBar(),
       body: BlocConsumer<LocalPasswordSettingBloc, LocalPasswordSettingState>(
         listener: (_, state) {
           newLocalPasswordController
@@ -59,7 +56,7 @@ class NewLocalPasswordPage extends StatelessWidget {
                   key: UniqueKey(),
                   body: Obx(
                     () {
-                      return _LocalPasswordSettingBody(
+                      return LocalPasswordSettingBody(
                         controller: newLocalPasswordController.firstPassword,
                         idEnabled: newLocalPasswordController
                             .enableDialButtonsOfPassword.value,
@@ -72,7 +69,7 @@ class NewLocalPasswordPage extends StatelessWidget {
                 return Scaffold(
                   key: UniqueKey(),
                   body: Obx(() {
-                    return _LocalPasswordSettingBody(
+                    return LocalPasswordSettingBody(
                       controller: newLocalPasswordController.secondPassword,
                       idEnabled: newLocalPasswordController
                           .enableDialButtonsOfConfirmedPassword.value,
@@ -80,62 +77,14 @@ class NewLocalPasswordPage extends StatelessWidget {
                     );
                   }),
                 );
-              } else {
-                return Scaffold(
-                  key: UniqueKey(),
-                );
+              // } else {
+              //   return Scaffold(
+              //     key: UniqueKey(),
+              //   );
               }
             })(),
           );
         },
-      ),
-    );
-  }
-}
-
-class _LocalPasswordSettingBody extends StatelessWidget {
-  const _LocalPasswordSettingBody({
-    Key? key,
-    required this.controller,
-    required this.idEnabled,
-    required this.title,
-  }) : super(key: key);
-
-  final TextEditingController controller;
-  final bool idEnabled;
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: Get.width * 0.18),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 18,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 30),
-          SizedBox(
-            width: 150,
-            child: DigitalField(
-              controller: controller,
-              maxLength: maxLengthLocalPassword,
-            ),
-          ),
-          const SizedBox(height: 150),
-          DigitalInput(
-            controller: controller,
-            maxLength: maxLengthLocalPassword,
-            isEnabled: idEnabled,
-          ),
-          const SizedBox(height: 20),
-        ],
       ),
     );
   }

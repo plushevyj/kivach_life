@@ -9,10 +9,13 @@ abstract class LocalPasswordSettingEvent extends Equatable {
 
 class LocalPasswordSettingsInitialEvent extends LocalPasswordSettingEvent {
   const LocalPasswordSettingsInitialEvent();
+
+  @override
+  List<Object?> get props => [];
 }
 
-class ProofOfIdentity extends LocalPasswordSettingEvent {
-  const ProofOfIdentity();
+class CreatePassword extends LocalPasswordSettingEvent {
+  const CreatePassword();
 }
 
 class EnterFirstLocalPassword extends LocalPasswordSettingEvent {
