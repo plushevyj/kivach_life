@@ -4,8 +4,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../widgets/local_password/digital_field.dart';
-import '../../../widgets/local_password/digital_input_widget.dart';
+import '/widgets/local_password/digital_field.dart';
+import '/widgets/local_password/digital_input_widget.dart';
 import '../controller/identity_proof_controller.dart';
 import '/core/constants.dart';
 

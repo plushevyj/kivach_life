@@ -14,9 +14,7 @@ class FirstOpeningOfAppRepository {
       final check = box.get('value') as bool;
       return check;
     }());
-    // todo: toogle this lines
-    // return isFirstOpening;
-    return true;
+    return isFirstOpening;
   }
 
   Future<void> saveFirstOpeningSetting(bool value) async {

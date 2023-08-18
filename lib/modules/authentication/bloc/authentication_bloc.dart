@@ -30,8 +30,8 @@ class AuthenticationBloc
     Emitter<AuthenticationState> emit,
   ) async {
     try {
-      emit(const Authenticated());
-      return;
+      // emit(const Authenticated());
+      // return;
       emit(const AuthenticationLoading());
       final token = await tokenRepository.getAccessToken();
       if (token == null) {

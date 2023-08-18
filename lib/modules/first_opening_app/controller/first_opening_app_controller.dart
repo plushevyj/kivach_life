@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import '../repository/first_opening_app.dart';
+import '../repository/first_opening_app_repository.dart';
 
 class FirstOpeningAppController extends GetxController {
   final _firstOpeningOfAppRepository = const FirstOpeningOfAppRepository();

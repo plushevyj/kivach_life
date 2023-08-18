@@ -10,11 +10,13 @@ class QRScannerPageController extends GetxController {
   final result = Rxn<Barcode>();
   final flashlight = false.obs;
   QRViewController? qrViewController;
-  final _registrationRepository = RegistrationRepository();
+  final _registrationRepository = const RegistrationRepository();
 
   @override
   void dispose() {
+    result.close();
     qrViewController?.dispose();
+    flashlight.close();
     super.dispose();
   }
 
@@ -25,7 +27,6 @@ class QRScannerPageController extends GetxController {
       try {
         if (scanData.format == BarcodeFormat.qrcode && scanData.code != null) {
           Future.delayed(const Duration(seconds: 1), () {
-            print('scanData.code = ${scanData.code}');
             if (scanData.code!.contains(pattern)) {
               Get.offNamed('/registration/${scanData.code}');
               // showErrorAlert('QR-код неверный');
