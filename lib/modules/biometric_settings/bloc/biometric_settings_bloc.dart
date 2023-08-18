@@ -42,7 +42,7 @@ class BiometricSettingsBloc
           showErrorAlert('Необходимо создать пароль для входа в приложение');
           return;
         }
-        if (await identityProof()) {
+        if (await identityProof(password: event.proof)) {
           final isLocalAuthorized =
               await _localAuthenticationRepository.authenticateByBiometric();
           if (isLocalAuthorized) {
@@ -64,7 +64,8 @@ class BiometricSettingsBloc
       if (kDebugMode) {
         print('error: ${error.toString()}');
       }
-      showErrorAlert('Произошла неизвесная ошибка');
+      showErrorAlert(
+          'Произошла ошибка биометрической авторизации на устройстве');
     }
   }
 

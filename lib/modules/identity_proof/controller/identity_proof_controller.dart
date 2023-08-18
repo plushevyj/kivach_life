@@ -10,10 +10,6 @@ import '../../../core/constants.dart';
 import '../../local_authentication/repository/local_authentication_repository.dart';
 
 class IdentityProofController extends GetxController {
-  IdentityProofController({this.password});
-
-  final String? password;
-
   final localAuthenticationRepository = const LocalAuthenticationRepository();
   final inputController = TextEditingController();
   final enableDialButtons = true.obs;
@@ -30,9 +26,7 @@ class IdentityProofController extends GetxController {
       enableDialButtons(inputController.text.length < maxLengthLocalPassword);
       if (inputController.text.length == maxLengthLocalPassword) {
         Timer(const Duration(milliseconds: 500), () async {
-          final enteredPasswordHash =
-              sha256.convert(utf8.encode(inputController.text)).toString();
-          if (await checkPassword(enteredPasswordHash)) {
+          if (await checkPassword(inputController.text)) {
             result(true);
           } else {
             showErrorAlert('Неверный пароль');
@@ -41,16 +35,15 @@ class IdentityProofController extends GetxController {
         });
       }
     });
-    if (await checkPassword(password)) {
-      result(true);
-    }
     super.onInit();
   }
 
-  Future<bool> checkPassword(enteredPassword) async {
+  Future<bool> checkPassword(String enteredPassword) async {
+    final enteredPasswordHash =
+        sha256.convert(utf8.encode(enteredPassword)).toString();
     final currentPasswordHash =
         (await localAuthenticationRepository.getLocalPasswordSetting())?.hash;
-    return enteredPassword == currentPasswordHash;
+    return enteredPasswordHash == currentPasswordHash;
   }
 
   void biometricAction() async {
@@ -62,6 +55,7 @@ class IdentityProofController extends GetxController {
   @override
   void dispose() {
     result.close();
+    // enableDialButtons.close();
     inputController.dispose();
     super.dispose();
   }

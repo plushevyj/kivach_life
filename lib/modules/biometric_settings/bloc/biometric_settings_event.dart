@@ -8,9 +8,10 @@ abstract class BiometricSettingsEvent extends Equatable {
 }
 
 class EnableBiometricsLogin extends BiometricSettingsEvent {
-  const EnableBiometricsLogin(this.state);
+  const EnableBiometricsLogin(this.state, {this.proof});
 
   final bool state;
+  final String? proof;
 
   @override
   List<Object?> get props => [state];

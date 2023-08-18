@@ -1,9 +1,9 @@
-import 'package:doctor/modules/first_opening_app/controller/first_opening_app_controller.dart';
-import 'package:doctor/modules/local_authentication/repository/local_authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
+import '/modules/first_opening_app/controller/first_opening_app_controller.dart';
+import '/modules/local_authentication/repository/local_authentication_repository.dart';
 import 'core/dependencies/injector.dart';
 import 'core/pages.dart';
 import 'core/themes/light_theme.dart';
@@ -43,20 +43,20 @@ class App extends StatelessWidget {
         builder: (context, child) {
           return BlocListener<AuthenticationBloc, AuthenticationState>(
             listener: (context, state) {
-              // if (state is AuthenticationLoading) {
-              //   Get.offNamed('/loading');
-              // } else if (state is Authenticated) {
-              //   Get.offNamed('/local_auth');
-              // } else {
-              //   Get.offNamed('/auth');
-              // }
+              if (state is AuthenticationLoading) {
+                Get.offNamed('/loading');
+              } else if (state is Authenticated) {
+                Get.offNamed('/local_auth');
+              } else {
+                Get.offNamed('/auth');
+              }
             },
             child: child,
           );
         },
         // initialRoute: '/loading',
         initialRoute: '/onboarding_settings',
-        // initialRoute: '/greeting_onboarding',
+        // initialRoute: '/onboarding_greeting',
       ),
     );
   }

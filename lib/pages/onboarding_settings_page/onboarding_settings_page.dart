@@ -18,101 +18,121 @@ class OnboardingSettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final onboardingSettingsPageController =
         Get.put(OnboardingSettingsPageController());
-    return Scaffold(
-      appBar: AppBar(
-        leadingWidth: 84,
-        actions: [
-          Container(
-            padding: const EdgeInsets.only(right: 10),
-            height: 56,
-            child: TextButton(
-              style: onboardingButtonStyle,
-              onPressed: () {},
-              child: const Text('Пропустить'),
-            ),
-          ),
-        ],
-      ),
-      body: PageView(
-        physics: const NeverScrollableScrollPhysics(),
-        controller: onboardingSettingsPageController.pageController,
-        children: [
-          const Padding(
-            padding: EdgeInsets.only(bottom: 80),
-            child: OnboardingInfoWidget(
-              onboardingInfo: OnboardingInfo(
-                title:
-                    'Добавьте цифровой пароль для упрощенного входа в приложение',
-                image: 'assets/images/onboarding/pincode.svg',
+    return BlocListener<LocalPasswordSettingBloc, LocalPasswordSettingState>(
+      listener: (context, state) {
+        if (state is SuccessfulPasswordChange) {
+          if (onboardingSettingsPageController.canAuthenticateByBiometric) {
+            onboardingSettingsPageController.pageController.nextPage(
+              duration: const Duration(
+                  milliseconds: OnboardingSettingsPageController
+                      .animationDurationInMilliseconds),
+              curve: Curves.ease,
+            );
+          } else {
+            Get.back();
+          }
+        } else if (state is ProofedOfIdentity) {
+          onboardingSettingsPageController.pageController.animateToPage(
+            1,
+            duration: const Duration(
+                milliseconds: OnboardingSettingsPageController
+                    .animationDurationInMilliseconds),
+            curve: Curves.ease,
+          );
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leadingWidth: 84,
+          actions: [
+            Container(
+              padding: const EdgeInsets.only(right: 10),
+              height: 56,
+              child: TextButton(
+                style: onboardingButtonStyle,
+                onPressed: () {},
+                child: const Text('Пропустить'),
               ),
             ),
-          ),
-          BlocListener<LocalPasswordSettingBloc, LocalPasswordSettingState>(
-            listener: (context, state) {
-              if (state is SuccessfulPasswordChange) {
-                if (onboardingSettingsPageController
-                    .canAuthenticateByBiometric) {
-                  onboardingSettingsPageController.pageController.nextPage(
-                    duration: const Duration(
-                        milliseconds: OnboardingSettingsPageController
-                            .animationDurationInMilliseconds),
-                    curve: Curves.ease,
-                  );
-                } else {
-                  //todo: add redirect to HomePage
-                }
-              }
-            },
-            child: const NewLocalPasswordPage(),
-          ),
-          const Padding(
-            padding: EdgeInsets.only(bottom: 80),
-            child: OnboardingInfoWidget(
-              onboardingInfo: OnboardingInfo(
-                title:
-                    'Добавьте настройку входа в приложение по отпечатку пальца или сканеру лица',
-                image: 'assets/images/onboarding/biometrics.svg',
+          ],
+        ),
+        body: PageView(
+          physics: const NeverScrollableScrollPhysics(),
+          controller: onboardingSettingsPageController.pageController,
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(bottom: 80),
+              child: OnboardingInfoWidget(
+                onboardingInfo: OnboardingInfo(
+                  title:
+                      'Добавьте цифровой пароль для упрощенного входа в приложение',
+                  image: 'assets/images/onboarding/pin-code.svg',
+                ),
               ),
             ),
-          ),
-        ],
-      ),
-      bottomSheet: Obx(
-        () {
-          if (onboardingSettingsPageController.currentPage.value == 0) {
-            return Container(
-              color: Colors.white,
-              padding: const EdgeInsets.only(bottom: 30).add(pagePadding),
-              child: ButtonForForm(
-                text: 'ПЕРЕЙТИ',
+            NewLocalPasswordBody(
+                newLocalPasswordController: onboardingSettingsPageController
+                    .newLocalPasswordController),
+            const Padding(
+              padding: EdgeInsets.only(bottom: 80),
+              child: OnboardingInfoWidget(
+                onboardingInfo: OnboardingInfo(
+                  title:
+                      'Добавьте настройку входа в приложение по отпечатку пальца или сканеру лица',
+                  image: 'assets/images/onboarding/biometrics.svg',
+                ),
+              ),
+            ),
+          ],
+        ),
+        bottomSheet: Obx(
+          () {
+            if (onboardingSettingsPageController.currentPage.value == 0) {
+              return GoToButton(
                 onPressed: () {
                   Get.context!
                       .read<LocalPasswordSettingBloc>()
                       .add(const CreatePassword());
-                  onboardingSettingsPageController.pageController.nextPage(
-                    duration: const Duration(
-                        milliseconds: OnboardingSettingsPageController
-                            .animationDurationInMilliseconds),
-                    curve: Curves.ease,
-                  );
                 },
-              ),
-            );
-          } else if (onboardingSettingsPageController.currentPage.value == 2) {
-            return Container(
-              color: Colors.white,
-              padding: const EdgeInsets.only(bottom: 30).add(pagePadding),
-              child: ButtonForForm(
-                text: 'ПЕРЕЙТИ',
-                onPressed: () => Get.context!
-                    .read<BiometricSettingsBloc>()
-                    .add(const EnableBiometricsLogin(true)),
-              ),
-            );
-          } else {
-            return const SizedBox.shrink();
-          }
-        },
+              );
+            } else if (onboardingSettingsPageController.currentPage.value ==
+                2) {
+              return GoToButton(
+                onPressed: () {
+                  Get.context!.read<BiometricSettingsBloc>().add(
+                        EnableBiometricsLogin(
+                          true,
+                          proof: onboardingSettingsPageController.proofPassword,
+                        ),
+                      );
+                },
+              );
+            } else {
+              return const SizedBox.shrink();
+            }
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class GoToButton extends StatelessWidget {
+  const GoToButton({
+    super.key,
+    required this.onPressed,
+  });
+
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.white,
+      padding: const EdgeInsets.only(bottom: 30).add(pagePadding),
+      child: ButtonForForm(
+        text: 'ПЕРЕЙТИ',
+        onPressed: onPressed,
       ),
     );
   }

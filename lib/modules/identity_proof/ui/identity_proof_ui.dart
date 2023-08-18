@@ -10,12 +10,15 @@ import '../controller/identity_proof_controller.dart';
 import '/core/constants.dart';
 
 Future<bool> identityProof({String? password}) async {
-  final identityProofController =
-      Get.put(IdentityProofController(password: password));
+  final identityProofController = Get.put(IdentityProofController());
   var localAuthSettings = await identityProofController
       .localAuthenticationRepository
       .checkLocalAuthenticationSettings();
   if (!localAuthSettings.$1) {
+    return true;
+  }
+  if (password != null &&
+      await identityProofController.checkPassword(password)) {
     return true;
   }
   final canAuthenticateByBiometric = await identityProofController

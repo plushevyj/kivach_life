@@ -17,75 +17,83 @@ class NewLocalPasswordPage extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(),
-      body: BlocConsumer<LocalPasswordSettingBloc, LocalPasswordSettingState>(
-        listener: (_, state) {
-          newLocalPasswordController
-            ..firstPassword.clear()
-            ..secondPassword.clear();
-          if (state is InvalidConfirmedNewLocalPassword) {
-            showErrorAlert('Введенные пароли не совпадают');
-            newLocalPasswordController.reverse(false);
-          } else if (state is GotFirstLocalPassword) {
-            newLocalPasswordController.reverse(true);
-          } else if (state is SuccessfulPasswordChange) {
-            Get.back();
-            showSuccessAlert('Локальный пароль изменен');
-          } else if (state is InvalidConfirmedNewLocalPassword) {
-            showErrorAlert('Неверный пароль');
-          } else if (state is ErrorNewLocalPasswordState) {
-            Get.back();
-            showErrorAlert(state.error);
-          }
-        },
-        builder: (context, state) {
-          return PageTransitionSwitcher(
-            duration: const Duration(milliseconds: 500),
-            reverse: !newLocalPasswordController.reverse.value,
-            transitionBuilder: (child, animation, secondaryAnimation) {
-              return SharedAxisTransition(
-                animation: animation,
-                secondaryAnimation: secondaryAnimation,
-                transitionType: SharedAxisTransitionType.horizontal,
-                child: child,
-              );
-            },
-            child: (() {
-              if (state is ProofedOfIdentity ||
-                  state is InvalidConfirmedNewLocalPassword) {
-                return Scaffold(
-                  key: UniqueKey(),
-                  body: Obx(
-                    () {
-                      return LocalPasswordSettingBody(
-                        controller: newLocalPasswordController.firstPassword,
-                        idEnabled: newLocalPasswordController
-                            .enableDialButtonsOfPassword.value,
-                        title: 'ПРИДУМАЙТЕ ПАРОЛЬ',
-                      );
-                    },
-                  ),
-                );
-              } else if (state is GotFirstLocalPassword) {
-                return Scaffold(
-                  key: UniqueKey(),
-                  body: Obx(() {
+      body: NewLocalPasswordBody(
+          newLocalPasswordController: newLocalPasswordController),
+    );
+  }
+}
+
+class NewLocalPasswordBody extends StatelessWidget {
+  const NewLocalPasswordBody({
+    super.key,
+    required this.newLocalPasswordController,
+  });
+
+  final NewLocalPasswordController newLocalPasswordController;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<LocalPasswordSettingBloc, LocalPasswordSettingState>(
+      listener: (_, state) {
+        if (state is InvalidConfirmedNewLocalPassword) {
+          showErrorAlert('Введенные пароли не совпадают');
+          newLocalPasswordController.firstPassword.clear();
+          newLocalPasswordController.reverse(false);
+        } else if (state is GotFirstLocalPassword) {
+          newLocalPasswordController.secondPassword.clear();
+          newLocalPasswordController.reverse(true);
+        } else if (state is SuccessfulPasswordChange) {
+          Get.back();
+          showSuccessAlert('Локальный пароль изменен');
+        } else if (state is ErrorNewLocalPasswordState) {
+          Get.back();
+          showErrorAlert(state.error);
+        }
+      },
+      builder: (context, state) {
+        return PageTransitionSwitcher(
+          duration: const Duration(milliseconds: 500),
+          reverse: !newLocalPasswordController.reverse.value,
+          transitionBuilder: (child, animation, secondaryAnimation) {
+            return SharedAxisTransition(
+              animation: animation,
+              secondaryAnimation: secondaryAnimation,
+              transitionType: SharedAxisTransitionType.horizontal,
+              child: child,
+            );
+          },
+          child: (() {
+            if (state is ProofedOfIdentity ||
+                state is InvalidConfirmedNewLocalPassword) {
+              return Scaffold(
+                key: UniqueKey(),
+                body: Obx(
+                  () {
                     return LocalPasswordSettingBody(
-                      controller: newLocalPasswordController.secondPassword,
+                      controller: newLocalPasswordController.firstPassword,
                       idEnabled: newLocalPasswordController
-                          .enableDialButtonsOfConfirmedPassword.value,
-                      title: 'ПОДТВЕРДИТЕ ПАРОЛЬ',
+                          .enableDialButtonsOfPassword.value,
+                      title: 'ПРИДУМАЙТЕ ПАРОЛЬ',
                     );
-                  }),
-                );
-              // } else {
-              //   return Scaffold(
-              //     key: UniqueKey(),
-              //   );
-              }
-            })(),
-          );
-        },
-      ),
+                  },
+                ),
+              );
+            } else if (state is GotFirstLocalPassword) {
+              return Scaffold(
+                key: UniqueKey(),
+                body: Obx(() {
+                  return LocalPasswordSettingBody(
+                    controller: newLocalPasswordController.secondPassword,
+                    idEnabled: newLocalPasswordController
+                        .enableDialButtonsOfConfirmedPassword.value,
+                    title: 'ПОДТВЕРДИТЕ ПАРОЛЬ',
+                  );
+                }),
+              );
+            }
+          })(),
+        );
+      },
     );
   }
 }

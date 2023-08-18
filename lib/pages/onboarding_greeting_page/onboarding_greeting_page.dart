@@ -1,11 +1,11 @@
-import 'package:doctor/core/themes/light_theme.dart';
-import 'package:doctor/widgets/inputs/button_for_form.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import '/core/themes/light_theme.dart';
+import '/widgets/inputs/button_for_form.dart';
 import '../../widgets/onboarding/onboarding_info_widget.dart';
-import 'onboarding_page_controller.dart';
+import 'onboarding_greeting_page_controller.dart';
 
 class GreetingOnboardingPage extends StatelessWidget {
   const GreetingOnboardingPage({super.key});

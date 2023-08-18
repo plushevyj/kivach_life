@@ -50,6 +50,7 @@ class NewLocalPasswordController extends GetxController {
     Get.context!
         .read<LocalPasswordSettingBloc>()
         .add(const LocalPasswordSettingsInitialEvent());
+    reverse.close();
     firstPassword.dispose();
     secondPassword.dispose();
     super.onClose();

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
+import '/pages/settings/new_local_password_page/new_local_password_page.dart';
 import '/modules/local_password_settings/bloc/local_password_settings_bloc.dart';
 import '/core/themes/light_theme.dart';
 import '/modules/biometric_settings/bloc/biometric_settings_bloc.dart';
@@ -20,7 +21,7 @@ class SettingsPage extends StatelessWidget {
         BlocListener<LocalPasswordSettingBloc, LocalPasswordSettingState>(
           listener: (_, state) {
             if (state is ProofedOfIdentity) {
-              Get.toNamed('/settings/new_local_password');
+              Get.to(const NewLocalPasswordPage());
             } else if (state is DeletedLocalPassword) {
               settingsPageController.enableLocalPassword(false);
             } else if (state is SuccessfulPasswordChange) {
