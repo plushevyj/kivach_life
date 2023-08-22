@@ -20,30 +20,27 @@ class AuthenticationBloc
     this.loginRepository = const LoginRepository(),
     this.tokenRepository = const TokenRepository(),
   }) : super(const AuthenticationInitial()) {
-    on<AuthenticationAppStarted>(_onAuthenticationAppStarted);
+    on<AuthenticateByToken>(_onAuthenticationAppStarted);
     on<LogIn>(_onLogIn);
     on<LogOut>(_onLogOut);
   }
 
   Future<void> _onAuthenticationAppStarted(
-    AuthenticationAppStarted event,
+    AuthenticateByToken event,
     Emitter<AuthenticationState> emit,
   ) async {
+    // emit(const Unauthenticated());
+    // return;
     try {
-      // emit(const Authenticated());
-      // return;
-      emit(const AuthenticationLoading());
       final token = await tokenRepository.getAccessToken();
       if (token == null) {
         emit(const Unauthenticated());
         return;
       }
       tokenRepository.addAccessToken(token);
-      final player = await loginRepository.logInByToken();
-      // Get.put(AuthController(), permanent: true).account.value = player;
+      final profile = await loginRepository.logInByToken();
       emit(const Authenticated());
     } catch (error) {
-      print(error);
       emit(AuthenticationError(error.toString()));
       emit(const Unauthenticated());
     }
@@ -54,20 +51,19 @@ class AuthenticationBloc
     Emitter<AuthenticationState> emit,
   ) async {
     try {
+      emit(const AuthenticationLoading());
       final token = await loginRepository.logIn(
         username: event.username,
         password: event.password,
       );
+      print('token = $token');
       emit(const Authenticated());
-      // Get.put(AuthController(), permanent: true).account.value = player;
-      // tokenRepository.addToken(token.token);
-      // tokenRepository.saveToken(token.token);
+      tokenRepository.addAccessToken(token.token);
+      tokenRepository.saveTokens(
+          accessToken: token.token, refreshTokens: token.refresh_token);
     } catch (error) {
-      print(error);
       emit(AuthenticationError(error.toString()));
       emit(const Unauthenticated());
-      // Get.put(AuthController(), permanent: true).passwordErrorText.value =
-      //     'Некорректная почта или пароль';
     }
   }
 

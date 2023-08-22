@@ -19,5 +19,5 @@ Future<void> initializeDependencies() async {
   Hive
     ..registerAdapter(BiometricSettingsAdapter())
     ..registerAdapter(LocalPasswordAdapter());
-  GetIt.I.registerSingleton<Dio>(const Http().createClient());
+  GetIt.I.registerSingleton<Dio>(DioClient().dio);
 }

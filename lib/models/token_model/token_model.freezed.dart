@@ -22,7 +22,6 @@ TokenModel _$TokenModelFromJson(Map<String, dynamic> json) {
 mixin _$TokenModel {
   String get token => throw _privateConstructorUsedError;
   String get refresh_token => throw _privateConstructorUsedError;
-  int get age => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +35,7 @@ abstract class $TokenModelCopyWith<$Res> {
           TokenModel value, $Res Function(TokenModel) then) =
       _$TokenModelCopyWithImpl<$Res, TokenModel>;
   @useResult
-  $Res call({String token, String refresh_token, int age});
+  $Res call({String token, String refresh_token});
 }
 
 /// @nodoc
@@ -54,7 +53,6 @@ class _$TokenModelCopyWithImpl<$Res, $Val extends TokenModel>
   $Res call({
     Object? token = null,
     Object? refresh_token = null,
-    Object? age = null,
   }) {
     return _then(_value.copyWith(
       token: null == token
@@ -65,10 +63,6 @@ class _$TokenModelCopyWithImpl<$Res, $Val extends TokenModel>
           ? _value.refresh_token
           : refresh_token // ignore: cast_nullable_to_non_nullable
               as String,
-      age: null == age
-          ? _value.age
-          : age // ignore: cast_nullable_to_non_nullable
-              as int,
     ) as $Val);
   }
 }
@@ -81,7 +75,7 @@ abstract class _$$_TokenModelCopyWith<$Res>
       __$$_TokenModelCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String token, String refresh_token, int age});
+  $Res call({String token, String refresh_token});
 }
 
 /// @nodoc
@@ -97,7 +91,6 @@ class __$$_TokenModelCopyWithImpl<$Res>
   $Res call({
     Object? token = null,
     Object? refresh_token = null,
-    Object? age = null,
   }) {
     return _then(_$_TokenModel(
       token: null == token
@@ -108,10 +101,6 @@ class __$$_TokenModelCopyWithImpl<$Res>
           ? _value.refresh_token
           : refresh_token // ignore: cast_nullable_to_non_nullable
               as String,
-      age: null == age
-          ? _value.age
-          : age // ignore: cast_nullable_to_non_nullable
-              as int,
     ));
   }
 }
@@ -119,8 +108,7 @@ class __$$_TokenModelCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_TokenModel with DiagnosticableTreeMixin implements _TokenModel {
-  const _$_TokenModel(
-      {required this.token, required this.refresh_token, required this.age});
+  const _$_TokenModel({required this.token, required this.refresh_token});
 
   factory _$_TokenModel.fromJson(Map<String, dynamic> json) =>
       _$$_TokenModelFromJson(json);
@@ -129,12 +117,10 @@ class _$_TokenModel with DiagnosticableTreeMixin implements _TokenModel {
   final String token;
   @override
   final String refresh_token;
-  @override
-  final int age;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'TokenModel(token: $token, refresh_token: $refresh_token, age: $age)';
+    return 'TokenModel(token: $token, refresh_token: $refresh_token)';
   }
 
   @override
@@ -143,8 +129,7 @@ class _$_TokenModel with DiagnosticableTreeMixin implements _TokenModel {
     properties
       ..add(DiagnosticsProperty('type', 'TokenModel'))
       ..add(DiagnosticsProperty('token', token))
-      ..add(DiagnosticsProperty('refresh_token', refresh_token))
-      ..add(DiagnosticsProperty('age', age));
+      ..add(DiagnosticsProperty('refresh_token', refresh_token));
   }
 
   @override
@@ -154,13 +139,12 @@ class _$_TokenModel with DiagnosticableTreeMixin implements _TokenModel {
             other is _$_TokenModel &&
             (identical(other.token, token) || other.token == token) &&
             (identical(other.refresh_token, refresh_token) ||
-                other.refresh_token == refresh_token) &&
-            (identical(other.age, age) || other.age == age));
+                other.refresh_token == refresh_token));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, token, refresh_token, age);
+  int get hashCode => Object.hash(runtimeType, token, refresh_token);
 
   @JsonKey(ignore: true)
   @override
@@ -179,8 +163,7 @@ class _$_TokenModel with DiagnosticableTreeMixin implements _TokenModel {
 abstract class _TokenModel implements TokenModel {
   const factory _TokenModel(
       {required final String token,
-      required final String refresh_token,
-      required final int age}) = _$_TokenModel;
+      required final String refresh_token}) = _$_TokenModel;
 
   factory _TokenModel.fromJson(Map<String, dynamic> json) =
       _$_TokenModel.fromJson;
@@ -189,8 +172,6 @@ abstract class _TokenModel implements TokenModel {
   String get token;
   @override
   String get refresh_token;
-  @override
-  int get age;
   @override
   @JsonKey(ignore: true)
   _$$_TokenModelCopyWith<_$_TokenModel> get copyWith =>

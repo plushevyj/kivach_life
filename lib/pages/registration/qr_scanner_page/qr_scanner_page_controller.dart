@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:get/get.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
+import '../registration_page/registration_page.dart';
 import '/widgets/alerts.dart';
 import '../../../modules/registration/repository/registration_repository.dart';
 
@@ -26,9 +27,16 @@ class QRScannerPageController extends GetxController {
     controller.scannedDataStream.listen((Barcode scanData) async {
       try {
         if (scanData.format == BarcodeFormat.qrcode && scanData.code != null) {
-          Future.delayed(const Duration(seconds: 1), () {
+          Future.delayed(const Duration(seconds: 1), () async {
             if (scanData.code!.contains(pattern)) {
-              Get.offNamed('/registration/${scanData.code}');
+              final registrationToken = scanData.code!.split(pattern)[1];
+              print('registrationToken = $registrationToken');
+              final profilePreview = await _registrationRepository
+                  .checkRegistrationToken(registrationToken);
+              Get.off(RegistrationPage(
+                registrationToken: registrationToken,
+                profilePreview: profilePreview,
+              ));
               // showErrorAlert('QR-код неверный');
             }
           });

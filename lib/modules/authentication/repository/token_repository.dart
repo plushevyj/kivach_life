@@ -16,7 +16,7 @@ class TokenRepository {
 
   Future<String?> getRefreshToken() async {
     final box = await _openStorage();
-    return box.get('accessToken') as String?;
+    return box.get('refreshToken') as String?;
   }
 
   void addAccessToken(String accessToken) {

@@ -27,7 +27,7 @@ class App extends StatelessWidget {
       providers: [
         BlocProvider(
             create: (_) =>
-                AuthenticationBloc()..add(const AuthenticationAppStarted())),
+                AuthenticationBloc()..add(const AuthenticateByToken())),
         BlocProvider(
             create: (_) =>
                 LocalAuthenticationBloc()..add(const LocallyAuthStarted())),
@@ -43,9 +43,7 @@ class App extends StatelessWidget {
         builder: (context, child) {
           return BlocListener<AuthenticationBloc, AuthenticationState>(
             listener: (context, state) {
-              if (state is AuthenticationLoading) {
-                Get.offNamed('/loading');
-              } else if (state is Authenticated) {
+              if (state is Authenticated) {
                 Get.offNamed('/local_auth');
               } else {
                 Get.offNamed('/auth');
@@ -55,7 +53,7 @@ class App extends StatelessWidget {
           );
         },
         // initialRoute: '/loading',
-        initialRoute: '/onboarding_settings',
+        initialRoute: '/loading',
         // initialRoute: '/onboarding_greeting',
       ),
     );

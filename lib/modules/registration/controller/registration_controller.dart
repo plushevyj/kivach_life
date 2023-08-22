@@ -1,6 +1,10 @@
+import 'package:doctor/models/token_model/token_model.dart';
+import 'package:doctor/modules/authentication/bloc/authentication_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
+import '../../authentication/repository/token_repository.dart';
 import '../repository/registration_repository.dart';
 
 class RegistrationController extends GetxController {
@@ -14,6 +18,7 @@ class RegistrationController extends GetxController {
   late String token;
 
   final _registrationRepository = const RegistrationRepository();
+  final _tokenRepository = const TokenRepository();
 
   @override
   void onInit() {
@@ -23,12 +28,14 @@ class RegistrationController extends GetxController {
   }
 
   void register() async {
-    _registrationRepository.sendUserData(
-      token: token,
-      username: usernameFieldController.text,
-      email: emailFieldController.text,
-      phone: phoneFieldController.text,
-      password: firstPasswordFieldController.text,
-    );
+    try {
+      final tokenModel = await _registrationRepository.sendRegistrationData(
+        registrationToken: token,
+        username: usernameFieldController.text,
+        email: emailFieldController.text,
+        phone: phoneFieldController.text,
+        password: firstPasswordFieldController.text,
+      );
+    } catch (_) {}
   }
 }

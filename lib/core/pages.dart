@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import '/pages/onboarding_greeting_page/onboarding_greeting_page.dart';
 import '/pages/onboarding_settings_page/onboarding_settings_page.dart';
 import '/pages/auth_page/auth_page.dart';
-import '/pages/auth_page/loading_page.dart';
+import '../pages/loading_page.dart';
 import '/pages/registration/qr_scanner_page/qr_scanner_page.dart';
 import '/pages/registration/registration_page/registration_page.dart';
 import '/pages/home_page/home_page.dart';
@@ -17,7 +17,6 @@ final pages = [
   GetPage(name: '/loading', page: () => const LoadingPage()),
   GetPage(name: '/auth', page: () => const AuthorizationPage()),
   GetPage(name: '/registration/qr', page: () => const QRScannerPage()),
-  GetPage(name: '/registration/register', page: () => const RegistrationPage()),
   GetPage(name: '/local_auth', page: () => const LocalAuthPage()),
   GetPage(name: '/home', page: () => HomePage()),
   GetPage(name: '/settings', page: () => const SettingsPage()),

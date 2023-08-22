@@ -14,7 +14,6 @@ class TokenModel with _$TokenModel {
   const factory TokenModel({
     required String token,
     required String refresh_token,
-    required int age,
   }) = _TokenModel;
 
   factory TokenModel.fromJson(Map<String, Object?> json) =>

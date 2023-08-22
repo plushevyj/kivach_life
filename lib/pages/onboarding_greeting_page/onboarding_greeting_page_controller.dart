@@ -14,10 +14,6 @@ class OnboardingController extends GetxController {
       image: 'assets/images/onboarding/schedule.svg',
     ),
     const OnboardingInfo(
-      title: 'Общайтесь с медперсоналом в чатах',
-      image: 'assets/images/onboarding/chat.svg',
-    ),
-    const OnboardingInfo(
       title: 'Следите за своими анализами и результатами обследований',
       image: 'assets/images/onboarding/result.svg',
     ),

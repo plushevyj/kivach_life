@@ -50,7 +50,7 @@ class OnboardingSettingsPage extends StatelessWidget {
               height: 56,
               child: TextButton(
                 style: onboardingButtonStyle,
-                onPressed: () {},
+                onPressed: () => Get.offNamed('/home'),
                 child: const Text('Пропустить'),
               ),
             ),

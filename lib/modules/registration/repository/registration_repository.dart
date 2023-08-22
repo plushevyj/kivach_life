@@ -1,6 +1,9 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:doctor/core/utils/convert_to.dart';
+import 'package:doctor/models/profile_preview_model/profile_preview_model.dart';
+import 'package:doctor/models/token_model/token_model.dart';
 import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 
@@ -9,35 +12,32 @@ import '../../../core/http/request_handler.dart';
 class RegistrationRepository {
   const RegistrationRepository();
 
-  static final _http = GetIt.I.get<Dio>();
+  static final _dio = GetIt.I.get<Dio>();
 
-  Future<void> sendUserData({
-    required String token,
+  Future<ProfilePreview> checkRegistrationToken(
+      String registrationToken) async {
+    const path = '/api/register';
+    final query = {'_token': registrationToken};
+    final response = await _dio.get(
+      path,
+      queryParameters: query,
+      options: Options(headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      }),
+    );
+    return ConvertTo<ProfilePreview>()
+        .item(response.data, ProfilePreview.fromJson);
+  }
+
+  Future<TokenModel> sendRegistrationData({
+    required String registrationToken,
     required String username,
     required String email,
     required String phone,
     required String password,
   }) async {
-    // final formQuery = {};
-    // final res = await handleRequest(
-    //   () => _http.post(
-    //     path,
-    //     queryParameters: query,
-    //     data: data,
-    //     options: Options(
-    //       headers: {
-    //         'Content-Type': 'application/x-www-form-urlencoded',
-    //       },
-    //     ),
-    //   ),
-    // );
-    final dio = Dio();
     const path = '/api/register';
-    final query = {'_token': token};
-    String username = 'dev-doctor';
-    String password = 'u8uySN26F*4u';
-    String basicAuth =
-        'Basic ${base64.encode(utf8.encode('$username:$password'))}';
+    final query = {'_token': registrationToken};
     final data = {
       'registration_form[username]': username,
       'registration_form[email]': email,
@@ -46,17 +46,17 @@ class RegistrationRepository {
       'registration_form[plainPassword][second]': password,
       'registration_form[agreeTerms]': 1,
     };
-    print(
-      'profilePreview = ${await dio.post(
-        'https://dev-doctors.kivach.ru$path',
-        queryParameters: query,
-        // data: data,
-        options: Options(headers: {
-          'Authorization': basicAuth,
-          'Content-Type': 'application/x-www-form-urlencoded',
-        }),
-      )}',
+    final response = await _dio.post(
+      path,
+      queryParameters: query,
+      data: data,
+      options: Options(headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      }),
     );
+    _dio.options.headers.addAll(
+      {'Content-Type': 'application/json'},
+    );
+    return ConvertTo<TokenModel>().item(response.data, TokenModel.fromJson);
   }
-
 }
