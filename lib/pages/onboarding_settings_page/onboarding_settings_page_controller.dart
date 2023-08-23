@@ -20,13 +20,9 @@ class OnboardingSettingsPageController extends GetxController {
   void onInit() async {
     checkBiometricSetting();
     newLocalPasswordController.secondPassword.addListener(() {
-      print(newLocalPasswordController.secondPassword.text);
       if (newLocalPasswordController.firstPassword.text ==
           newLocalPasswordController.secondPassword.text) {
         proofPassword = newLocalPasswordController.secondPassword.text;
-        print('proofPassword = $proofPassword');
-        print(newLocalPasswordController.firstPassword.text ==
-            newLocalPasswordController.secondPassword.text);
       }
     });
     pageController.addListener(() {

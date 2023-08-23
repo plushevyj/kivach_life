@@ -27,10 +27,9 @@ class QRScannerPageController extends GetxController {
     controller.scannedDataStream.listen((Barcode scanData) async {
       try {
         if (scanData.format == BarcodeFormat.qrcode && scanData.code != null) {
-          Future.delayed(const Duration(seconds: 1), () async {
+          Timer(const Duration(milliseconds: 1), () async {
             if (scanData.code!.contains(pattern)) {
               final registrationToken = scanData.code!.split(pattern)[1];
-              print('registrationToken = $registrationToken');
               final profilePreview = await _registrationRepository
                   .checkRegistrationToken(registrationToken);
               Get.off(RegistrationPage(
@@ -43,7 +42,6 @@ class QRScannerPageController extends GetxController {
         }
       } catch (error) {
         showErrorAlert(error.toString());
-        print(error);
       }
     });
   }

@@ -19,7 +19,8 @@ class RegistrationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final registrationController = Get.put(RegistrationController());
+    final registrationController =
+        Get.put(RegistrationController(registrationToken: registrationToken));
     return Scaffold(
       appBar: AppBar(
         title: const Text('Заполните форму'),
@@ -34,7 +35,7 @@ class RegistrationPage extends StatelessWidget {
               const SizedBox(height: 20),
               Text(
                 'Здравствуйте, ${profilePreview.fullname}.',
-                style: TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 16),
               ),
               const SizedBox(height: 20),
               TextFieldForForm(
@@ -99,9 +100,17 @@ class RegistrationPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              ButtonForForm(
-                text: 'Зарегистрироваться',
-                onPressed: () => registrationController.register(),
+              Obx(
+                () => ButtonForForm(
+                  text: !registrationController.isLoading.value
+                      ? 'Зарегистрироваться'
+                      : null,
+                  child: registrationController.isLoading.value
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : null,
+                  onPressed: () =>
+                      registrationController.register(Get.context!),
+                ),
               ),
               const SizedBox(height: 20),
             ],

@@ -20,22 +20,30 @@ class LoginRepository {
     final response =
         await handleRequest(() => _dio.post('/api/login', data: data));
     final result = TokenModel.fromJson(response.data);
-    print(result);
     return ConvertTo<TokenModel>().item(response.data, TokenModel.fromJson);
   }
 
   Future<Profile> logInByToken() async {
-    final res = await handleRequest(() => _dio.post('/api/profile'));
+    final res = await handleRequest(() => _dio.get('/api/profile'));
     return ConvertTo<Profile>().item(res.data, Profile.fromJson);
   }
 
   Future<TokenModel> refreshToken(String refreshToken) async {
-    const path = '/api/token/refresh';
+    const path = 'https://dev-doctors.kivach.ru/api/token/refresh';
     final query = {
       'refresh_token': refreshToken,
     };
-    final response =
-        await handleRequest(() => Dio().post(path, queryParameters: query));
+    final response = await handleRequest(
+      () => Dio().post(
+        path,
+        queryParameters: query,
+        options: Options(
+          headers: {
+            'Authorization': basicAuth,
+          },
+        ),
+      ),
+    );
     return ConvertTo<TokenModel>().item(response.data, TokenModel.fromJson);
   }
 }

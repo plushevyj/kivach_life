@@ -1,8 +1,6 @@
-import 'package:dio/dio.dart';
-import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 
-import 'token_repository.dart';
+import '/models/token_model/token_model.dart';
 
 class TokenRepository {
   const TokenRepository();
@@ -11,25 +9,20 @@ class TokenRepository {
 
   Future<String?> getAccessToken() async {
     final box = await _openStorage();
-    return box.get('accessToken') as String?;
+    return await box.get('accessToken') as String?;
   }
 
   Future<String?> getRefreshToken() async {
     final box = await _openStorage();
-    return box.get('refreshToken') as String?;
+    return await box.get('refreshToken') as String?;
   }
 
-  void addAccessToken(String accessToken) {
-    GetIt.I.get<Dio>().options.headers['Authorization'] = 'Bearer $accessToken';
-  }
-
-  Future<void> saveTokens({
-    required String accessToken,
-    required String refreshTokens,
+  Future<void> saveToken({
+    required TokenModel token,
   }) async {
     final box = await _openStorage();
-    box.put('accessToken', accessToken);
-    box.put('refreshToken', accessToken);
+    box.put('accessToken', token.token);
+    box.put('refreshToken', token.refresh_token);
   }
 
   Future<void> clearTokens() async {

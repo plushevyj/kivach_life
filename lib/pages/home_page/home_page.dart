@@ -1,13 +1,11 @@
 import 'dart:io';
 
+import 'package:doctor/modules/authentication/repository/token_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../core/http/http.dart';
-
-String accessToken =
-    'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2OTIwMjQwMDAsImV4cCI6MTY5MjAyNzYwMCwicm9sZXMiOlsiUk9MRV9QQVRJRU5UIiwiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoiZmx5Y29kZSJ9.h5sS10e7IvdThDWggnClDEWchiinu5ULrLSf9raCvYLavjIiBANoGeepWA-76AFWl6LI-pO7Ch3hTD7jNzTkGtJpYIkwVEwZqd4SgYt5k4U-dm3Hzj3TkZVH9_jt37CvUPWSiJLmAdvXGD7F8dQz53RwFRH_cEleg-imnxdNbD0fBRv6I94wLFlbVL143ptMct0GtGXPIsFmBv1xgKVXt9NAJVux7kNdstdqxcjZkz5_PGiPUaMwijCzswZO5NgywhXqA9ufQZpXbSpiwZJJcZHspihHUSTntN6SyR6zle46oWj2LD6yaOK0SRf8dsjuNGE05zRRLs055dGo6amWIQ';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
@@ -89,7 +87,6 @@ class HomePage extends StatelessWidget {
                 case 1:
                   navBarIndexNotifier.value = index;
                   load(route: '/schedule');
-                  webViewController.getTitle().then((value) => print(value));
                 case 2:
                   navBarIndexNotifier.value = index;
                   load(route: '/chat');
@@ -129,9 +126,11 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  void load({required String route}) {
+  void load({required String route}) async {
+    String? accessToken = await const TokenRepository().getAccessToken();
+
     final headers = {
-      'Authorization': basicAuth(),
+      'Authorization': basicAuth,
       'X-Auth': 'Bearer $accessToken',
     };
     webViewController.loadRequest(

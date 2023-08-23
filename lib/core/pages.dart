@@ -5,7 +5,6 @@ import '/pages/onboarding_settings_page/onboarding_settings_page.dart';
 import '/pages/auth_page/auth_page.dart';
 import '../pages/loading_page.dart';
 import '/pages/registration/qr_scanner_page/qr_scanner_page.dart';
-import '/pages/registration/registration_page/registration_page.dart';
 import '/pages/home_page/home_page.dart';
 import '/pages/settings/settings_page/settings_page.dart';
 import '/pages/local_auth_page/local_auth_page.dart';

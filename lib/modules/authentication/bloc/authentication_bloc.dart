@@ -2,9 +2,8 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:get/get.dart';
 
-import '../../first_opening_app/controller/first_opening_app_controller.dart';
+import '../../../core/http/http.dart';
 import '../repository/login_repository.dart';
 import '../repository/token_repository.dart';
 
@@ -20,24 +19,22 @@ class AuthenticationBloc
     this.loginRepository = const LoginRepository(),
     this.tokenRepository = const TokenRepository(),
   }) : super(const AuthenticationInitial()) {
-    on<AuthenticateByToken>(_onAuthenticationAppStarted);
+    on<AuthenticateByToken>(_onAuthenticateByToken);
     on<LogIn>(_onLogIn);
     on<LogOut>(_onLogOut);
   }
 
-  Future<void> _onAuthenticationAppStarted(
+  Future<void> _onAuthenticateByToken(
     AuthenticateByToken event,
     Emitter<AuthenticationState> emit,
   ) async {
-    // emit(const Unauthenticated());
-    // return;
     try {
-      final token = await tokenRepository.getAccessToken();
-      if (token == null) {
+      final accessToken = await tokenRepository.getAccessToken();
+      if (accessToken == null) {
         emit(const Unauthenticated());
         return;
       }
-      tokenRepository.addAccessToken(token);
+      addAccessToken(accessToken: accessToken);
       final profile = await loginRepository.logInByToken();
       emit(const Authenticated());
     } catch (error) {
@@ -56,11 +53,10 @@ class AuthenticationBloc
         username: event.username,
         password: event.password,
       );
-      print('token = $token');
+      tokenRepository.saveToken(token: token);
+      addAccessToken(accessToken: token.token);
+      final profile = await loginRepository.logInByToken();
       emit(const Authenticated());
-      tokenRepository.addAccessToken(token.token);
-      tokenRepository.saveTokens(
-          accessToken: token.token, refreshTokens: token.refresh_token);
     } catch (error) {
       emit(AuthenticationError(error.toString()));
       emit(const Unauthenticated());

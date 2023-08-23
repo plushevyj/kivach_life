@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
-import '/modules/first_opening_app/controller/first_opening_app_controller.dart';
-import '/modules/local_authentication/repository/local_authentication_repository.dart';
 import 'core/dependencies/injector.dart';
 import 'core/pages.dart';
 import 'core/themes/light_theme.dart';
@@ -52,7 +50,6 @@ class App extends StatelessWidget {
             child: child,
           );
         },
-        // initialRoute: '/loading',
         initialRoute: '/loading',
         // initialRoute: '/onboarding_greeting',
       ),
