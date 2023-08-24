@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:doctor/modules/authentication/repository/token_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -28,8 +29,8 @@ class HomePage extends StatelessWidget {
           onPageStarted: (url) {},
           onPageFinished: (url) {},
           onWebResourceError: (error) {},
-          onNavigationRequest: (request) {
-            if (request.url.startsWith('https://dev-doctors.kivach.ru')) {
+          onNavigationRequest: (NavigationRequest request) {
+            if (request.url.startsWith(dotenv.get('BASE_URL'))) {
               urlTitleNotifier.value = request.url;
               return NavigationDecision.navigate;
             }
@@ -38,7 +39,7 @@ class HomePage extends StatelessWidget {
         ),
       );
     load(route: '/');
-    urlTitleNotifier.value = 'https://dev-doctors.kivach.ru/';
+    urlTitleNotifier.value = '${dotenv.get('BASE_URL')}/';
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -133,8 +134,7 @@ class HomePage extends StatelessWidget {
       'Authorization': basicAuth,
       'X-Auth': 'Bearer $accessToken',
     };
-    webViewController.loadRequest(
-        Uri.parse('https://dev-doctors.kivach.ru$route'),
+    webViewController.loadRequest(Uri.parse('${dotenv.get('BASE_URL')}$route'),
         headers: headers);
   }
 }

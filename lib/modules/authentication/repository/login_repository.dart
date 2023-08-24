@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../../models/profile/profile_model.dart';
@@ -29,7 +30,7 @@ class LoginRepository {
   }
 
   Future<TokenModel> refreshToken(String refreshToken) async {
-    const path = 'https://dev-doctors.kivach.ru/api/token/refresh';
+    final path = '${dotenv.get('BASE_URL')}/api/token/refresh';
     final query = {
       'refresh_token': refreshToken,
     };

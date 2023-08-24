@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -11,6 +12,7 @@ import 'observer.dart';
 
 Future<void> initializeDependencies() async {
   // Get.smartManagement = SmartManagement.full;
+  await dotenv.load();
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = Observer();
   await Hive.initFlutter();

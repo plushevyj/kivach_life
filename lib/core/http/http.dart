@@ -1,13 +1,15 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:doctor/modules/authentication/bloc/authentication_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
-import '../../modules/authentication/repository/login_repository.dart';
-import '../../modules/authentication/repository/token_repository.dart';
-import '../../modules/local_authentication/repository/local_authentication_repository.dart';
+
+import '/modules/authentication/bloc/authentication_bloc.dart';
+import '/modules/authentication/repository/login_repository.dart';
+import '/modules/authentication/repository/token_repository.dart';
+import '/modules/local_authentication/repository/local_authentication_repository.dart';
 
 class DioClient {
   late final Dio _dio = Dio();
@@ -19,7 +21,7 @@ class DioClient {
 
   DioClient() {
     _dio
-      ..options.baseUrl = 'https://dev-doctors.kivach.ru'
+      ..options.baseUrl = dotenv.get('BASE_URL')
       ..options.connectTimeout = const Duration(milliseconds: 10000)
       ..options.receiveTimeout = const Duration(milliseconds: 10000)
       ..options.headers = {
