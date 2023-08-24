@@ -6,8 +6,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import '../../core/http/http.dart';
-
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
 
@@ -15,7 +13,6 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final urlTitleNotifier = ValueNotifier('');
     final navBarIndexNotifier = ValueNotifier(0);
     final loadingNotifier = ValueNotifier<int?>(null);
     webViewController
@@ -31,7 +28,6 @@ class HomePage extends StatelessWidget {
           onWebResourceError: (error) {},
           onNavigationRequest: (NavigationRequest request) {
             if (request.url.startsWith(dotenv.get('BASE_URL'))) {
-              urlTitleNotifier.value = request.url;
               return NavigationDecision.navigate;
             }
             return NavigationDecision.prevent;
@@ -39,9 +35,11 @@ class HomePage extends StatelessWidget {
         ),
       );
     load(route: '/');
-    urlTitleNotifier.value = '${dotenv.get('BASE_URL')}/';
     return Scaffold(
+      backgroundColor: const Color(0xFFF3F5F6),
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         automaticallyImplyLeading: false,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(2),
@@ -64,15 +62,12 @@ class HomePage extends StatelessWidget {
               ? Icons.arrow_back_ios
               : Icons.arrow_back_outlined),
         ),
-        title: ValueListenableBuilder(
-          valueListenable: urlTitleNotifier,
-          builder: (_, url, __) {
-            return Text(url);
-          },
-        ),
       ),
-      body: WebViewWidget(
-        controller: webViewController,
+      body: Padding(
+        padding: EdgeInsets.only(top: Get.statusBarHeight / context.mediaQuery.devicePixelRatio),
+        child: WebViewWidget(
+          controller: webViewController,
+        ),
       ),
       bottomNavigationBar: ValueListenableBuilder(
         valueListenable: navBarIndexNotifier,
@@ -131,7 +126,6 @@ class HomePage extends StatelessWidget {
     String? accessToken = await const TokenRepository().getAccessToken();
 
     final headers = {
-      'Authorization': basicAuth,
       'X-Auth': 'Bearer $accessToken',
     };
     webViewController.loadRequest(Uri.parse('${dotenv.get('BASE_URL')}$route'),

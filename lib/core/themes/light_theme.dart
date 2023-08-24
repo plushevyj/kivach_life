@@ -14,7 +14,7 @@ final onboardingButtonStyle = ButtonStyle(
 );
 
 abstract final class KivachColors {
-  static const green = Color(0xFF016836);
+  static const green = Color(0xFF1A7A5C);
   static const lightGreen = Color(0xFF66A67E);
 }
 

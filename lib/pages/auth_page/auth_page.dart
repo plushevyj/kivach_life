@@ -40,7 +40,7 @@ class AuthorizationPage extends StatelessWidget {
                 children: [
                   SvgPicture.asset(
                     'assets/images/logo.svg',
-                    width: 75,
+                    width: 250,
                   ),
                   const SizedBox(height: 20),
                   TextFieldForForm(
