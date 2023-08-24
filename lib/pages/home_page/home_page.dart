@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:doctor/core/themes/light_theme.dart';
 import 'package:doctor/modules/authentication/repository/token_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -41,6 +43,10 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         automaticallyImplyLeading: false,
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          statusBarIconBrightness: Brightness.light, // For Android (dark icons)
+          statusBarBrightness: Brightness.light, // For iOS (dark icons)
+        ),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(2),
           child: ValueListenableBuilder(
@@ -64,7 +70,8 @@ class HomePage extends StatelessWidget {
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.only(top: Get.statusBarHeight / context.mediaQuery.devicePixelRatio),
+        padding: EdgeInsets.only(
+            top: Get.statusBarHeight / context.mediaQuery.devicePixelRatio),
         child: WebViewWidget(
           controller: webViewController,
         ),
@@ -95,7 +102,7 @@ class HomePage extends StatelessWidget {
             unselectedIconTheme: const IconThemeData(size: 24),
             selectedLabelStyle: const TextStyle(fontSize: 12),
             unselectedLabelStyle: const TextStyle(fontSize: 12),
-            selectedItemColor: const Color(0xFF38A381),
+            selectedItemColor: KivachColors.green,
             unselectedItemColor: const Color(0xFFAEB2BA),
             type: BottomNavigationBarType.fixed,
             items: const [

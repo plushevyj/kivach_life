@@ -38,11 +38,6 @@ class LoginRepository {
       () => Dio().post(
         path,
         queryParameters: query,
-        options: Options(
-          headers: {
-            'Authorization': basicAuth,
-          },
-        ),
       ),
     );
     return ConvertTo<TokenModel>().item(response.data, TokenModel.fromJson);

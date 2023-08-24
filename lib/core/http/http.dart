@@ -25,7 +25,6 @@ class DioClient {
       ..options.connectTimeout = const Duration(milliseconds: 10000)
       ..options.receiveTimeout = const Duration(milliseconds: 10000)
       ..options.headers = {
-        'Authorization': basicAuth,
         'Content-Type': 'application/json',
       }
       ..interceptors.add(InterceptorsWrapper(onError: _throwError));
@@ -75,9 +74,6 @@ class DioClient {
     // if (exceptionText != null) throw exceptionText;
   }
 }
-
-final basicAuth =
-    'Basic ${base64.encode(utf8.encode('dev-doctor:u8uySN26F*4u'))}';
 
 void addAccessToken({required String accessToken}) {
   GetIt.I.get<Dio>().options.headers['X-Auth'] = 'Bearer $accessToken';
