@@ -29,7 +29,8 @@ class HomePage extends StatelessWidget {
           onPageFinished: (url) {},
           onWebResourceError: (error) {},
           onNavigationRequest: (NavigationRequest request) {
-            if (request.url.startsWith(dotenv.get('BASE_URL'))) {
+            if (request.url.startsWith(dotenv.get('BASE_URL')) ||
+                (request.url.startsWith('https://info.kivach.ru'))) {
               return NavigationDecision.navigate;
             }
             return NavigationDecision.prevent;

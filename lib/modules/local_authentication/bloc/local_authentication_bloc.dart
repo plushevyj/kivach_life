@@ -5,6 +5,7 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:get/get.dart';
 
 import '../repository/local_authentication_repository.dart';
 import '/widgets/alerts.dart';
@@ -37,6 +38,7 @@ class LocalAuthenticationBloc
     if (localAuthSettings.$1) {
       emit(LocallyNotAuthenticated(localAuthSettings));
     } else {
+      await Get.toNamed('/onboarding_settings');
       emit(const LocallyAuthenticated());
     }
   }

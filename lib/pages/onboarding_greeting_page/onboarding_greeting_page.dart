@@ -42,7 +42,7 @@ class GreetingOnboardingPage extends StatelessWidget {
             height: 56,
             child: TextButton(
               style: onboardingButtonStyle,
-              onPressed: () {},
+              onPressed: () => Get.back(),
               child: const Text('Пропустить'),
             ),
           ),
@@ -65,7 +65,8 @@ class GreetingOnboardingPage extends StatelessWidget {
             ? Container(
                 color: Colors.white,
                 padding: const EdgeInsets.only(bottom: 30).add(pagePadding),
-                child: ButtonForForm(text: 'НАЧАТЬ', onPressed: () {}),
+                child:
+                    ButtonForForm(text: 'НАЧАТЬ', onPressed: () => Get.back()),
               )
             : Container(
                 color: Colors.white,

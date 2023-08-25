@@ -30,6 +30,7 @@ class LoginRepository {
   }
 
   Future<TokenModel> refreshToken(String refreshToken) async {
+    print(refreshToken);
     final path = '${dotenv.get('BASE_URL')}/api/token/refresh';
     final query = {
       'refresh_token': refreshToken,

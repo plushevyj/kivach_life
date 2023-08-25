@@ -18,31 +18,47 @@ class OnboardingSettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final onboardingSettingsPageController =
         Get.put(OnboardingSettingsPageController());
-    return BlocListener<LocalPasswordSettingBloc, LocalPasswordSettingState>(
-      listener: (context, state) {
-        if (state is SuccessfulPasswordChange) {
-          if (onboardingSettingsPageController.canAuthenticateByBiometric) {
-            onboardingSettingsPageController.pageController.nextPage(
-              duration: const Duration(
-                  milliseconds: OnboardingSettingsPageController
-                      .animationDurationInMilliseconds),
-              curve: Curves.ease,
-            );
-          } else {
-            Get.back();
-          }
-        } else if (state is ProofedOfIdentity) {
-          onboardingSettingsPageController.pageController.animateToPage(
-            1,
-            duration: const Duration(
-                milliseconds: OnboardingSettingsPageController
-                    .animationDurationInMilliseconds),
-            curve: Curves.ease,
-          );
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<LocalPasswordSettingBloc, LocalPasswordSettingState>(
+          listener: (context, state) {
+            if (state is SuccessfulPasswordChange) {
+              print(
+                  'onboardingSettingsPageController.canAuthenticateByBiometric = ${onboardingSettingsPageController.canAuthenticateByBiometric}');
+              if (onboardingSettingsPageController.canAuthenticateByBiometric) {
+                onboardingSettingsPageController.pageController.nextPage(
+                  duration: const Duration(
+                      milliseconds: OnboardingSettingsPageController
+                          .animationDurationInMilliseconds),
+                  curve: Curves.ease,
+                );
+              } else {
+                Get.back();
+              }
+            } else if (state is ProofedOfIdentity) {
+              onboardingSettingsPageController.pageController.animateToPage(
+                1,
+                duration: const Duration(
+                    milliseconds: OnboardingSettingsPageController
+                        .animationDurationInMilliseconds),
+                curve: Curves.ease,
+              );
+            }
+          },
+        ),
+        BlocListener<BiometricSettingsBloc, BiometricSettingsState>(
+          listener: (context, state) {
+            print(state);
+            if (state is ChangedUserBiometricSetting ||
+                state is ErrorBiometricSettings) {
+              Navigator.pop(Get.context!);
+            }
+          },
+        ),
+      ],
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           leadingWidth: 84,
           actions: [
             Container(

@@ -14,11 +14,19 @@ class NewLocalPasswordPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final newLocalPasswordController = Get.put(NewLocalPasswordController());
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(),
-      body: NewLocalPasswordBody(
-          newLocalPasswordController: newLocalPasswordController),
+    return BlocListener<LocalPasswordSettingBloc, LocalPasswordSettingState>(
+      listener: (context, state) {
+        if (state is SuccessfulPasswordChange) {
+          Get.back();
+          showSuccessAlert('Локальный пароль изменен');
+        }
+      },
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(),
+        body: NewLocalPasswordBody(
+            newLocalPasswordController: newLocalPasswordController),
+      ),
     );
   }
 }
@@ -42,9 +50,6 @@ class NewLocalPasswordBody extends StatelessWidget {
         } else if (state is GotFirstLocalPassword) {
           newLocalPasswordController.secondPassword.clear();
           newLocalPasswordController.reverse(true);
-        } else if (state is SuccessfulPasswordChange) {
-          Get.back();
-          showSuccessAlert('Локальный пароль изменен');
         } else if (state is ErrorNewLocalPasswordState) {
           Get.back();
           showErrorAlert(state.error);

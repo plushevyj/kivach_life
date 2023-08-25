@@ -19,7 +19,7 @@ class AuthorizationPage extends StatelessWidget {
     final loginController = TextEditingController();
     final passwordController = TextEditingController();
     return BlocListener<AuthenticationBloc, AuthenticationState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state is AuthenticationLoading) {
           authPageController.isLoading(true);
         } else if (state is Unauthenticated) {

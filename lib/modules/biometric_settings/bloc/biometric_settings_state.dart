@@ -20,10 +20,6 @@ class ChangedUserBiometricSetting extends BiometricSettingsState {
   List<Object> get props => [isEnable];
 }
 
-class ValidUserBiometricData extends BiometricSettingsState {
-  const ValidUserBiometricData();
-}
-
 class ErrorBiometricSettings extends BiometricSettingsState {
   const ErrorBiometricSettings(this.error);
 

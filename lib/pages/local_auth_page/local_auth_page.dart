@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 
 import '../../widgets/local_password/digital_field.dart';
 import '../../widgets/local_password/digital_input_widget.dart';
+import '../onboarding_greeting_page/onboarding_greeting_page_controller.dart';
 import '/core/themes/light_theme.dart';
 import '/core/constants.dart';
 import '/modules/local_authentication/bloc/local_authentication_bloc.dart';
@@ -40,9 +41,10 @@ class LocalAuthPage extends StatelessWidget {
         builder: (_, state) {
           if (state is LocallyAuthenticated) {
             return const Center(
-                child: CircularProgressIndicator(
-              color: KivachColors.green,
-            ));
+              child: CircularProgressIndicator(
+                color: KivachColors.green,
+              ),
+            );
           } else if (state is LocallyNotAuthenticated) {
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: Get.width * 0.18),
