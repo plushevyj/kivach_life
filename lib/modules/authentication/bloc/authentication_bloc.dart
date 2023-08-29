@@ -38,7 +38,6 @@ class AuthenticationBloc
     const firstOpeningOfAppRepository = FirstOpeningOfAppRepository();
     final isFirstOpening =
         await firstOpeningOfAppRepository.checkFirstOpening();
-    print('isFirstOpening = $isFirstOpening');
     if (isFirstOpening) {
       await Get.toNamed('/onboarding_greeting');
       await firstOpeningOfAppRepository.saveFirstOpeningSetting(false);
@@ -77,7 +76,6 @@ class AuthenticationBloc
       final profile = await loginRepository.logInByToken();
       emit(const Authenticated());
     } catch (error) {
-      print(error.toString());
       emit(AuthenticationError(error.toString()));
       showErrorAlert(error.toString());
       emit(const Unauthenticated());

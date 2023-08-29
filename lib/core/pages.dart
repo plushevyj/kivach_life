@@ -19,7 +19,7 @@ final pages = [
   GetPage(name: '/local_auth', page: () => const LocalAuthPage()),
   GetPage(name: '/home', page: () => HomePage()),
   GetPage(name: '/settings', page: () => const SettingsPage()),
-  GetPage(name: '/profile_setting', page: () => const ProfileSettingPage()),
+  GetPage(name: '/profile_setting', page: () => ProfileSettingPage()),
   GetPage(
       name: '/onboarding_greeting', page: () => const GreetingOnboardingPage()),
   GetPage(

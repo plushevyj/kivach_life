@@ -25,8 +25,12 @@ class LoginRepository {
   }
 
   Future<Profile> logInByToken() async {
-    final res = await handleRequest(() => _dio.get('/api/profile'));
-    return ConvertTo<Profile>().item(res.data, Profile.fromJson);
+    try {
+      final res = await handleRequest(() => _dio.get('/api/profile'));
+      return ConvertTo<Profile>().item(res.data, Profile.fromJson);
+    } catch (error) {
+      rethrow;
+    }
   }
 
   Future<TokenModel> refreshToken(String refreshToken) async {

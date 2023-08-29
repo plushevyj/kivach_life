@@ -1,5 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:doctor/modules/authentication/bloc/authentication_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 
 import '/modules/authentication/repository/login_repository.dart';
@@ -34,22 +37,24 @@ class DioClient {
         error.response?.statusCode == 403) {
       final refreshTokenFromCache = await _tokenRepository.getRefreshToken();
       if (refreshTokenFromCache != null) {
-        final refreshResult =
-            await _loginRepository.refreshToken(refreshTokenFromCache);
-        _tokenRepository.saveToken(token: refreshResult);
-        addAccessToken(accessToken: refreshResult.token);
-        final opts = Options(
-            method: error.requestOptions.method,
-            headers: error.requestOptions.headers);
-        final cloneReq = await dio.request(error.requestOptions.path,
-            options: opts,
-            data: error.requestOptions.data,
-            queryParameters: error.requestOptions.queryParameters);
-        return handler.resolve(cloneReq);
+        try {
+          final refreshResult =
+              await _loginRepository.refreshToken(refreshTokenFromCache);
+          _tokenRepository.saveToken(token: refreshResult);
+          addAccessToken(accessToken: refreshResult.token);
+          final opts = Options(
+              method: error.requestOptions.method,
+              headers: error.requestOptions.headers);
+          final cloneReq = await dio.request(error.requestOptions.path,
+              options: opts,
+              data: error.requestOptions.data,
+              queryParameters: error.requestOptions.queryParameters);
+          return handler.resolve(cloneReq);
+        } catch (_) {}
       }
+      BlocProvider.of<AuthenticationBloc>(Get.context!).add(const LogOut());
+      // return;
     }
-
-
 
     // String? exceptionText;
     // if (error.response != null) {

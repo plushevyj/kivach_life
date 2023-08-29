@@ -16,15 +16,11 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final navBarIndexNotifier = ValueNotifier(0);
-    final loadingNotifier = ValueNotifier<int?>(null);
     webViewController
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x00000000))
       ..setNavigationDelegate(
         NavigationDelegate(
-          onProgress: (progress) {
-            loadingNotifier.value = progress;
-          },
           onPageStarted: (url) {},
           onPageFinished: (url) {},
           onWebResourceError: (error) {},
@@ -41,41 +37,25 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFF3F5F6),
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        automaticallyImplyLeading: false,
-        systemOverlayStyle: const SystemUiOverlayStyle(
-          statusBarIconBrightness: Brightness.light, // For Android (dark icons)
-          statusBarBrightness: Brightness.light, // For iOS (dark icons)
-        ),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(2),
-          child: ValueListenableBuilder(
-            valueListenable: loadingNotifier,
-            builder: (_, loadingValue, __) {
-              return loadingValue != null && loadingValue != 100
-                  ? LinearProgressIndicator(
-                      minHeight: 2,
-                      value: loadingValue.toDouble(),
-                      color: const Color(0xFF38A381),
-                    )
-                  : const SizedBox(height: 2);
-            },
+      body: Stack(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(
+                top: Get.statusBarHeight / context.mediaQuery.devicePixelRatio),
+            child: WebViewWidget(
+              controller: webViewController,
+            ),
           ),
-        ),
-        leading: IconButton(
-          onPressed: () => webViewController.goBack(),
-          icon: Icon(Platform.isIOS
-              ? Icons.arrow_back_ios
-              : Icons.arrow_back_outlined),
-        ),
-      ),
-      body: Padding(
-        padding: EdgeInsets.only(
-            top: Get.statusBarHeight / context.mediaQuery.devicePixelRatio),
-        child: WebViewWidget(
-          controller: webViewController,
-        ),
+          Positioned(
+            top: 75,
+            child: IconButton(
+              onPressed: () => webViewController.goBack(),
+              icon: Icon(Platform.isIOS
+                  ? Icons.arrow_back_ios
+                  : Icons.arrow_back_outlined),
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: ValueListenableBuilder(
         valueListenable: navBarIndexNotifier,
