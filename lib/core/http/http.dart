@@ -37,20 +37,18 @@ class DioClient {
         error.response?.statusCode == 403) {
       final refreshTokenFromCache = await _tokenRepository.getRefreshToken();
       if (refreshTokenFromCache != null) {
-        try {
-          final refreshResult =
-              await _loginRepository.refreshToken(refreshTokenFromCache);
-          _tokenRepository.saveToken(token: refreshResult);
-          addAccessToken(accessToken: refreshResult.token);
-          final opts = Options(
-              method: error.requestOptions.method,
-              headers: error.requestOptions.headers);
-          final cloneReq = await dio.request(error.requestOptions.path,
-              options: opts,
-              data: error.requestOptions.data,
-              queryParameters: error.requestOptions.queryParameters);
-          return handler.resolve(cloneReq);
-        } catch (_) {}
+        final refreshResult =
+            await _loginRepository.refreshToken(refreshTokenFromCache);
+        _tokenRepository.saveToken(token: refreshResult);
+        addAccessToken(accessToken: refreshResult.token);
+        final opts = Options(
+            method: error.requestOptions.method,
+            headers: error.requestOptions.headers);
+        final cloneReq = await dio.request(error.requestOptions.path,
+            options: opts,
+            data: error.requestOptions.data,
+            queryParameters: error.requestOptions.queryParameters);
+        return handler.resolve(cloneReq);
       }
       BlocProvider.of<AuthenticationBloc>(Get.context!).add(const LogOut());
       // return;

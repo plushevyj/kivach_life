@@ -52,6 +52,17 @@ class AuthorizationPage extends StatelessWidget {
                     controller: passwordController,
                     hint: 'Пароль',
                     isPassword: true,
+                    onSubmitted: (_) {
+                      if (loginController.text.isNotEmpty &&
+                          passwordController.text.isNotEmpty) {
+                        Get.context!.read<AuthenticationBloc>().add(
+                          LogIn(
+                            username: loginController.text,
+                            password: passwordController.text,
+                          ),
+                        );
+                      }
+                    },
                   ),
                   const SizedBox(height: 20),
                   Obx(

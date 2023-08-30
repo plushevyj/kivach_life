@@ -22,7 +22,7 @@ Patient _$PatientFromJson(Map<String, dynamic> json) {
 mixin _$Patient {
   String get firstname => throw _privateConstructorUsedError;
   String get lastname => throw _privateConstructorUsedError;
-  String get middlename => throw _privateConstructorUsedError;
+  String? get middlename => throw _privateConstructorUsedError;
   String get birthdate => throw _privateConstructorUsedError;
   String get sex => throw _privateConstructorUsedError;
 
@@ -39,7 +39,7 @@ abstract class $PatientCopyWith<$Res> {
   $Res call(
       {String firstname,
       String lastname,
-      String middlename,
+      String? middlename,
       String birthdate,
       String sex});
 }
@@ -59,7 +59,7 @@ class _$PatientCopyWithImpl<$Res, $Val extends Patient>
   $Res call({
     Object? firstname = null,
     Object? lastname = null,
-    Object? middlename = null,
+    Object? middlename = freezed,
     Object? birthdate = null,
     Object? sex = null,
   }) {
@@ -72,10 +72,10 @@ class _$PatientCopyWithImpl<$Res, $Val extends Patient>
           ? _value.lastname
           : lastname // ignore: cast_nullable_to_non_nullable
               as String,
-      middlename: null == middlename
+      middlename: freezed == middlename
           ? _value.middlename
           : middlename // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       birthdate: null == birthdate
           ? _value.birthdate
           : birthdate // ignore: cast_nullable_to_non_nullable
@@ -98,7 +98,7 @@ abstract class _$$_PatientCopyWith<$Res> implements $PatientCopyWith<$Res> {
   $Res call(
       {String firstname,
       String lastname,
-      String middlename,
+      String? middlename,
       String birthdate,
       String sex});
 }
@@ -115,7 +115,7 @@ class __$$_PatientCopyWithImpl<$Res>
   $Res call({
     Object? firstname = null,
     Object? lastname = null,
-    Object? middlename = null,
+    Object? middlename = freezed,
     Object? birthdate = null,
     Object? sex = null,
   }) {
@@ -128,10 +128,10 @@ class __$$_PatientCopyWithImpl<$Res>
           ? _value.lastname
           : lastname // ignore: cast_nullable_to_non_nullable
               as String,
-      middlename: null == middlename
+      middlename: freezed == middlename
           ? _value.middlename
           : middlename // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       birthdate: null == birthdate
           ? _value.birthdate
           : birthdate // ignore: cast_nullable_to_non_nullable
@@ -162,7 +162,7 @@ class _$_Patient with DiagnosticableTreeMixin implements _Patient {
   @override
   final String lastname;
   @override
-  final String middlename;
+  final String? middlename;
   @override
   final String birthdate;
   @override
@@ -224,7 +224,7 @@ abstract class _Patient implements Patient {
   const factory _Patient(
       {required final String firstname,
       required final String lastname,
-      required final String middlename,
+      required final String? middlename,
       required final String birthdate,
       required final String sex}) = _$_Patient;
 
@@ -235,7 +235,7 @@ abstract class _Patient implements Patient {
   @override
   String get lastname;
   @override
-  String get middlename;
+  String? get middlename;
   @override
   String get birthdate;
   @override

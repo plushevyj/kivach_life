@@ -45,6 +45,7 @@ final lightTheme = ThemeData(
     enabledBorder: outlineInputBorder,
     labelStyle: const TextStyle(color: KivachColors.green),
     suffixIconColor: KivachColors.green,
+    errorBorder: outlineInputBorder,
   ),
   textSelectionTheme: const TextSelectionThemeData(
     cursorColor: KivachColors.green,

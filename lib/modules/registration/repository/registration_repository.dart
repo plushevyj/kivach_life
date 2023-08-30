@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:doctor/core/http/request_handler.dart';
 import 'package:doctor/core/utils/convert_to.dart';
 import 'package:doctor/models/profile_preview_model/profile_preview_model.dart';
 import 'package:doctor/models/token_model/token_model.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 
 class RegistrationRepository {
@@ -32,7 +34,6 @@ class RegistrationRepository {
     required String password,
     required bool agreeTerms,
   }) async {
-    const path = '/api/register';
     final query = {'_token': registrationToken};
     final data = {
       'registration_form[username]': username,
@@ -42,12 +43,23 @@ class RegistrationRepository {
       'registration_form[plainPassword][second]': password,
       'registration_form[agreeTerms]': agreeTerms ? 1 : 0,
     };
-    _dio.options.headers['Content-Type'] = 'application/x-www-form-urlencoded';
-    final response = await _dio.post(
-      path,
+    final response = await Dio().post(
+      '${dotenv.get('BASE_URL')}/api/register',
+      options: Options(
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      ),
       queryParameters: query,
       data: data,
     );
+    print(response.data);
+    // _dio.options.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+    // final response = await _dio.post(
+    //   path,
+    //   queryParameters: query,
+    //   data: data,
+    // );
     _dio.options.headers['Content-Type'] = 'application/json';
     return ConvertTo<TokenModel>().item(response.data, TokenModel.fromJson);
   }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:doctor/modules/authentication/bloc/authentication_bloc.dart';
 import 'package:doctor/widgets/alerts.dart';
@@ -5,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
+import '../../../core/utils/convert_to.dart';
+import '../../../models/registration/registration_error_model/registration_error_model.dart';
 import '../../authentication/repository/token_repository.dart';
 import '../repository/registration_repository.dart';
 
@@ -22,6 +26,15 @@ class RegistrationController extends GetxController {
   final secondPasswordFieldController = TextEditingController();
   final isAgree = false.obs;
 
+  final keyForm = GlobalKey<FormState>();
+
+  FormFieldValidator<String?>? validatorUsername,
+      validatorEmail,
+      validatorPhone,
+      validatorFirstPassword,
+      validatorSecondPassword,
+      validatorAgree;
+
   final _registrationRepository = const RegistrationRepository();
   final _tokenRepository = const TokenRepository();
 
@@ -36,12 +49,26 @@ class RegistrationController extends GetxController {
         password: firstPasswordFieldController.text,
         agreeTerms: isAgree.value,
       );
+      print('usernameFieldController.text = ${usernameFieldController.text}');
       _tokenRepository.saveToken(token: token);
-
+      print(await _tokenRepository.getRefreshToken());
+      print(await _tokenRepository.getAccessToken());
       BlocProvider.of<AuthenticationBloc>(Get.context!)
           .add(const AuthenticateByToken());
     } on DioException catch (error) {
-      showErrorAlert(error.response?.data['message']);
+      if (error.response!.statusCode! >= 500) {
+        showErrorAlert('Запрос не выполнен.');
+      } else if (error.response!.statusCode! >= 400) {
+        final message = await ConvertTo<RegistrationErrorModel>().item(
+            error.response?.data['message'], RegistrationErrorModel.fromJson);
+        print(message);
+        validatorUsername = (_) => message.username?.first;
+        validatorEmail = (_) => message.email?.first;
+        validatorPhone = (_) => message.phone?.first;
+        validatorFirstPassword = (_) => message.plainPassword?.first?.first;
+        validatorSecondPassword = (_) => message.plainPassword?.second?.first;
+        validatorAgree = (_) => message.agreeTerms?.first;
+      }
     } catch (error) {
       showErrorAlert(error.toString());
     } finally {

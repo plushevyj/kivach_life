@@ -9,7 +9,7 @@ class Patient with _$Patient {
   const factory Patient({
     required String firstname,
     required String lastname,
-    required String middlename,
+    required String? middlename,
     required String birthdate,
     required String sex,
   }) = _Patient;

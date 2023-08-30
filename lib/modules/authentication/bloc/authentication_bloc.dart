@@ -42,7 +42,7 @@ class AuthenticationBloc
       await Get.toNamed('/onboarding_greeting');
       await firstOpeningOfAppRepository.saveFirstOpeningSetting(false);
     }
-    try {
+    // try {
       final accessToken = await tokenRepository.getAccessToken();
       if (accessToken == null) {
         emit(const Unauthenticated());
@@ -51,14 +51,14 @@ class AuthenticationBloc
       addAccessToken(accessToken: accessToken);
       final profile = await loginRepository.logInByToken();
       emit(const Authenticated());
-    } catch (error) {
-      emit(AuthenticationError(error.toString()));
-      tokenRepository.clearTokens();
-      localAuthenticationRepository
-        ..deleteBiometricSetting()
-        ..deleteLocalPassword();
-      emit(const Unauthenticated());
-    }
+    // } catch (error) {
+    //   emit(AuthenticationError(error.toString()));
+    //   tokenRepository.clearTokens();
+    //   localAuthenticationRepository
+    //     ..deleteBiometricSetting()
+    //     ..deleteLocalPassword();
+    //   emit(const Unauthenticated());
+    // }
   }
 
   Future<void> _onLogIn(
