@@ -31,7 +31,8 @@ class RegistrationRepository {
     required String username,
     required String email,
     required String phone,
-    required String password,
+    required String firstPassword,
+    required String secondPassword,
     required bool agreeTerms,
   }) async {
     final query = {'_token': registrationToken};
@@ -39,8 +40,8 @@ class RegistrationRepository {
       'registration_form[username]': username,
       'registration_form[email]': email,
       'registration_form[phone]': phone,
-      'registration_form[plainPassword][first]': password,
-      'registration_form[plainPassword][second]': password,
+      'registration_form[plainPassword][first]': firstPassword,
+      'registration_form[plainPassword][second]': secondPassword,
       'registration_form[agreeTerms]': agreeTerms ? 1 : 0,
     };
     final response = await Dio().post(

@@ -6,43 +6,39 @@ class VisibilityTextController extends GetxController {
   final visibilityText = true.obs;
 }
 
-class TextFieldForForm extends StatefulWidget {
+class TextFieldForForm extends StatelessWidget {
   const TextFieldForForm({
     super.key,
     required this.controller,
     required this.hint,
     this.isPassword = false,
     this.onSubmitted,
-    this.validator,
+    this.errorText,
+    this.errorStyle,
   });
 
   final TextEditingController controller;
   final String hint;
   final bool isPassword;
   final Function(String)? onSubmitted;
-  final FormFieldValidator<String?>? validator;
+  final String? errorText;
+  final TextStyle? errorStyle;
 
-  @override
-  State<TextFieldForForm> createState() => _TextFieldForFormState();
-}
-
-class _TextFieldForFormState extends State<TextFieldForForm> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      // height: 60,
-      child: widget.isPassword
+      child: isPassword
           ? GetX(
               init: VisibilityTextController(),
               global: false,
               builder: (logic) {
                 return TextFormField(
                   obscureText: logic.visibilityText.value,
-                  controller: widget.controller,
+                  controller: controller,
                   textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
-                    labelText: widget.hint,
-                    suffixIcon: widget.isPassword
+                    labelText: hint,
+                    suffixIcon: isPassword
                         ? IconButton(
                             icon: Icon(logic.visibilityText.value
                                 ? Icons.visibility
@@ -52,20 +48,22 @@ class _TextFieldForFormState extends State<TextFieldForForm> {
                             },
                           )
                         : null,
+                    errorText: errorText,
+                    errorStyle: errorStyle,
                   ),
                   autocorrect: false,
-                  validator: widget.validator,
                 );
               },
             )
           : TextFormField(
-              controller: widget.controller,
+              controller: controller,
               textInputAction: TextInputAction.next,
               decoration: InputDecoration(
-                labelText: widget.hint,
+                labelText: hint,
+                errorText: errorText,
+                errorStyle: errorStyle,
               ),
               autocorrect: false,
-              validator: widget.validator,
             ),
     );
   }

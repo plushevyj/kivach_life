@@ -24,6 +24,7 @@ class RegistrationPage extends StatefulWidget {
 class _RegistrationPageState extends State<RegistrationPage> {
   @override
   Widget build(BuildContext context) {
+
     final registrationController = Get.put(
         RegistrationController(registrationToken: widget.registrationToken));
     return Scaffold(
@@ -34,99 +35,106 @@ class _RegistrationPageState extends State<RegistrationPage> {
         padding: pagePadding,
         child: SingleChildScrollView(
           child: Obx(
-            () => Form(
-              key: registrationController.keyForm,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 20),
-                  Text(
-                    'Здравствуйте, ${widget.profilePreview.fullname}.',
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                  const SizedBox(height: 20),
-                  TextFieldForForm(
-                    controller: registrationController.usernameFieldController,
-                    hint: 'Логин',
-                    validator: registrationController.validatorUsername,
-                  ),
-                  const SizedBox(height: 20),
-                  TextFieldForForm(
-                    controller: registrationController.emailFieldController,
-                    hint: 'Email',
-                    validator: registrationController.validatorEmail,
-                  ),
-                  const SizedBox(height: 20),
-                  TextFieldForForm(
-                    controller: registrationController.phoneFieldController,
-                    hint: 'Телефон',
-                    validator: registrationController.validatorPhone,
-                  ),
-                  const SizedBox(height: 20),
-                  TextFieldForForm(
-                    controller:
-                        registrationController.firstPasswordFieldController,
-                    hint: 'Пароль',
-                    isPassword: true,
-                    validator: registrationController.validatorFirstPassword,
-                  ),
-                  const SizedBox(height: 20),
-                  TextFieldForForm(
-                    controller:
-                        registrationController.secondPasswordFieldController,
-                    hint: 'Подтвердите пароль',
-                    isPassword: true,
-                    validator: registrationController.validatorSecondPassword,
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Checkbox(
-                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        checkColor: Colors.white,
-                        fillColor: MaterialStateProperty.resolveWith((states) {
-                          if (states.contains(MaterialState.selected)) {
-                            return KivachColors.green;
-                          }
-                        }),
-                        overlayColor: MaterialStateProperty.all(
-                          KivachColors.green.withOpacity(0.1),
-                        ),
-                        side: const BorderSide(
-                          color: KivachColors.green,
-                          width: 2,
-                        ),
-                        onChanged: (bool? value) {
-                          registrationController.isAgree.value = value!;
-                        },
-                        value: registrationController.isAgree.value,
-                      ),
-                      SizedBox(
-                        width: Get.width * 0.7,
-                        child: const Text(
-                          'Согласен с условиями пользовательского соглашения '
-                          'и политикой обработки персональных данных',
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  Obx(
-                    () => ButtonForForm(
-                      text: !registrationController.isLoading.value
-                          ? 'Зарегистрироваться'
+            () => Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 20),
+                Text(
+                  'Здравствуйте, ${widget.profilePreview.fullname}.',
+                  style: const TextStyle(fontSize: 16),
+                ),
+                const SizedBox(height: 20),
+                TextFieldForForm(
+                  controller: registrationController.usernameFieldController,
+                  hint: 'Логин',
+                  errorText: registrationController.errorTextUsername.value,
+                  errorStyle:
+                      registrationController.errorTextUsername.value == null
+                          ? const TextStyle(height: 0, fontSize: 0)
                           : null,
-                      child: registrationController.isLoading.value
-                          ? const CircularProgressIndicator(color: Colors.white)
-                          : null,
-                      onPressed: () =>
-                          registrationController.register(Get.context!),
+                ),
+                const SizedBox(height: 20),
+                TextFieldForForm(
+                  controller: registrationController.emailFieldController,
+                  hint: 'Email',
+                  errorText: registrationController.errorTextEmail.value,
+                  // validator: registrationController.validatorEmail,z
+                ),
+                const SizedBox(height: 20),
+                TextFieldForForm(
+                  controller: registrationController.phoneFieldController,
+                  hint: 'Телефон',
+                  errorText: registrationController.errorTextPhone.value,
+                  // validator: registrationController.validatorPhone,
+                ),
+                const SizedBox(height: 20),
+                TextFieldForForm(
+                  controller:
+                      registrationController.firstPasswordFieldController,
+                  hint: 'Пароль',
+                  isPassword: true,
+                  errorText:
+                      registrationController.errorTextFirstPassword.value,
+                  // validator: registrationController.validatorFirstPassword,
+                ),
+                const SizedBox(height: 20),
+                TextFieldForForm(
+                  controller:
+                      registrationController.secondPasswordFieldController,
+                  hint: 'Подтвердите пароль',
+                  isPassword: true,
+                  errorText:
+                      registrationController.errorTextSecondPassword.value,
+                  // validator: registrationController.validatorSecondPassword,
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  children: [
+                    Checkbox(
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      checkColor: Colors.white,
+                      fillColor: MaterialStateProperty.resolveWith((states) {
+                        if (states.contains(MaterialState.selected)) {
+                          return KivachColors.green;
+                        }
+                      }),
+                      overlayColor: MaterialStateProperty.all(
+                        KivachColors.green.withOpacity(0.1),
+                      ),
+                      side: const BorderSide(
+                        color: KivachColors.green,
+                        width: 2,
+                      ),
+                      onChanged: (bool? value) {
+                        registrationController.isAgree.value = value!;
+                      },
+                      value: registrationController.isAgree.value,
                     ),
+                    SizedBox(
+                      width: Get.width * 0.7,
+                      child: const Text(
+                        'Согласен с условиями пользовательского соглашения '
+                        'и политикой обработки персональных данных',
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Obx(
+                  () => ButtonForForm(
+                    text: !registrationController.isLoading.value
+                        ? 'Зарегистрироваться'
+                        : null,
+                    child: registrationController.isLoading.value
+                        ? const CircularProgressIndicator(color: Colors.white)
+                        : null,
+                    onPressed: () =>
+                        registrationController.register(Get.context!),
                   ),
-                  const SizedBox(height: 20),
-                ],
-              ),
+                ),
+                const SizedBox(height: 20),
+              ],
             ),
           ),
         ),

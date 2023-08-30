@@ -28,17 +28,23 @@ class RegistrationController extends GetxController {
 
   final keyForm = GlobalKey<FormState>();
 
-  FormFieldValidator<String?>? validatorUsername,
-      validatorEmail,
-      validatorPhone,
-      validatorFirstPassword,
-      validatorSecondPassword,
-      validatorAgree;
+  var errorTextUsername = RxnString(null),
+      errorTextEmail = RxnString(null),
+      errorTextPhone = RxnString(null),
+      errorTextFirstPassword = RxnString(null),
+      errorTextSecondPassword = RxnString(null),
+      errorTextAgree = RxnString(null);
 
   final _registrationRepository = const RegistrationRepository();
   final _tokenRepository = const TokenRepository();
 
   void register(BuildContext context) async {
+    errorTextUsername(null);
+    errorTextEmail(null);
+    errorTextPhone(null);
+    errorTextFirstPassword(null);
+    errorTextSecondPassword(null);
+    errorTextAgree(null);
     try {
       isLoading(true);
       final token = await _registrationRepository.sendRegistrationData(
@@ -46,7 +52,8 @@ class RegistrationController extends GetxController {
         username: usernameFieldController.text,
         email: emailFieldController.text,
         phone: phoneFieldController.text,
-        password: firstPasswordFieldController.text,
+        firstPassword: firstPasswordFieldController.text,
+        secondPassword: secondPasswordFieldController.text,
         agreeTerms: isAgree.value,
       );
       print('usernameFieldController.text = ${usernameFieldController.text}');
@@ -61,13 +68,14 @@ class RegistrationController extends GetxController {
       } else if (error.response!.statusCode! >= 400) {
         final message = await ConvertTo<RegistrationErrorModel>().item(
             error.response?.data['message'], RegistrationErrorModel.fromJson);
+        print(error.response?.data['message']);
         print(message);
-        validatorUsername = (_) => message.username?.first;
-        validatorEmail = (_) => message.email?.first;
-        validatorPhone = (_) => message.phone?.first;
-        validatorFirstPassword = (_) => message.plainPassword?.first?.first;
-        validatorSecondPassword = (_) => message.plainPassword?.second?.first;
-        validatorAgree = (_) => message.agreeTerms?.first;
+        errorTextUsername(message.username?.first);
+        errorTextEmail(message.email?.first);
+        errorTextPhone(message.phone?.first);
+        errorTextFirstPassword(message.plainPassword?.first?.first);
+        errorTextSecondPassword(message.plainPassword?.second?.first);
+        errorTextAgree(message.agreeTerms?.first);
       }
     } catch (error) {
       showErrorAlert(error.toString());
