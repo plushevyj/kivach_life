@@ -19,9 +19,22 @@ class LocalAuthenticationBloc
     on<LocallyAuthStarted>(_onLocallyAuthStarted);
     on<LogInLocallyUsingBiometrics>(_onLogInLocallyUsingBiometrics);
     on<LogInLocallyUsingDigitalPassword>(_onLogInLocallyUsingPassword);
+    on<LocallyLogOut>(_onLocallyLogOut);
   }
 
   final _localAuthenticationRepository = const LocalAuthenticationRepository();
+
+  void _onLocallyLogOut(
+    LocallyLogOut event,
+    Emitter<LocalAuthenticationState> emit,
+  ) async {
+    _localAuthenticationRepository
+      ..deleteLocalPassword()
+      ..deleteBiometricSetting();
+    var localAuthSettings =
+        await _localAuthenticationRepository.checkLocalAuthenticationSettings();
+    // emit(LocallyNotAuthenticated(localAuthSettings));
+  }
 
   Future<void> _onLocallyAuthStarted(
     LocallyAuthStarted event,

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:doctor/modules/authentication/bloc/authentication_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -39,6 +41,7 @@ class DioClient {
       if (refreshTokenFromCache != null) {
         final refreshResult =
             await _loginRepository.refreshToken(refreshTokenFromCache);
+        print(refreshResult);
         _tokenRepository.saveToken(token: refreshResult);
         addAccessToken(accessToken: refreshResult.token);
         final opts = Options(
@@ -50,25 +53,26 @@ class DioClient {
             queryParameters: error.requestOptions.queryParameters);
         return handler.resolve(cloneReq);
       }
+      throw error;
       BlocProvider.of<AuthenticationBloc>(Get.context!).add(const LogOut());
-      // return;
     }
 
-    // String? exceptionText;
-    // if (error.response != null) {
-    //   exceptionText = error.response?.data['detail'].toString();
-    // } else {
-    //   switch (error.error.runtimeType) {
-    //     case SocketException:
-    //       error.error.toString().contains('Failed host lookup')
-    //           ? exceptionText = 'Ошибка подключения к серверу'
-    //           : exceptionText = 'Отсутствует подключение к интернету';
-    //       break;
-    //     default:
-    //       exceptionText = 'Возникло исключение:\n${error.error}';
-    //   }
-    // }
-    // if (exceptionText != null) throw exceptionText;
+    String? exceptionText;
+    if (error.response != null) {
+      exceptionText = error.response?.data['detail'].toString();
+    } else {
+      switch (error.error.runtimeType) {
+        case SocketException:
+          error.error.toString().contains('Failed host lookup')
+              ? exceptionText = 'Ошибка подключения к серверу'
+              : exceptionText = 'Отсутствует подключение к интернету';
+          break;
+        default:
+          exceptionText = 'Возникло исключение:\n${error.error}';
+      }
+      return;
+    }
+    if (exceptionText != null) throw exceptionText;
   }
 }
 

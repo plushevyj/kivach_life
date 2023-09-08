@@ -50,7 +50,9 @@
     <key>NSFaceIDUsageDescription</key>
     <string>Аутентификация в приложении Кивач</string>
     <key>NSCameraUsageDescription</key>
-    <string>Мы используем камеру для сканирования QR-кода</string>
+    <string>Приложение использует камеру для сканирования QR-кода и создания аватара профиля</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Приложение использует галерею для сканирования QR-кода и создания аватара профиля</string>
     <key>UIUserInterfaceStyle</key>
     <string>Light</string>
 </dict>

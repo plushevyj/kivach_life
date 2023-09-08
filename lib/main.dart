@@ -1,4 +1,5 @@
 import 'package:doctor/modules/in_app_update/bloc/in_app_update_bloc.dart';
+import 'package:doctor/modules/reset_password/bloc/reset_password_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -24,14 +25,12 @@ class App extends StatelessWidget {
     final localPasswordSettingBloc = LocalPasswordSettingBloc();
     return MultiBlocProvider(
       providers: [
+        BlocProvider(create: (_) => InAppUpdateBloc()),
         BlocProvider(
             create: (_) =>
                 AuthenticationBloc()..add(const AuthenticateByToken())),
-        BlocProvider(
-            create: (_) =>
-                LocalAuthenticationBloc()..add(const LocallyAuthStarted())),
-        BlocProvider(
-            create: (_) => InAppUpdateBloc()..add(const CheckVersionApp())),
+        BlocProvider(create: (_) => LocalAuthenticationBloc()),
+        BlocProvider(create: (_) => ResetPasswordBloc()),
         BlocProvider(create: (_) => localPasswordSettingBloc),
         BlocProvider(
             create: (_) => BiometricSettingsBloc(
@@ -46,6 +45,8 @@ class App extends StatelessWidget {
             listener: (context, state) {
               if (state is Authenticated) {
                 Get.offNamed('/local_auth');
+                // } else if (state is Unauthenticated) {
+                //   Get.offAllNamed('/local_auth');
               } else {
                 Get.offNamed('/auth');
               }

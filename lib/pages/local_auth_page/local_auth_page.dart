@@ -1,12 +1,14 @@
 import 'dart:io' show Platform;
 
+import 'package:doctor/modules/account/controller/account_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../widgets/local_password/digital_field.dart';
 import '../../widgets/local_password/digital_input_widget.dart';
-import '../onboarding_greeting_page/onboarding_greeting_page_controller.dart';
 import '/core/themes/light_theme.dart';
 import '/core/constants.dart';
 import '/modules/local_authentication/bloc/local_authentication_bloc.dart';
@@ -19,23 +21,26 @@ class LocalAuthPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final passwordController = Get.put(LocalPasswordController());
+    Get.context!
+        .read<LocalAuthenticationBloc>()
+        .add(const LocallyAuthStarted());
+    final localPasswordPageController = Get.put(LocalPasswordPageController());
     return Scaffold(
       body: BlocConsumer<LocalAuthenticationBloc, LocalAuthenticationState>(
         listener: (_, state) {
           if (state is LocallyAuthenticated) {
             Get.offNamed('/home');
           } else if (state is LocallyNotAuthenticated) {
-            if (passwordController.firstRenderer.value &&
+            if (localPasswordPageController.firstRenderer.value &&
                 state.localAuthenticationSetting.$2) {
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 Get.context!
                     .read<LocalAuthenticationBloc>()
                     .add(const LogInLocallyUsingBiometrics());
-                passwordController.firstRenderer(false);
+                localPasswordPageController.firstRenderer(false);
               });
             }
-            passwordController.password.clear();
+            localPasswordPageController.password.clear();
           }
         },
         builder: (_, state) {
@@ -52,25 +57,37 @@ class LocalAuthPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const CircleAvatar(
-                    radius: 30,
-                    backgroundColor: Color(0xFFD7D7D7),
-                    child: Icon(Icons.person, size: 30, color: Colors.grey),
+                  Obx(
+                    () => Skeletonizer(
+                      enabled: localPasswordPageController.avatarLoading.value,
+                      child: CircleAvatar(
+                        radius: 40,
+                        backgroundColor: const Color(0xFFD7D7D7),
+                        foregroundImage:
+                            localPasswordPageController.image?.image,
+                        child: const Icon(
+                          Icons.person,
+                          size: 40,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 30),
                   SizedBox(
                     width: 150,
                     child: DigitalField(
-                      controller: passwordController.password,
+                      controller: localPasswordPageController.password,
                       maxLength: maxLengthLocalPassword,
                     ),
                   ),
                   const SizedBox(height: 150),
                   Obx(
                     () => DigitalInput(
-                      controller: passwordController.password,
+                      controller: localPasswordPageController.password,
                       maxLength: maxLengthLocalPassword,
-                      isEnabled: passwordController.enableDialButtons.value,
+                      isEnabled:
+                          localPasswordPageController.enableDialButtons.value,
                       leftWidget: state.localAuthenticationSetting.$2
                           ? Icon(
                               Platform.isIOS ? Icons.face : Icons.fingerprint)

@@ -1,4 +1,4 @@
-package ru.kivach.doctor
+package test.kivach.doctor
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 

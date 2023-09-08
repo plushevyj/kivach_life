@@ -7,6 +7,7 @@ import 'package:equatable/equatable.dart';
 import 'package:get/get.dart';
 
 import '../../../core/http/http.dart';
+import '../../account/controller/account_controller.dart';
 import '../../first_opening_app/repository/first_opening_app_repository.dart';
 import '../../local_authentication/repository/local_authentication_repository.dart';
 import '../repository/login_repository.dart';
@@ -19,12 +20,10 @@ class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
   final LoginRepository loginRepository;
   final TokenRepository tokenRepository;
-  final LocalAuthenticationRepository localAuthenticationRepository;
 
   AuthenticationBloc({
     this.loginRepository = const LoginRepository(),
     this.tokenRepository = const TokenRepository(),
-    this.localAuthenticationRepository = const LocalAuthenticationRepository(),
   }) : super(const AuthenticationInitial()) {
     on<AuthenticateByToken>(_onAuthenticateByToken);
     on<LogIn>(_onLogIn);
@@ -43,14 +42,15 @@ class AuthenticationBloc
       await firstOpeningOfAppRepository.saveFirstOpeningSetting(false);
     }
     // try {
-      final accessToken = await tokenRepository.getAccessToken();
-      if (accessToken == null) {
-        emit(const Unauthenticated());
-        return;
-      }
-      addAccessToken(accessToken: accessToken);
-      final profile = await loginRepository.logInByToken();
-      emit(const Authenticated());
+    final accessToken = await tokenRepository.getAccessToken();
+    if (accessToken == null) {
+      emit(const Unauthenticated());
+      return;
+    }
+    addAccessToken(accessToken: accessToken);
+    final profile = await loginRepository.logInByToken();
+    Get.put(AccountController(), permanent: true).profile(profile);
+    emit(const Authenticated());
     // } catch (error) {
     //   emit(AuthenticationError(error.toString()));
     //   tokenRepository.clearTokens();
@@ -74,6 +74,8 @@ class AuthenticationBloc
       tokenRepository.saveToken(token: token);
       addAccessToken(accessToken: token.token);
       final profile = await loginRepository.logInByToken();
+      print(profile);
+      Get.put(AccountController(), permanent: true).profile(profile);
       emit(const Authenticated());
     } catch (error) {
       emit(AuthenticationError(error.toString()));

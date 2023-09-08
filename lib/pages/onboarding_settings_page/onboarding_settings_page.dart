@@ -23,8 +23,6 @@ class OnboardingSettingsPage extends StatelessWidget {
         BlocListener<LocalPasswordSettingBloc, LocalPasswordSettingState>(
           listener: (context, state) {
             if (state is SuccessfulPasswordChange) {
-              print(
-                  'onboardingSettingsPageController.canAuthenticateByBiometric = ${onboardingSettingsPageController.canAuthenticateByBiometric}');
               if (onboardingSettingsPageController.canAuthenticateByBiometric) {
                 onboardingSettingsPageController.pageController.nextPage(
                   duration: const Duration(
@@ -48,7 +46,6 @@ class OnboardingSettingsPage extends StatelessWidget {
         ),
         BlocListener<BiometricSettingsBloc, BiometricSettingsState>(
           listener: (context, state) {
-            print(state);
             if (state is ChangedUserBiometricSetting ||
                 state is ErrorBiometricSettings) {
               Navigator.pop(Get.context!);

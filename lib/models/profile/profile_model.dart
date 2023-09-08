@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 
+import '../avatar/avatar_model.dart';
 import '../patient/patient_model.dart';
 
 part 'profile_model.freezed.dart';
@@ -15,7 +16,7 @@ class Profile with _$Profile {
     required Patient patient,
     required bool notificationEnabled,
     required String? phone,
-    required String? avatar,
+    required Avatar? avatar,
   }) = _Profile;
 
   factory Profile.fromJson(Map<String, Object?> json) =>

@@ -11,7 +11,20 @@ import 'package:webview_flutter/webview_flutter.dart';
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
 
-  final webViewController = WebViewController();
+  static const PlatformWebViewControllerCreationParams params =
+      /*WebViewPlatform.instance is WebKitWebViewPlatform
+          ? WebKitWebViewControllerCreationParams(
+              allowsInlineMediaPlayback: true,
+              mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{})
+          :*/
+      PlatformWebViewControllerCreationParams();
+
+  final webViewController = WebViewController.fromPlatformCreationParams(
+    params,
+    onPermissionRequest: (request) {
+      request.grant();
+    },
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -36,26 +49,27 @@ class HomePage extends StatelessWidget {
     load(route: '/');
     return Scaffold(
       backgroundColor: const Color(0xFFF3F5F6),
-      extendBodyBehindAppBar: true,
-      body: Stack(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(
-                top: Get.statusBarHeight / context.mediaQuery.devicePixelRatio),
-            child: WebViewWidget(
-              controller: webViewController,
-            ),
-          ),
-          Positioned(
-            top: 75,
-            child: IconButton(
-              onPressed: () => webViewController.goBack(),
-              icon: Icon(Platform.isIOS
-                  ? Icons.arrow_back_ios
-                  : Icons.arrow_back_outlined),
-            ),
-          ),
+      // extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          statusBarIconBrightness: Brightness.dark, // For Android (dark icons)
+          statusBarBrightness: Brightness.light, // For iOS (dark icons)
+        ),
+        backgroundColor: Colors.transparent,
+        leading: IconButton(
+          onPressed: () => webViewController.goBack(),
+          icon: Icon(Platform.isIOS
+              ? Icons.arrow_back_ios
+              : Icons.arrow_back_outlined),
+        ),
+        actions: [
+          IconButton(
+              onPressed: () => Get.toNamed('/settings'),
+              icon: const Icon(Icons.settings))
         ],
+      ),
+      body: WebViewWidget(
+        controller: webViewController,
       ),
       bottomNavigationBar: ValueListenableBuilder(
         valueListenable: navBarIndexNotifier,
@@ -74,8 +88,8 @@ class HomePage extends StatelessWidget {
                 case 2:
                   navBarIndexNotifier.value = index;
                   load(route: '/chat');
-                case 3:
-                  Get.toNamed('/settings');
+                // case 3:
+                //   Get.toNamed('/settings');
               }
             },
             enableFeedback: false,
@@ -99,10 +113,10 @@ class HomePage extends StatelessWidget {
                 icon: Icon(Icons.chat_outlined),
                 label: 'Чат',
               ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.settings),
-                label: 'Настройки',
-              ),
+              // BottomNavigationBarItem(
+              //   icon: Icon(Icons.settings),
+              //   label: 'Настройки',
+              // ),
             ],
           );
         },

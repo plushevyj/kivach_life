@@ -70,12 +70,12 @@ class RegistrationController extends GetxController {
             error.response?.data['message'], RegistrationErrorModel.fromJson);
         print(error.response?.data['message']);
         print(message);
-        errorTextUsername(message.username?.first);
-        errorTextEmail(message.email?.first);
-        errorTextPhone(message.phone?.first);
-        errorTextFirstPassword(message.plainPassword?.first?.first);
-        errorTextSecondPassword(message.plainPassword?.second?.first);
-        errorTextAgree(message.agreeTerms?.first);
+        errorTextUsername.value = message.username?.first;
+        errorTextEmail.value = message.email?.first;
+        errorTextPhone.value = message.phone?.first;
+        errorTextFirstPassword.value = message.plainPassword?.first?.first;
+        errorTextSecondPassword.value = message.plainPassword?.second?.first;
+        errorTextAgree.value = message.agreeTerms?.first;
       }
     } catch (error) {
       showErrorAlert(error.toString());

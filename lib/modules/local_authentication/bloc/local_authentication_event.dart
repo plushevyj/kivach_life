@@ -26,3 +26,7 @@ class LogInLocallyUsingDigitalPassword extends LocalAuthenticationEvent {
   @override
   List<Object?> get props => [password];
 }
+
+class LocallyLogOut extends LocalAuthenticationEvent {
+  const LocallyLogOut();
+}

@@ -13,7 +13,9 @@ _$_Profile _$$_ProfileFromJson(Map<String, dynamic> json) => _$_Profile(
       patient: Patient.fromJson(json['patient'] as Map<String, dynamic>),
       notificationEnabled: json['notificationEnabled'] as bool,
       phone: json['phone'] as String?,
-      avatar: json['avatar'] as String?,
+      avatar: json['avatar'] == null
+          ? null
+          : Avatar.fromJson(json['avatar'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$_ProfileToJson(_$_Profile instance) =>

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../http/http.dart';
 import '/models/biometric_settings_model/biometric_setting_model.dart';
@@ -20,4 +21,5 @@ Future<void> initializeDependencies() async {
     ..registerAdapter(BiometricSettingsAdapter())
     ..registerAdapter(LocalPasswordAdapter());
   GetIt.I.registerSingleton<Dio>(DioClient().dio);
+  await [Permission.camera, Permission.photos].request();
 }

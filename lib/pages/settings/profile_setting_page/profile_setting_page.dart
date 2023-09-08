@@ -2,13 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
 import '../../../modules/authentication/repository/token_repository.dart';
 
 class ProfileSettingPage extends StatelessWidget {
   ProfileSettingPage({super.key});
 
-  final webViewController = WebViewController();
+  static const PlatformWebViewControllerCreationParams params =
+      /*WebViewPlatform.instance is WebKitWebViewPlatform
+          ? WebKitWebViewControllerCreationParams(
+              allowsInlineMediaPlayback: true,
+              mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{})
+          :*/
+      PlatformWebViewControllerCreationParams();
+
+  final webViewController = WebViewController.fromPlatformCreationParams(
+    params,
+    onPermissionRequest: (request) {
+      request.grant();
+    },
+  );
 
   @override
   Widget build(BuildContext context) {

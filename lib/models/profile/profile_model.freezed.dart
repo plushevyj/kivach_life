@@ -26,7 +26,7 @@ mixin _$Profile {
   Patient get patient => throw _privateConstructorUsedError;
   bool get notificationEnabled => throw _privateConstructorUsedError;
   String? get phone => throw _privateConstructorUsedError;
-  String? get avatar => throw _privateConstructorUsedError;
+  Avatar? get avatar => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -45,9 +45,10 @@ abstract class $ProfileCopyWith<$Res> {
       Patient patient,
       bool notificationEnabled,
       String? phone,
-      String? avatar});
+      Avatar? avatar});
 
   $PatientCopyWith<$Res> get patient;
+  $AvatarCopyWith<$Res>? get avatar;
 }
 
 /// @nodoc
@@ -99,7 +100,7 @@ class _$ProfileCopyWithImpl<$Res, $Val extends Profile>
       avatar: freezed == avatar
           ? _value.avatar
           : avatar // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as Avatar?,
     ) as $Val);
   }
 
@@ -108,6 +109,18 @@ class _$ProfileCopyWithImpl<$Res, $Val extends Profile>
   $PatientCopyWith<$Res> get patient {
     return $PatientCopyWith<$Res>(_value.patient, (value) {
       return _then(_value.copyWith(patient: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $AvatarCopyWith<$Res>? get avatar {
+    if (_value.avatar == null) {
+      return null;
+    }
+
+    return $AvatarCopyWith<$Res>(_value.avatar!, (value) {
+      return _then(_value.copyWith(avatar: value) as $Val);
     });
   }
 }
@@ -126,10 +139,12 @@ abstract class _$$_ProfileCopyWith<$Res> implements $ProfileCopyWith<$Res> {
       Patient patient,
       bool notificationEnabled,
       String? phone,
-      String? avatar});
+      Avatar? avatar});
 
   @override
   $PatientCopyWith<$Res> get patient;
+  @override
+  $AvatarCopyWith<$Res>? get avatar;
 }
 
 /// @nodoc
@@ -178,7 +193,7 @@ class __$$_ProfileCopyWithImpl<$Res>
       avatar: freezed == avatar
           ? _value.avatar
           : avatar // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as Avatar?,
     ));
   }
 }
@@ -218,7 +233,7 @@ class _$_Profile with DiagnosticableTreeMixin implements _Profile {
   @override
   final String? phone;
   @override
-  final String? avatar;
+  final Avatar? avatar;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -289,7 +304,7 @@ abstract class _Profile implements Profile {
       required final Patient patient,
       required final bool notificationEnabled,
       required final String? phone,
-      required final String? avatar}) = _$_Profile;
+      required final Avatar? avatar}) = _$_Profile;
 
   factory _Profile.fromJson(Map<String, dynamic> json) = _$_Profile.fromJson;
 
@@ -306,7 +321,7 @@ abstract class _Profile implements Profile {
   @override
   String? get phone;
   @override
-  String? get avatar;
+  Avatar? get avatar;
   @override
   @JsonKey(ignore: true)
   _$$_ProfileCopyWith<_$_Profile> get copyWith =>

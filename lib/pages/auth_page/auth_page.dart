@@ -1,3 +1,4 @@
+import 'package:doctor/modules/in_app_update/bloc/in_app_update_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,7 @@ class AuthorizationPage extends StatelessWidget {
     return BlocListener<AuthenticationBloc, AuthenticationState>(
       listener: (context, state) async {
         if (state is AuthenticationLoading) {
+          FocusScope.of(context).requestFocus(FocusNode());
           authPageController.isLoading(true);
         } else if (state is Unauthenticated) {
           authPageController.isLoading(false);
@@ -56,11 +58,11 @@ class AuthorizationPage extends StatelessWidget {
                       if (loginController.text.isNotEmpty &&
                           passwordController.text.isNotEmpty) {
                         Get.context!.read<AuthenticationBloc>().add(
-                          LogIn(
-                            username: loginController.text,
-                            password: passwordController.text,
-                          ),
-                        );
+                              LogIn(
+                                username: loginController.text,
+                                password: passwordController.text,
+                              ),
+                            );
                       }
                     },
                   ),
@@ -83,6 +85,14 @@ class AuthorizationPage extends StatelessWidget {
                               );
                         }
                       },
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  TextButton(
+                    onPressed: () => Get.toNamed('/reset'),
+                    child: const Text(
+                      'Забыли пароль?',
+                      style: TextStyle(color: KivachColors.green),
                     ),
                   ),
                   TextButton(

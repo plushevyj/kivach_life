@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../pages/reset_page/code_reset_page.dart';
+import '../pages/reset_page/reset_page.dart';
 import '/pages/onboarding_greeting_page/onboarding_greeting_page.dart';
 import '/pages/onboarding_settings_page/onboarding_settings_page.dart';
 import '/pages/auth_page/auth_page.dart';
@@ -24,4 +26,6 @@ final pages = [
       name: '/onboarding_greeting', page: () => const GreetingOnboardingPage()),
   GetPage(
       name: '/onboarding_settings', page: () => const OnboardingSettingsPage()),
+  GetPage(name: '/reset', page: () => const ResetPage()),
+  GetPage(name: '/reset/sms', page: () => SMSCodePage()),
 ];
