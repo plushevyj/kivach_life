@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 
 import '../../models/onboarding_info/onboarding_info.dart';
@@ -28,6 +29,8 @@ class OnboardingController extends GetxController {
     pageController.addListener(() {
       isLastPage(pageController.page! >= onboardingPagesList.length - 1.5);
     });
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => FlutterNativeSplash.remove());
     super.onInit();
   }
 

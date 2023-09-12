@@ -37,6 +37,7 @@ class App extends StatelessWidget {
                 localPasswordSettingBloc: localPasswordSettingBloc)),
       ],
       child: GetMaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Kivach Life',
         theme: lightTheme,
         getPages: pages,

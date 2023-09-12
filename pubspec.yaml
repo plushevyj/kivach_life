@@ -36,6 +36,9 @@ dependencies:
   skeletonizer: ^0.7.0
   intl_phone_number_input: ^0.7.3+1
   permission_handler: ^10.4.5
+  firebase_core: ^2.15.1
+  firebase_messaging: ^14.6.7
+  flutter_native_splash: ^2.3.2
 
 
 dev_dependencies:
@@ -46,6 +49,7 @@ dev_dependencies:
   freezed: ^2.3.5
   json_serializable: ^6.7.1
   hive_generator: ^2.0.0
+  flutter_launcher_icons: ^0.13.1
 
 
 flutter:
@@ -54,3 +58,15 @@ flutter:
     - .env
     - assets/images/
     - assets/images/onboarding/
+
+flutter_native_splash:
+  android: true
+  ios: true
+  color: "#FFFFFF"
+  image: assets/images/splash_image.png
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: assets/images/launcher_icon.png
+  min_sdk_android: 21

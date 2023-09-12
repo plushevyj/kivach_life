@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../ui/in_app_update_ios_modal.dart';
@@ -23,7 +24,7 @@ class InAppUpdateBloc extends Bloc<InAppUpdateEvent, InAppUpdateState> {
     try {
       if (Platform.isIOS) {
         final response = await Dio()
-            .get('https://itunes.apple.com/lookup?bundleId=ru.kivach.doctor');
+            .get(dotenv.get('ITUNES_URL_FOR_REQUEST'));
         final versionFromAppStore =
             jsonDecode(response.data)['results'].first['version'];
         final currentVersion = (await PackageInfo.fromPlatform()).version;

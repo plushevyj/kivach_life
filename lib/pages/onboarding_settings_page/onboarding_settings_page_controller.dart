@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 
 import '../../modules/local_authentication/repository/local_authentication_repository.dart';
@@ -28,6 +29,8 @@ class OnboardingSettingsPageController extends GetxController {
     pageController.addListener(() {
       currentPage(pageController.page);
     });
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => FlutterNativeSplash.remove());
     super.onInit();
   }
 

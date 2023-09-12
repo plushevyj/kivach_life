@@ -9,6 +9,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 Future<void> showLogOutAlert() {
+  const title = 'Вы действительно хотите выйти из аккаунта?';
+  const message =
+      'Данные авторизации, биометрии и цифровой пароль будут сброшены. Для '
+      'повторного входа в личный кабинет необходимо будет заново ввести логин '
+      'и пароль.';
+  const successButtonText = 'Да';
+  const cancelButtonText = 'Отмена';
   if (Platform.isIOS) {
     return showCupertinoDialog(
       context: Get.context!,
@@ -18,13 +25,13 @@ Future<void> showLogOutAlert() {
             primarySwatch: Colors.blue,
           ),
           child: CupertinoAlertDialog(
-            title: const Text('Выход'),
-            content: const Text('Вы действительно хотите выйти из аккаунта?'),
+            title: const Text(title),
+            content: const Text(message),
             actions: [
               CupertinoDialogAction(
                 onPressed: () => Get.back(),
                 child: const Text(
-                  'Отмена',
+                  cancelButtonText,
                   style: TextStyle(fontWeight: FontWeight.normal),
                 ),
               ),
@@ -37,7 +44,7 @@ Future<void> showLogOutAlert() {
                   Get.offAllNamed('/auth');
                 },
                 child: const Text(
-                  'Да',
+                  successButtonText,
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               )
@@ -51,13 +58,13 @@ Future<void> showLogOutAlert() {
       context: Get.context!,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Выход'),
-          content: const Text('Вы действительно хотите выйти из аккаунта?'),
+          title: const Text(title),
+          content: const Text(message),
           actions: [
             TextButton(
               style: TextButton.styleFrom(foregroundColor: KivachColors.green),
               onPressed: () => Get.back(),
-              child: const Text('Отмена'),
+              child: const Text(cancelButtonText),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -76,7 +83,7 @@ Future<void> showLogOutAlert() {
                 Get.context!.read<AuthenticationBloc>().add(const LogOut());
                 Get.offAllNamed('/auth');
               },
-              child: const Text('Да'),
+              child: const Text(successButtonText),
             ),
           ],
         );

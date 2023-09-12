@@ -7,7 +7,7 @@ import 'package:equatable/equatable.dart';
 import 'package:get/get.dart';
 
 import '../../../core/http/http.dart';
-import '../../account/controller/account_controller.dart';
+import '../../account/controllers/account_controller.dart';
 import '../../first_opening_app/repository/first_opening_app_repository.dart';
 import '../../local_authentication/repository/local_authentication_repository.dart';
 import '../repository/login_repository.dart';

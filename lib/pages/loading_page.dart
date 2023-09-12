@@ -15,7 +15,6 @@ class LoadingPage extends StatefulWidget {
 class _LoadingPageState extends State<LoadingPage> {
   @override
   void dispose() {
-    print('kek');
     Get.context!.read<InAppUpdateBloc>().add(const CheckVersionApp());
     super.dispose();
   }

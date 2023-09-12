@@ -114,9 +114,7 @@ class SettingsPage extends StatelessWidget {
                       title: 'Выйти из аккаунта',
                       icon: Icons.logout,
                       iconBackgroundColor: Colors.pink,
-                      onPressed: () {
-                        showLogOutAlert();
-                      },
+                      onPressed: () => showLogOutAlert(),
                     ),
                   ],
                 ),

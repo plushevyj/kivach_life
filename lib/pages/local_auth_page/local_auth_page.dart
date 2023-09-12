@@ -1,14 +1,15 @@
 import 'dart:io' show Platform;
 
-import 'package:doctor/modules/account/controller/account_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
+import '../../modules/account/controllers/avatar_controller.dart';
 import '../../widgets/local_password/digital_field.dart';
 import '../../widgets/local_password/digital_input_widget.dart';
+import '../../widgets/modal/logout_dialog.dart';
 import '/core/themes/light_theme.dart';
 import '/core/constants.dart';
 import '/modules/local_authentication/bloc/local_authentication_bloc.dart';
@@ -25,21 +26,23 @@ class LocalAuthPage extends StatelessWidget {
         .read<LocalAuthenticationBloc>()
         .add(const LocallyAuthStarted());
     final localPasswordPageController = Get.put(LocalPasswordPageController());
+    final avatarController = Get.put(AvatarController());
     return Scaffold(
       body: BlocConsumer<LocalAuthenticationBloc, LocalAuthenticationState>(
         listener: (_, state) {
           if (state is LocallyAuthenticated) {
             Get.offNamed('/home');
           } else if (state is LocallyNotAuthenticated) {
-            if (localPasswordPageController.firstRenderer.value &&
-                state.localAuthenticationSetting.$2) {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              FlutterNativeSplash.remove();
+              if (localPasswordPageController.firstRenderer.value &&
+                  state.localAuthenticationSetting.$2) {
                 Get.context!
                     .read<LocalAuthenticationBloc>()
                     .add(const LogInLocallyUsingBiometrics());
                 localPasswordPageController.firstRenderer(false);
-              });
-            }
+              }
+            });
             localPasswordPageController.password.clear();
           }
         },
@@ -59,12 +62,11 @@ class LocalAuthPage extends StatelessWidget {
                 children: [
                   Obx(
                     () => Skeletonizer(
-                      enabled: localPasswordPageController.avatarLoading.value,
+                      enabled: avatarController.avatarLoading.value,
                       child: CircleAvatar(
                         radius: 40,
                         backgroundColor: const Color(0xFFD7D7D7),
-                        foregroundImage:
-                            localPasswordPageController.image?.image,
+                        foregroundImage: avatarController.image?.image,
                         child: const Icon(
                           Icons.person,
                           size: 40,
@@ -88,11 +90,13 @@ class LocalAuthPage extends StatelessWidget {
                       maxLength: maxLengthLocalPassword,
                       isEnabled:
                           localPasswordPageController.enableDialButtons.value,
-                      leftWidget: state.localAuthenticationSetting.$2
+                      leftWidget: const Text('ВЫЙТИ'),
+                      leftWidgetAction: () => showLogOutAlert(),
+                      rightWidget: state.localAuthenticationSetting.$2
                           ? Icon(
                               Platform.isIOS ? Icons.face : Icons.fingerprint)
                           : null,
-                      leftWidgetAction: state.localAuthenticationSetting.$2
+                      rightWidgetAction: state.localAuthenticationSetting.$2
                           ? () => Get.context!
                               .read<LocalAuthenticationBloc>()
                               .add(const LogInLocallyUsingBiometrics())

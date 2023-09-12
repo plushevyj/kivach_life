@@ -1,12 +1,17 @@
 import 'dart:io';
 
 import 'package:doctor/core/themes/light_theme.dart';
+import 'package:doctor/modules/account/controllers/avatar_controller.dart';
 import 'package:doctor/modules/authentication/repository/token_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+
+import '../../modules/account/controllers/account_controller.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
@@ -18,7 +23,6 @@ class HomePage extends StatelessWidget {
               mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{})
           :*/
       PlatformWebViewControllerCreationParams();
-
   final webViewController = WebViewController.fromPlatformCreationParams(
     params,
     onPermissionRequest: (request) {
@@ -28,6 +32,9 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => FlutterNativeSplash.remove());
+    final avatarController = Get.put(AvatarController());
     final navBarIndexNotifier = ValueNotifier(0);
     webViewController
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
@@ -61,6 +68,30 @@ class HomePage extends StatelessWidget {
           icon: Icon(Platform.isIOS
               ? Icons.arrow_back_ios
               : Icons.arrow_back_outlined),
+        ),
+        titleSpacing: 0,
+        titleTextStyle: const TextStyle(fontSize: 18, color: Colors.black),
+        title: Row(
+          children: [
+            Obx(
+              () => Skeletonizer(
+                enabled: avatarController.avatarLoading.value,
+                child: CircleAvatar(
+                  radius: 20,
+                  backgroundColor: const Color(0xFFD7D7D7),
+                  foregroundImage: avatarController.image?.image,
+                  child: const Icon(
+                    Icons.person,
+                    size: 20,
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+            if (Get.put(AccountController()).profile.value != null)
+              Text(Get.put(AccountController()).profile.value!.username),
+          ],
         ),
         actions: [
           IconButton(
