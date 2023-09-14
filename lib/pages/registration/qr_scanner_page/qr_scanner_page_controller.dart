@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:scan/scan.dart';
 
 import '../registration_page/registration_page.dart';
 import '/widgets/alerts.dart';
@@ -23,27 +25,50 @@ class QRScannerPageController extends GetxController {
 
   void onQRViewCreated(QRViewController controller) async {
     qrViewController = controller;
-    const pattern = 'register?_token=';
+
     controller.scannedDataStream.listen((Barcode scanData) async {
       try {
         if (scanData.format == BarcodeFormat.qrcode && scanData.code != null) {
           Timer(const Duration(milliseconds: 1), () async {
-            if (scanData.code!.contains(pattern)) {
-              final registrationToken = scanData.code!.split(pattern)[1];
-              final profilePreview = await _registrationRepository
-                  .checkRegistrationToken(registrationToken);
-              Get.off(RegistrationPage(
-                registrationToken: registrationToken,
-                profilePreview: profilePreview,
-              ));
-              // showErrorAlert('QR-код неверный');
-            }
+            qrCodeHandler(scanData.code!);
           });
         }
       } catch (error) {
         showErrorAlert(error.toString());
       }
     });
+  }
+
+  void pickQRCodeFromGallery() async {
+    try {
+      final file = await ImagePicker()
+          .pickImage(source: ImageSource.gallery);
+      if (file != null) {
+        var qrResult = await Scan.parse(file.path);
+        if (qrResult != null) {
+          qrCodeHandler(qrResult);
+          return;
+        }
+        showErrorAlert('QR-код не распознан.');
+      }
+    } catch (_) {
+      showErrorAlert('Файл не распознан или повреждён.');
+    }
+  }
+
+  void qrCodeHandler(String qrcode) async {
+    const pattern = 'register?_token=';
+    if (qrcode.contains(pattern)) {
+      final registrationToken = qrcode.split(pattern)[1];
+      final profilePreview = await _registrationRepository
+          .checkRegistrationToken(registrationToken);
+      Get.off(RegistrationPage(
+        registrationToken: registrationToken,
+        profilePreview: profilePreview,
+      ));
+      return;
+    }
+    showErrorAlert('Неверный QR-код.');
   }
 
   void toggleFlashlight() {

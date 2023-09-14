@@ -27,5 +27,5 @@ Future<void> initializeDependencies() async {
     ..registerAdapter(BiometricSettingsAdapter())
     ..registerAdapter(LocalPasswordAdapter());
   GetIt.I.registerSingleton<Dio>(DioClient().dio);
-  await [Permission.camera, Permission.photos].request();
+  await [Permission.camera, Permission.photos, Permission.storage].request();
 }

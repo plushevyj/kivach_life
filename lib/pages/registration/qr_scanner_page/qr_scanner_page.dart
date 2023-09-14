@@ -1,6 +1,11 @@
+import 'dart:ffi';
+
+import 'package:doctor/widgets/alerts.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:scan/scan.dart';
 
 import 'qr_scanner_page_controller.dart';
 
@@ -47,6 +52,19 @@ class QRScannerPage extends StatelessWidget {
             formatsAllowed: const [BarcodeFormat.qrcode],
           ),
           const _CameraBorder(),
+          Positioned(
+            left: 4,
+            bottom: 4,
+            child: IconButton(
+              onPressed: () {
+                controller.pickQRCodeFromGallery();
+              },
+              icon: const Icon(
+                Icons.photo_library_outlined,
+                color: Colors.white,
+              ),
+            ),
+          ),
         ],
       ),
     );

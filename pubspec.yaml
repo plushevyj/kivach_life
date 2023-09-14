@@ -39,7 +39,9 @@ dependencies:
   firebase_core: ^2.15.1
   firebase_messaging: ^14.6.7
   flutter_native_splash: ^2.3.2
-
+  image_picker: ^1.0.4
+  scan: ^1.6.0
+  webview_flutter_wkwebview: ^3.7.4
 
 dev_dependencies:
   flutter_test:

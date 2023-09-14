@@ -4,12 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CodeResetController extends GetxController {
-  Timer? _timer;
   late int _start;
 
   final textController = TextEditingController();
   var timerMessage = RxnString('01:00');
-
   final isLoading = false.obs;
 
   @override
@@ -18,10 +16,18 @@ class CodeResetController extends GetxController {
     super.onInit();
   }
 
+  @override
+  void dispose() {
+    textController.dispose();
+    timerMessage.close();
+    isLoading.close();
+    super.dispose();
+  }
+
   void startTimer() {
     _start = 60;
     String twoDigits(int n) => n.toString().padLeft(2, '0');
-    _timer = Timer.periodic(
+    Timer.periodic(
       const Duration(seconds: 1),
       (timer) {
         if (_start <= 0) {

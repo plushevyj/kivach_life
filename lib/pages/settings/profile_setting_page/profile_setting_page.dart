@@ -9,13 +9,13 @@ import '../../../modules/authentication/repository/token_repository.dart';
 class ProfileSettingPage extends StatelessWidget {
   ProfileSettingPage({super.key});
 
-  static const PlatformWebViewControllerCreationParams params =
-      /*WebViewPlatform.instance is WebKitWebViewPlatform
-          ? WebKitWebViewControllerCreationParams(
-              allowsInlineMediaPlayback: true,
-              mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{})
-          :*/
-      PlatformWebViewControllerCreationParams();
+  static PlatformWebViewControllerCreationParams params =
+      // WebViewPlatform.instance is WebKitWebViewPlatform
+          // ? WebKitWebViewControllerCreationParams(
+          //     allowsInlineMediaPlayback: true,
+          //     mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{})
+          // :
+      const PlatformWebViewControllerCreationParams();
 
   final webViewController = WebViewController.fromPlatformCreationParams(
     params,

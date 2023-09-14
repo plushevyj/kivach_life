@@ -44,7 +44,7 @@ class RegistrationRepository {
       'registration_form[plainPassword][second]': secondPassword,
       'registration_form[agreeTerms]': agreeTerms ? 1 : 0,
     };
-    final response = await Dio().post(
+    final response = await _dio.post(
       '${dotenv.get('BASE_URL')}/api/register',
       options: Options(
         headers: {

@@ -13,19 +13,14 @@ class ResetPasswordRepository {
     required String phone,
   }) async {
     final data = {'sms_pass_reset[phone]': phone};
-    try {
-      final response = await Dio().post(
-        '${dotenv.get('BASE_URL')}/api/reset/sms',
-        data: data,
-        options: Options(
-          headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        ),
-      );
-    } on DioException catch (error) {
-      throw error.response?.data['message'] ?? error.error;
-    } catch (_) {
-      rethrow;
-    }
+    await handleRequest(() => _dio.post(
+          '${dotenv.get('BASE_URL')}/api/reset/sms',
+          data: data,
+          options: Options(
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+          ),
+        ));
+    _dio.options.headers['Content-Type'] = 'application/json';
   }
 
   Future<TokenModel> sendCode({
@@ -33,19 +28,16 @@ class ResetPasswordRepository {
     required String code,
   }) async {
     final data = {'sms_pass_reset[phone]': phone, 'sms_pass_reset[code]': code};
-    try {
-      final response = await Dio().post(
+    final response = await handleRequest(
+      () => _dio.post(
         '${dotenv.get('BASE_URL')}/api/reset/sms',
         data: data,
         options: Options(
           headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         ),
-      );
-      return ConvertTo<TokenModel>().item(response.data, TokenModel.fromJson);
-    } on DioException catch (error) {
-      throw error.response?.data['message'] ?? error.error;
-    } catch (_) {
-      rethrow;
-    }
+      ),
+    );
+    _dio.options.headers['Content-Type'] = 'application/json';
+    return ConvertTo<TokenModel>().item(response.data, TokenModel.fromJson);
   }
 }

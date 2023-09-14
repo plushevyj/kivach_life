@@ -55,7 +55,6 @@ class SMSCodePage extends StatelessWidget {
               const SizedBox(height: 20),
               Obx(
                 () {
-                  print(codeResetController.timerMessage.value);
                   return codeResetController.timerMessage.value != null
                       ? Text(
                           'Отправить код повторно через ${codeResetController.timerMessage.value!}.')

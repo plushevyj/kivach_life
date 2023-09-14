@@ -17,7 +17,6 @@ class DioClient {
 
   final _tokenRepository = const TokenRepository();
   final _loginRepository = const LoginRepository();
-  final _localAuthenticationRepository = const LocalAuthenticationRepository();
 
   DioClient() {
     _dio
@@ -39,40 +38,45 @@ class DioClient {
         error.response?.statusCode == 403) {
       final refreshTokenFromCache = await _tokenRepository.getRefreshToken();
       if (refreshTokenFromCache != null) {
-        final refreshResult =
-            await _loginRepository.refreshToken(refreshTokenFromCache);
-        print(refreshResult);
-        _tokenRepository.saveToken(token: refreshResult);
-        addAccessToken(accessToken: refreshResult.token);
-        final opts = Options(
-            method: error.requestOptions.method,
-            headers: error.requestOptions.headers);
-        final cloneReq = await dio.request(error.requestOptions.path,
-            options: opts,
+        try {
+          final refreshResult =
+              await _loginRepository.refreshToken(refreshTokenFromCache);
+          await _tokenRepository.saveToken(token: refreshResult);
+          addAccessToken(accessToken: refreshResult.token);
+          final cloneReq = _dio.request(
+            error.requestOptions.path,
+            options: Options(
+              method: error.requestOptions.method,
+              headers: error.requestOptions.headers,
+            )..headers?.addAll({'X-Auth': 'Bearer ${refreshResult.token}'}),
             data: error.requestOptions.data,
-            queryParameters: error.requestOptions.queryParameters);
-        return handler.resolve(cloneReq);
+            queryParameters: error.requestOptions.queryParameters,
+          );
+          return handler.resolve(await cloneReq);
+        } on DioException catch (_) {
+          BlocProvider.of<AuthenticationBloc>(Get.context!).add(const LogOut());
+          rethrow;
+        }
       }
-      throw error;
-      BlocProvider.of<AuthenticationBloc>(Get.context!).add(const LogOut());
     }
+    handler.reject(error);
 
-    String? exceptionText;
-    if (error.response != null) {
-      exceptionText = error.response?.data['detail'].toString();
-    } else {
-      switch (error.error.runtimeType) {
-        case SocketException:
-          error.error.toString().contains('Failed host lookup')
-              ? exceptionText = 'Ошибка подключения к серверу'
-              : exceptionText = 'Отсутствует подключение к интернету';
-          break;
-        default:
-          exceptionText = 'Возникло исключение:\n${error.error}';
-      }
-      return;
-    }
-    if (exceptionText != null) throw exceptionText;
+    // String? exceptionText;
+    // if (error.response != null) {
+    //   exceptionText = error.response?.data['detail'].toString();
+    // } else {
+    //   switch (error.error.runtimeType) {
+    //     case SocketException:
+    //       error.error.toString().contains('Failed host lookup')
+    //           ? exceptionText = 'Ошибка подключения к серверу'
+    //           : exceptionText = 'Отсутствует подключение к интернету';
+    //       break;
+    //     default:
+    //       exceptionText = 'Возникло исключение:\n${error.error}';
+    //   }
+    //   return;
+    // }
+    // if (exceptionText != null) throw exceptionText;
   }
 }
 

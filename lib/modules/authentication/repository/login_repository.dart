@@ -24,16 +24,11 @@ class LoginRepository {
   }
 
   Future<Profile> logInByToken() async {
-    try {
-      final res = await handleRequest(() => _dio.get('/api/profile'));
-      return ConvertTo<Profile>().item(res.data, Profile.fromJson);
-    } catch (error) {
-      rethrow;
-    }
+    final res = await handleRequest(() => _dio.get('/api/profile'));
+    return ConvertTo<Profile>().item(res.data, Profile.fromJson);
   }
 
   Future<TokenModel> refreshToken(String refreshToken) async {
-    print(refreshToken);
     final path = '${dotenv.get('BASE_URL')}/api/token/refresh';
     final query = {
       'refresh_token': refreshToken,

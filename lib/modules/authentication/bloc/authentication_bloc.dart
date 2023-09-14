@@ -1,7 +1,6 @@
 import 'dart:async';
 
-import 'package:dio/dio.dart';
-import 'package:doctor/widgets/alerts.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get/get.dart';
@@ -9,7 +8,6 @@ import 'package:get/get.dart';
 import '../../../core/http/http.dart';
 import '../../account/controllers/account_controller.dart';
 import '../../first_opening_app/repository/first_opening_app_repository.dart';
-import '../../local_authentication/repository/local_authentication_repository.dart';
 import '../repository/login_repository.dart';
 import '../repository/token_repository.dart';
 
@@ -41,24 +39,21 @@ class AuthenticationBloc
       await Get.toNamed('/onboarding_greeting');
       await firstOpeningOfAppRepository.saveFirstOpeningSetting(false);
     }
-    // try {
-    final accessToken = await tokenRepository.getAccessToken();
-    if (accessToken == null) {
+    try {
+      final accessToken = await tokenRepository.getAccessToken();
+      if (accessToken == null) {
+        emit(const Unauthenticated());
+        return;
+      }
+      addAccessToken(accessToken: accessToken);
+      final profile = await loginRepository.logInByToken();
+      Get.put(AccountController(), permanent: true).profile(profile);
+      emit(const Authenticated());
+    } catch (error) {
+      emit(AuthenticationError(error.toString()));
+      tokenRepository.clearTokens();
       emit(const Unauthenticated());
-      return;
     }
-    addAccessToken(accessToken: accessToken);
-    final profile = await loginRepository.logInByToken();
-    Get.put(AccountController(), permanent: true).profile(profile);
-    emit(const Authenticated());
-    // } catch (error) {
-    //   emit(AuthenticationError(error.toString()));
-    //   tokenRepository.clearTokens();
-    //   localAuthenticationRepository
-    //     ..deleteBiometricSetting()
-    //     ..deleteLocalPassword();
-    //   emit(const Unauthenticated());
-    // }
   }
 
   Future<void> _onLogIn(
@@ -74,12 +69,10 @@ class AuthenticationBloc
       tokenRepository.saveToken(token: token);
       addAccessToken(accessToken: token.token);
       final profile = await loginRepository.logInByToken();
-      print(profile);
       Get.put(AccountController(), permanent: true).profile(profile);
       emit(const Authenticated());
     } catch (error) {
       emit(AuthenticationError(error.toString()));
-      showErrorAlert(error.toString());
       emit(const Unauthenticated());
     }
   }

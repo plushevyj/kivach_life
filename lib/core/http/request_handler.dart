@@ -15,7 +15,7 @@ Future<Response> handleRequest(dynamic request) async {
       'Error is: ${error.error}\n'
       'Data is: ${error.response != null ? error.response!.data : 'NULL'}',
     );
-    throw error.response?.data ?? error.error;
+    throw error.response?.data['message'] ?? error.error;
   } catch (error) {
     rethrow;
   }

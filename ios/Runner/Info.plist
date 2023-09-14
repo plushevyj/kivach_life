@@ -53,9 +53,13 @@
 		<string>Приложение использует камеру для сканирования QR-кода и создания аватара профиля</string>
 		<key>NSPhotoLibraryUsageDescription</key>
 		<string>Приложение использует галерею для сканирования QR-кода и создания аватара профиля</string>
+		<key>NSPhotoLibraryAddUsageDescription</key>
+        <string>Приложение использует галерею для сканирования QR-кода и создания аватара профиля</string>
 		<key>UIUserInterfaceStyle</key>
 		<string>Light</string>
 		<key>UIStatusBarHidden</key>
 		<false/>
+		<key>io.flutter.embedded_views_preview</key>
+        <string>YES</string>
 	</dict>
 </plist>
