@@ -1,10 +1,8 @@
 import 'package:doctor/core/themes/light_theme.dart';
 import 'package:doctor/modules/authentication/repository/token_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../widgets/layout/custom_appbar.dart';
@@ -52,72 +50,64 @@ class HomePage extends StatelessWidget {
         ),
       );
     load(route: '/');
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: Scaffold(
-        backgroundColor: const Color(0xFFF3F5F6),
-        extendBodyBehindAppBar: true,
-        body: Padding(
-          padding: const EdgeInsets.only(top: kToolbarHeight),
-          child: Stack(
-            children: [
-              WebViewWidget(
-                controller: webViewController,
+    return Scaffold(
+      backgroundColor: const Color(0xFFF3F5F6),
+      extendBodyBehindAppBar: true,
+      body: Padding(
+        padding: const EdgeInsets.only(top: kToolbarHeight),
+        child: Stack(
+          clipBehavior: Clip.antiAlias,
+          children: [
+            WebViewWidget(
+              controller: webViewController,
+            ),
+            CustomAppBar(webViewController: webViewController),
+          ],
+        ),
+      ),
+      bottomNavigationBar: ValueListenableBuilder(
+        valueListenable: navBarIndexNotifier,
+        builder: (_, currentIndex, __) {
+          return BottomNavigationBar(
+            backgroundColor: null,
+            currentIndex: currentIndex,
+            onTap: (index) {
+              switch (index) {
+                case 0:
+                  navBarIndexNotifier.value = index;
+                  load(route: '/');
+                case 1:
+                  navBarIndexNotifier.value = index;
+                  load(route: '/schedule');
+                case 2:
+                  navBarIndexNotifier.value = index;
+                  load(route: '/chat');
+              }
+            },
+            enableFeedback: false,
+            selectedIconTheme: const IconThemeData(size: 24),
+            unselectedIconTheme: const IconThemeData(size: 24),
+            selectedLabelStyle: const TextStyle(fontSize: 12),
+            unselectedLabelStyle: const TextStyle(fontSize: 12),
+            selectedItemColor: KivachColors.green,
+            unselectedItemColor: const Color(0xFFAEB2BA),
+            type: BottomNavigationBarType.fixed,
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home_outlined),
+                label: 'Главная',
               ),
-              // Positioned(
-              //   top: 0,
-              //   left: 0,
-              //   child: CustomAppBar(webViewController: webViewController),
-              // ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.calendar_today_outlined),
+                label: 'Расписание',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.chat_outlined),
+                label: 'Чат',
+              ),
             ],
-          ),
-        ),
-        bottomNavigationBar: ValueListenableBuilder(
-          valueListenable: navBarIndexNotifier,
-          builder: (_, currentIndex, __) {
-            return BottomNavigationBar(
-              backgroundColor: null,
-              currentIndex: currentIndex,
-              onTap: (index) {
-                switch (index) {
-                  case 0:
-                    navBarIndexNotifier.value = index;
-                    load(route: '/');
-                  case 1:
-                    navBarIndexNotifier.value = index;
-                    load(route: '/schedule');
-                  case 2:
-                    navBarIndexNotifier.value = index;
-                    load(route: '/chat');
-                  // case 3:
-                  //   Get.toNamed('/settings');
-                }
-              },
-              enableFeedback: false,
-              selectedIconTheme: const IconThemeData(size: 24),
-              unselectedIconTheme: const IconThemeData(size: 24),
-              selectedLabelStyle: const TextStyle(fontSize: 12),
-              unselectedLabelStyle: const TextStyle(fontSize: 12),
-              selectedItemColor: KivachColors.green,
-              unselectedItemColor: const Color(0xFFAEB2BA),
-              type: BottomNavigationBarType.fixed,
-              items: const [
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.home_outlined),
-                  label: 'Главная',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.calendar_today_outlined),
-                  label: 'Расписание',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.chat_outlined),
-                  label: 'Чат',
-                ),
-              ],
-            );
-          },
-        ),
+          );
+        },
       ),
     );
   }
