@@ -16,6 +16,7 @@ final onboardingButtonStyle = ButtonStyle(
 abstract final class KivachColors {
   static const green = Color(0xFF1A7A5C);
   static const lightGreen = Color(0xFF66A67E);
+  static const green2 = Color(0xFF93AC9F);
 }
 
 final outlineInputBorder = OutlineInputBorder(
@@ -59,7 +60,12 @@ final lightTheme = ThemeData(
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ButtonStyle(
-      backgroundColor: MaterialStateProperty.all(KivachColors.green),
+      backgroundColor: MaterialStateProperty.resolveWith((state) {
+        if (state.contains(MaterialState.disabled)) {
+          return KivachColors.green2;
+        }
+        return KivachColors.green;
+      }),
       minimumSize: MaterialStateProperty.all(const Size(double.infinity, 60)),
       shape: MaterialStateProperty.all(
         RoundedRectangleBorder(

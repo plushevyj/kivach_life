@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:doctor/models/token_model/token_model.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 
+import '/models/token_model/token_model.dart';
 import '../../../core/http/request_handler.dart';
 import '../../../core/utils/convert_to.dart';
 
@@ -20,7 +20,6 @@ class ResetPasswordRepository {
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
           ),
         ));
-    _dio.options.headers['Content-Type'] = 'application/json';
   }
 
   Future<TokenModel> sendCode({
@@ -37,7 +36,6 @@ class ResetPasswordRepository {
         ),
       ),
     );
-    _dio.options.headers['Content-Type'] = 'application/json';
     return ConvertTo<TokenModel>().item(response.data, TokenModel.fromJson);
   }
 }

@@ -1,6 +1,7 @@
-import 'package:doctor/modules/authentication/repository/token_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+
+import '/modules/authentication/repository/token_repository.dart';
 import '../repository/reset_password_repository.dart';
 
 part 'reset_password_event.dart';

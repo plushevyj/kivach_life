@@ -8,6 +8,19 @@ import 'package:webview_flutter/webview_flutter.dart';
 import '../../modules/account/controllers/account_controller.dart';
 import '../../modules/account/controllers/avatar_controller.dart';
 
+class CustomAppBarController extends GetxController {
+  CustomAppBarController({required this.webViewController});
+
+  final WebViewController webViewController;
+  final canGoBack = false.obs;
+  final canGoForward = false.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+  }
+}
+
 class CustomAppBar extends StatelessWidget {
   const CustomAppBar({Key? key, required this.webViewController})
       : super(key: key);
@@ -17,6 +30,8 @@ class CustomAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final avatarController = Get.put(AvatarController());
+    final customAppBarController =
+        Get.put(CustomAppBarController(webViewController: webViewController));
     return Container(
       height: kToolbarHeight,
       width: Get.width - 60,
@@ -27,12 +42,19 @@ class CustomAppBar extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                IconButton(
-                  onPressed: () => webViewController.goBack(),
-                  icon: Icon(
-                    Platform.isIOS
-                        ? Icons.arrow_back_ios
-                        : Icons.arrow_back_outlined,
+                Obx(
+                  () => IconButton(
+                    onPressed: customAppBarController.canGoBack.value
+                        ? () => webViewController.goBack()
+                        : null,
+                    icon: Icon(
+                      Platform.isIOS
+                          ? Icons.arrow_back_ios
+                          : Icons.arrow_back_outlined,
+                      color: customAppBarController.canGoBack.value
+                          ? Colors.black
+                          : Colors.grey,
+                    ),
                   ),
                 ),
                 Obx(

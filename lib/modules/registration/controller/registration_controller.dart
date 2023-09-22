@@ -1,12 +1,10 @@
-import 'dart:async';
-
 import 'package:dio/dio.dart';
-import 'package:doctor/modules/authentication/bloc/authentication_bloc.dart';
-import 'package:doctor/widgets/alerts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
+import '/widgets/alerts.dart';
+import '/modules/authentication/bloc/authentication_bloc.dart';
 import '../../../core/utils/convert_to.dart';
 import '../../../models/registration/registration_error_model/registration_error_model.dart';
 import '../../authentication/repository/token_repository.dart';
@@ -16,6 +14,7 @@ class RegistrationController extends GetxController {
   RegistrationController({required this.registrationToken});
 
   final isLoading = false.obs;
+  final activeRegistrationButton = false.obs;
 
   final String registrationToken;
 
@@ -38,6 +37,17 @@ class RegistrationController extends GetxController {
   final _registrationRepository = const RegistrationRepository();
   final _tokenRepository = const TokenRepository();
 
+  @override
+  void dispose() {
+    usernameFieldController.dispose();
+    emailFieldController.dispose();
+    phoneFieldController.dispose();
+    firstPasswordFieldController.dispose();
+    secondPasswordFieldController.dispose();
+    isAgree.close();
+    super.dispose();
+  }
+
   void register(BuildContext context) async {
     errorTextUsername(null);
     errorTextEmail(null);
@@ -56,10 +66,7 @@ class RegistrationController extends GetxController {
         secondPassword: secondPasswordFieldController.text,
         agreeTerms: isAgree.value,
       );
-      print('usernameFieldController.text = ${usernameFieldController.text}');
       _tokenRepository.saveToken(token: token);
-      print(await _tokenRepository.getRefreshToken());
-      print(await _tokenRepository.getAccessToken());
       BlocProvider.of<AuthenticationBloc>(Get.context!)
           .add(const AuthenticateByToken());
     } on DioException catch (error) {
@@ -68,8 +75,6 @@ class RegistrationController extends GetxController {
       } else if (error.response!.statusCode! >= 400) {
         final message = await ConvertTo<RegistrationErrorModel>().item(
             error.response?.data['message'], RegistrationErrorModel.fromJson);
-        print(error.response?.data['message']);
-        print(message);
         errorTextUsername.value = message.username?.first;
         errorTextEmail.value = message.email?.first;
         errorTextPhone.value = message.phone?.first;

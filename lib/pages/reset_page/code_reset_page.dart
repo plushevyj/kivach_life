@@ -1,16 +1,14 @@
-import 'dart:async';
-
-import 'package:doctor/modules/authentication/bloc/authentication_bloc.dart';
-import 'package:doctor/modules/reset_password/bloc/reset_password_bloc.dart';
-import 'package:doctor/widgets/alerts.dart';
-import 'package:doctor/widgets/inputs/button_for_form.dart';
-import 'package:doctor/widgets/inputs/text_field_for_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 import '../../core/themes/light_theme.dart';
 import 'code_reset_controller.dart';
+import '/modules/authentication/bloc/authentication_bloc.dart';
+import '/modules/reset_password/bloc/reset_password_bloc.dart';
+import '/widgets/alerts.dart';
+import '/widgets/inputs/button_for_form.dart';
+import '/widgets/inputs/text_field_for_form.dart';
 
 class SMSCodePage extends StatelessWidget {
   const SMSCodePage({super.key});

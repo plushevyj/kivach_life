@@ -4,7 +4,6 @@ import 'package:get_it/get_it.dart';
 
 import '../../../models/profile/profile_model.dart';
 import '/models/token_model/token_model.dart';
-import '/core/http/http.dart';
 import '/core/http/request_handler.dart';
 import '/core/utils/convert_to.dart';
 

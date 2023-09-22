@@ -1,4 +1,3 @@
-import 'package:doctor/modules/in_app_update/bloc/in_app_update_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';

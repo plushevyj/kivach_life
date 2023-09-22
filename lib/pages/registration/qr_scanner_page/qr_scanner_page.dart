@@ -1,11 +1,6 @@
-import 'dart:ffi';
-
-import 'package:doctor/widgets/alerts.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:scan/scan.dart';
 
 import 'qr_scanner_page_controller.dart';
 
@@ -29,17 +24,22 @@ class QRScannerPage extends StatelessWidget {
           style: TextStyle(color: Colors.white),
         ),
         actions: [
-          Obx(
-            () {
-              return IconButton(
-                icon: Icon(
-                  controller.flashlight.value
-                      ? Icons.flash_off
-                      : Icons.flash_on,
-                  color: Colors.white,
-                ),
-                onPressed: () => controller.toggleFlashlight(),
-              );
+          FutureBuilder(
+            future: controller.qrViewController?.getFlashStatus(),
+            builder: (context, snapshot) {
+              return snapshot.hasData
+                  ? Obx(
+                      () => IconButton(
+                        icon: Icon(
+                          controller.flashlight.value
+                              ? Icons.flash_off
+                              : Icons.flash_on,
+                          color: Colors.white,
+                        ),
+                        onPressed: () => controller.toggleFlashlight(),
+                      ),
+                    )
+                  : const SizedBox.shrink();
             },
           ),
         ],

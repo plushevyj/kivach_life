@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 
 import '../../core/constants.dart';
-import '../../modules/account/controllers/account_controller.dart';
 import '/modules/local_authentication/bloc/local_authentication_bloc.dart';
 
 class LocalPasswordPageController extends GetxController {

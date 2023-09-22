@@ -1,18 +1,17 @@
-import 'package:doctor/models/token_model/token_model.dart';
-import 'package:doctor/modules/in_app_update/bloc/in_app_update_bloc.dart';
-import 'package:doctor/modules/reset_password/bloc/reset_password_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 import 'core/dependencies/injector.dart';
+import 'core/firebase/firebase_api.dart';
 import 'core/pages.dart';
 import 'core/themes/light_theme.dart';
-import 'modules/authentication/repository/token_repository.dart';
 import 'modules/biometric_settings/bloc/biometric_settings_bloc.dart';
 import 'modules/local_authentication/bloc/local_authentication_bloc.dart';
 import 'modules/local_password_settings/bloc/local_password_settings_bloc.dart';
-import '/modules/authentication/bloc/authentication_bloc.dart';
+import 'modules/authentication/bloc/authentication_bloc.dart';
+import 'modules/in_app_update/bloc/in_app_update_bloc.dart';
+import 'modules/reset_password/bloc/reset_password_bloc.dart';
 
 void main() async {
   await initializeDependencies();
@@ -45,9 +44,10 @@ class App extends StatelessWidget {
         getPages: pages,
         builder: (context, child) {
           return BlocListener<AuthenticationBloc, AuthenticationState>(
-            listener: (context, state) {
+            listener: (context, state) async {
               if (state is Authenticated) {
                 Get.offNamed('/local_auth');
+                await FirebaseApi().initNotifications();
                 // } else if (state is Unauthenticated) {
                 //   Get.offAllNamed('/local_auth');
               } else {

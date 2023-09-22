@@ -1,7 +1,7 @@
-import 'package:doctor/models/profile_preview_model/profile_preview_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '/models/profile_preview_model/profile_preview_model.dart';
 import '/core/themes/light_theme.dart';
 import '../../../modules/registration/controller/registration_controller.dart';
 import '../../../widgets/inputs/button_for_form.dart';
@@ -24,7 +24,6 @@ class RegistrationPage extends StatefulWidget {
 class _RegistrationPageState extends State<RegistrationPage> {
   @override
   Widget build(BuildContext context) {
-
     final registrationController = Get.put(
         RegistrationController(registrationToken: widget.registrationToken));
     return Scaffold(
@@ -98,6 +97,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         if (states.contains(MaterialState.selected)) {
                           return KivachColors.green;
                         }
+                        return null;
                       }),
                       overlayColor: MaterialStateProperty.all(
                         KivachColors.green.withOpacity(0.1),
@@ -112,14 +112,26 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       value: registrationController.isAgree.value,
                     ),
                     SizedBox(
-                      width: Get.width * 0.7,
+                      width: Get.width * 0.8,
                       child: const Text(
                         'Согласен с условиями пользовательского соглашения '
-                        'и политикой обработки персональных данных',
+                        'и политикой обработки персональных данных.',
                       ),
                     ),
                   ],
                 ),
+                const SizedBox(height: 5),
+                if (registrationController.errorTextAgree.value != null)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 12),
+                    child: Text(
+                      registrationController.errorTextAgree.value!,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Theme.of(context).colorScheme.error,
+                      ),
+                    ),
+                  ),
                 const SizedBox(height: 20),
                 Obx(
                   () => ButtonForForm(

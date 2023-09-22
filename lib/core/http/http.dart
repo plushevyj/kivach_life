@@ -1,15 +1,9 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
-import 'package:doctor/modules/authentication/bloc/authentication_bloc.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 
 import '/modules/authentication/repository/login_repository.dart';
 import '/modules/authentication/repository/token_repository.dart';
-import '/modules/local_authentication/repository/local_authentication_repository.dart';
 
 class DioClient {
   late final Dio _dio = Dio();
@@ -53,10 +47,7 @@ class DioClient {
             queryParameters: error.requestOptions.queryParameters,
           );
           return handler.resolve(await cloneReq);
-        } on DioException catch (_) {
-          BlocProvider.of<AuthenticationBloc>(Get.context!).add(const LogOut());
-          rethrow;
-        }
+        } catch (_) {}
       }
     }
     handler.reject(error);

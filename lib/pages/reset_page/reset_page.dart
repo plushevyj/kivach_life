@@ -1,10 +1,10 @@
-import 'package:doctor/modules/reset_password/bloc/reset_password_bloc.dart';
-import 'package:doctor/widgets/inputs/button_for_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
+import '/modules/reset_password/bloc/reset_password_bloc.dart';
+import '/widgets/inputs/button_for_form.dart';
 import '../../core/themes/light_theme.dart';
 import '../../widgets/alerts.dart';
 import 'reset_controller.dart';

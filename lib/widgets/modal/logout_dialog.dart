@@ -1,12 +1,13 @@
 import 'dart:io';
 
-import 'package:doctor/core/themes/light_theme.dart';
-import 'package:doctor/modules/authentication/bloc/authentication_bloc.dart';
-import 'package:doctor/modules/local_authentication/bloc/local_authentication_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+
+import '/core/themes/light_theme.dart';
+import '/modules/authentication/bloc/authentication_bloc.dart';
+import '/modules/local_authentication/bloc/local_authentication_bloc.dart';
 
 Future<void> showLogOutAlert() {
   const title = 'Вы действительно хотите выйти из аккаунта?';
