@@ -60,12 +60,7 @@ final lightTheme = ThemeData(
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ButtonStyle(
-      backgroundColor: MaterialStateProperty.resolveWith((state) {
-        if (state.contains(MaterialState.disabled)) {
-          return KivachColors.green2;
-        }
-        return KivachColors.green;
-      }),
+      backgroundColor: MaterialStateProperty.all(KivachColors.green),
       minimumSize: MaterialStateProperty.all(const Size(double.infinity, 60)),
       shape: MaterialStateProperty.all(
         RoundedRectangleBorder(

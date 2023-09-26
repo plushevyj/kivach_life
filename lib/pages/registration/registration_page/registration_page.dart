@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 import '/models/profile_preview_model/profile_preview_model.dart';
 import '/core/themes/light_theme.dart';
@@ -61,11 +62,53 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   // validator: registrationController.validatorEmail,z
                 ),
                 const SizedBox(height: 20),
-                TextFieldForForm(
-                  controller: registrationController.phoneFieldController,
-                  hint: 'Телефон',
-                  errorText: registrationController.errorTextPhone.value,
-                  // validator: registrationController.validatorPhone,
+                // TextFieldForForm(
+                //   controller: registrationController.phoneFieldController,
+                //   hint: 'Телефон',
+                //   errorText: registrationController.errorTextPhone.value,
+                //   // validator: registrationController.validatorPhone,
+                // ),
+                Form(
+                  key: registrationController.formPhoneInputKey,
+                  child: InternationalPhoneNumberInput(
+                    locale: 'RU',
+                    onInputChanged: (_) {},
+                    onInputValidated: (value) {
+                      registrationController.isValidatePhoneNumber(value);
+                      print(
+                          'registrationController.isValidatePhoneNumber = ${registrationController.isValidatePhoneNumber}');
+                    },
+                    onSaved: (number) {
+                      registrationController.number = number;
+                    },
+                    selectorConfig: const SelectorConfig(
+                      selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
+                    ),
+                    searchBoxDecoration: const InputDecoration(
+                      labelText:
+                          'Поиск по наименованиям стран и кодов регионов',
+                    ),
+                    validator: (_) {
+                      if (!registrationController.isValidatePhoneNumber.value) {
+                        return 'Неверный номер';
+                      }
+                      return registrationController.errorTextPhone.value;
+                    },
+                    ignoreBlank: false,
+                    autoValidateMode: AutovalidateMode.always,
+                    selectorTextStyle: const TextStyle(color: Colors.black),
+                    initialValue: registrationController.number,
+                    textFieldController:
+                        registrationController.phoneFieldController,
+                    formatInput: true,
+                    keyboardType: const TextInputType.numberWithOptions(
+                      signed: true,
+                      decimal: true,
+                    ),
+                    inputDecoration: const InputDecoration(
+                      labelText: 'Номер телефона',
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 20),
                 TextFieldForForm(
@@ -127,7 +170,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     child: Text(
                       registrationController.errorTextAgree.value!,
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 13,
                         color: Theme.of(context).colorScheme.error,
                       ),
                     ),
@@ -141,8 +184,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     child: registrationController.isLoading.value
                         ? const CircularProgressIndicator(color: Colors.white)
                         : null,
-                    onPressed: () =>
-                        registrationController.register(Get.context!),
+                    onPressed: () {
+                      registrationController.formPhoneInputKey.currentState
+                          ?.save();
+                      registrationController.register(Get.context!);
+                    },
                   ),
                 ),
                 const SizedBox(height: 20),

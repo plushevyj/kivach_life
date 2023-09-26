@@ -41,13 +41,15 @@ class App extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Kivach Life',
         theme: lightTheme,
+        themeMode: ThemeMode.light,
+        darkTheme: ThemeData.light(),
         getPages: pages,
         builder: (context, child) {
           return BlocListener<AuthenticationBloc, AuthenticationState>(
             listener: (context, state) async {
               if (state is Authenticated) {
                 Get.offNamed('/local_auth');
-                await FirebaseApi().initNotifications();
+                await FirebaseApi().sendToken();
                 // } else if (state is Unauthenticated) {
                 //   Get.offAllNamed('/local_auth');
               } else {

@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../modules/authentication/repository/token_repository.dart';
+import 'profile_settings_page_controller.dart';
 
 class ProfileSettingPage extends StatelessWidget {
   ProfileSettingPage({super.key});
 
   static PlatformWebViewControllerCreationParams params =
       // WebViewPlatform.instance is WebKitWebViewPlatform
-          // ? WebKitWebViewControllerCreationParams(
-          //     allowsInlineMediaPlayback: true,
-          //     mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{})
-          // :
+      // ? WebKitWebViewControllerCreationParams(
+      //     allowsInlineMediaPlayback: true,
+      //     mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{})
+      // :
       const PlatformWebViewControllerCreationParams();
 
   final webViewController = WebViewController.fromPlatformCreationParams(
@@ -24,6 +26,7 @@ class ProfileSettingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(ProfileSettingsPageController());
     webViewController
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x00000000))

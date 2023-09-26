@@ -8,21 +8,30 @@ class FirebaseApi {
   final _firebaseMessaging = FirebaseMessaging.instance;
 
   Future<void> initNotifications() async {
-    _firebaseMessaging.setForegroundNotificationPresentationOptions(
+    await _firebaseMessaging.setForegroundNotificationPresentationOptions(
       alert: true,
       badge: true,
       sound: true,
     );
-    await _firebaseMessaging.requestPermission();
-    final fCMToken = await _firebaseMessaging.getToken();
-    if (fCMToken != null) {
-      await const PushNotificationsRepository()
-          .setTokenPushNotifications(token: fCMToken);
-    }
+    await _firebaseMessaging.requestPermission(
+      alert: true,
+      announcement: true,
+      badge: true,
+      carPlay: true,
+      criticalAlert: true,
+      provisional: true,
+      sound: true,
+    );
     FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
     FirebaseMessaging.onMessage.listen(_handleMessage);
-    if (kDebugMode) {
-      print('token = ${fCMToken.toString()}');
+  }
+
+  Future<void> sendToken() async {
+    final fCMToken = await _firebaseMessaging.getToken();
+    if (fCMToken != null) {
+      print(fCMToken);
+      // await const PushNotificationsRepository()
+      //     .setTokenPushNotifications(token: fCMToken);
     }
   }
 

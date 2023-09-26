@@ -9,6 +9,7 @@ import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../firebase/firebase_api.dart';
 import '/firebase_options.dart';
 import '../http/http.dart';
 import '/models/biometric_settings_model/biometric_setting_model.dart';
@@ -19,7 +20,7 @@ Future<void> initializeDependencies() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  // await FirebaseApi().initNotifications();
+  await FirebaseApi().initNotifications();
   await dotenv.load();
   Bloc.observer = Observer();
   await Hive.initFlutter();

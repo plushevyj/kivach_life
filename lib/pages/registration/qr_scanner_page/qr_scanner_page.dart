@@ -24,23 +24,16 @@ class QRScannerPage extends StatelessWidget {
           style: TextStyle(color: Colors.white),
         ),
         actions: [
-          FutureBuilder(
-            future: controller.qrViewController?.getFlashStatus(),
-            builder: (context, snapshot) {
-              return snapshot.hasData
-                  ? Obx(
-                      () => IconButton(
-                        icon: Icon(
-                          controller.flashlight.value
-                              ? Icons.flash_off
-                              : Icons.flash_on,
-                          color: Colors.white,
-                        ),
-                        onPressed: () => controller.toggleFlashlight(),
-                      ),
-                    )
-                  : const SizedBox.shrink();
-            },
+          Obx(
+            () => IconButton(
+              icon: Icon(
+                controller.flashlight.value
+                    ? Icons.flash_off
+                    : Icons.flash_on,
+                color: Colors.white,
+              ),
+              onPressed: () => controller.toggleFlashlight(),
+            ),
           ),
         ],
       ),

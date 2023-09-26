@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 import '/widgets/alerts.dart';
 import '/modules/authentication/bloc/authentication_bloc.dart';
@@ -13,6 +14,9 @@ import '../repository/registration_repository.dart';
 class RegistrationController extends GetxController {
   RegistrationController({required this.registrationToken});
 
+  final formPhoneInputKey = GlobalKey<FormState>();
+  var number = PhoneNumber(isoCode: 'RU');
+  final isValidatePhoneNumber = true.obs;
   final isLoading = false.obs;
   final activeRegistrationButton = false.obs;
 
@@ -61,7 +65,7 @@ class RegistrationController extends GetxController {
         registrationToken: registrationToken,
         username: usernameFieldController.text,
         email: emailFieldController.text,
-        phone: phoneFieldController.text,
+        phone: number.phoneNumber ?? '',
         firstPassword: firstPasswordFieldController.text,
         secondPassword: secondPasswordFieldController.text,
         agreeTerms: isAgree.value,

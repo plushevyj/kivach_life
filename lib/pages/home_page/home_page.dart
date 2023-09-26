@@ -5,13 +5,14 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../modules/account/controllers/account_controller.dart';
 import '../../modules/account/controllers/avatar_controller.dart';
 import '/core/themes/light_theme.dart';
 import '/modules/authentication/repository/token_repository.dart';
-import '../../widgets/layout/custom_appbar.dart';
+import 'home_page_controller.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
@@ -36,17 +37,19 @@ class HomePage extends StatelessWidget {
     WidgetsBinding.instance
         .addPostFrameCallback((_) => FlutterNativeSplash.remove());
     final navBarIndexNotifier = ValueNotifier(0);
-    final customAppBarController =
-        Get.put(CustomAppBarController(webViewController: webViewController));
+    final homePageController = Get.put(HomePageController());
     webViewController
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x00000000))
       ..setNavigationDelegate(
         NavigationDelegate(
+          onPageStarted: (url) {
+            homePageController
+                .isInternalSite(url.startsWith(dotenv.get('BASE_URL')));
+          },
           onPageFinished: (url) async {
-            customAppBarController
-                .canGoBack(await webViewController.canGoBack());
-            customAppBarController
+            homePageController.canGoBack(await webViewController.canGoBack());
+            homePageController
                 .canGoForward(await webViewController.canGoForward());
             if (url == '${dotenv.get('BASE_URL')}/') {
               navBarIndexNotifier.value = 0;
@@ -57,10 +60,17 @@ class HomePage extends StatelessWidget {
             }
           },
           onNavigationRequest: (request) async {
+            if (request.url.startsWith('tel:') ||
+                (request.url.startsWith('https://apps.apple.com')) ||
+                (request.url.startsWith('https://play.google.com'))) {
+              launchUrl(Uri.parse(request.url));
+            }
             if (request.url.startsWith(dotenv.get('BASE_URL')) ||
                 (request.url.startsWith('https://info.kivach.ru')) ||
                 (request.url.startsWith('https://kivach.diet')) ||
                 (request.url.startsWith('https://lecture.kivach.ru')) ||
+                (request.url.startsWith('https://kivach.ru')) ||
+                (request.url.startsWith('https://kivachlab.ru')) ||
                 (request.url.startsWith('https://www.youtube.com'))) {
               return NavigationDecision.navigate;
             }
@@ -72,19 +82,33 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFF3F5F6),
       extendBodyBehindAppBar: true,
-      body: Padding(
-        padding: const EdgeInsets.only(top: kToolbarHeight),
-        child: Stack(
-          clipBehavior: Clip.antiAlias,
-          children: [
-            WebViewWidget(
-              controller: webViewController,
+      body: Stack(
+        children: [
+          Obx(
+            () => Padding(
+              padding: EdgeInsets.only(
+                top: homePageController.isInternalSite.value
+                    ? kToolbarHeight
+                    : kToolbarHeight * 2,
+              ),
+              child: WebViewWidget(
+                controller: webViewController,
+              ),
             ),
-            CustomAppBar(
-                customAppBarController: customAppBarController,
-                webViewController: webViewController),
-          ],
-        ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: kToolbarHeight),
+            child: Obx(
+              () => CustomAppBar(
+                customAppBarController: homePageController,
+                webViewController: webViewController,
+                width: homePageController.isInternalSite.value
+                    ? Get.width - 60
+                    : Get.width - 5,
+              ),
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: ValueListenableBuilder(
         valueListenable: navBarIndexNotifier,
@@ -149,17 +173,19 @@ class CustomAppBar extends StatelessWidget {
     super.key,
     required this.customAppBarController,
     required this.webViewController,
+    this.width,
   });
 
-  final CustomAppBarController customAppBarController;
+  final HomePageController customAppBarController;
   final WebViewController webViewController;
+  final double? width;
 
   @override
   Widget build(BuildContext context) {
     final avatarController = Get.put(AvatarController());
     return Container(
       height: kToolbarHeight,
-      width: Get.width - 60,
+      width: width,
       alignment: Alignment.centerLeft,
       child: Row(
         children: [
@@ -237,5 +263,23 @@ class CustomAppBar extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class LeadingOfCustomAppBar extends StatelessWidget {
+  const LeadingOfCustomAppBar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
+}
+
+class ActionsOfCustomAppBar extends StatelessWidget {
+  const ActionsOfCustomAppBar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
   }
 }
