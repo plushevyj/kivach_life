@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../../core/themes/light_theme.dart';
 
 class ButtonForForm extends StatelessWidget {
   const ButtonForForm({
@@ -22,8 +25,8 @@ class ButtonForForm extends StatelessWidget {
       child: child ??
           Text(
             text!,
-            style: const TextStyle(
-              fontSize: 16,
+            style: TextStyle(
+              fontSize: isSmallScreen ? 14 : 16,
               color: Colors.white,
             ),
           ),

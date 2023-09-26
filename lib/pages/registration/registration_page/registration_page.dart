@@ -158,7 +158,8 @@ class RegistrationPage extends StatelessWidget {
                       value: registrationController.isAgree.value,
                     ),
                     SizedBox(
-                      width: Get.width * 0.8,
+                      width:
+                          Get.width - pagePadding.left - pagePadding.right - 40,
                       child: const Text(
                         'Согласен с условиями пользовательского соглашения '
                         'и политикой обработки персональных данных.',

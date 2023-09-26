@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+final isSmallScreen = Get.width <= 360;
 
 const pagePadding = EdgeInsets.symmetric(horizontal: 20);
 
@@ -44,9 +47,15 @@ final lightTheme = ThemeData(
     focusedErrorBorder: outlineInputBorder,
     disabledBorder: outlineInputBorder,
     enabledBorder: outlineInputBorder,
-    labelStyle: const TextStyle(color: KivachColors.green),
-    suffixIconColor: KivachColors.green,
     errorBorder: outlineInputBorder,
+    // contentPadding: isSmallScreen
+    //     ? const EdgeInsets.symmetric(horizontal: 15, vertical: 20)
+    //     : null,
+    labelStyle: TextStyle(
+      color: KivachColors.green,
+      fontSize: isSmallScreen ? 16 : null,
+    ),
+    suffixIconColor: KivachColors.green,
   ),
   textSelectionTheme: const TextSelectionThemeData(
     cursorColor: KivachColors.green,
@@ -61,7 +70,9 @@ final lightTheme = ThemeData(
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ButtonStyle(
       backgroundColor: MaterialStateProperty.all(KivachColors.green),
-      minimumSize: MaterialStateProperty.all(const Size(double.infinity, 60)),
+      minimumSize: MaterialStateProperty.all(
+        Size(double.infinity, isSmallScreen ? 55 : 60),
+      ),
       shape: MaterialStateProperty.all(
         RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),

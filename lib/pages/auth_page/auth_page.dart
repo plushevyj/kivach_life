@@ -33,75 +33,79 @@ class AuthorizationPage extends StatelessWidget {
       child: Scaffold(
         persistentFooterAlignment: AlignmentDirectional.center,
         body: SafeArea(
-          child: Padding(
-            padding: pagePadding,
-            child: Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SvgPicture.asset(
-                    'assets/images/logo.svg',
-                    width: 250,
+          child: Center(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: pagePadding,
+                child: Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SvgPicture.asset(
+                        'assets/images/logo.svg',
+                        width: 250,
+                      ),
+                      const SizedBox(height: 20),
+                      TextFieldForForm(
+                        controller: loginController,
+                        hint: 'Логин',
+                      ),
+                      const SizedBox(height: 20),
+                      TextFieldForForm(
+                        controller: passwordController,
+                        hint: 'Пароль',
+                        isPassword: true,
+                        onSubmitted: (_) {
+                          if (loginController.text.isNotEmpty &&
+                              passwordController.text.isNotEmpty) {
+                            Get.context!.read<AuthenticationBloc>().add(
+                                  LogIn(
+                                    username: loginController.text,
+                                    password: passwordController.text,
+                                  ),
+                                );
+                          }
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      Obx(
+                        () => ButtonForForm(
+                          text:
+                              !authPageController.isLoading.value ? 'ВОЙТИ' : null,
+                          child: authPageController.isLoading.value
+                              ? const CircularProgressIndicator(color: Colors.white)
+                              : null,
+                          onPressed: () {
+                            if (loginController.text.isNotEmpty &&
+                                passwordController.text.isNotEmpty) {
+                              Get.context!.read<AuthenticationBloc>().add(
+                                    LogIn(
+                                      username: loginController.text,
+                                      password: passwordController.text,
+                                    ),
+                                  );
+                            }
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      TextButton(
+                        onPressed: () => Get.toNamed('/reset'),
+                        child: const Text(
+                          'Забыли пароль?',
+                          style: TextStyle(color: KivachColors.green),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () => Get.toNamed('/registration/qr'),
+                        child: const Text(
+                          'Зарегистрироваться',
+                          style: TextStyle(color: KivachColors.green),
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 20),
-                  TextFieldForForm(
-                    controller: loginController,
-                    hint: 'Логин',
-                  ),
-                  const SizedBox(height: 20),
-                  TextFieldForForm(
-                    controller: passwordController,
-                    hint: 'Пароль',
-                    isPassword: true,
-                    onSubmitted: (_) {
-                      if (loginController.text.isNotEmpty &&
-                          passwordController.text.isNotEmpty) {
-                        Get.context!.read<AuthenticationBloc>().add(
-                              LogIn(
-                                username: loginController.text,
-                                password: passwordController.text,
-                              ),
-                            );
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  Obx(
-                    () => ButtonForForm(
-                      text:
-                          !authPageController.isLoading.value ? 'ВОЙТИ' : null,
-                      child: authPageController.isLoading.value
-                          ? const CircularProgressIndicator(color: Colors.white)
-                          : null,
-                      onPressed: () {
-                        if (loginController.text.isNotEmpty &&
-                            passwordController.text.isNotEmpty) {
-                          Get.context!.read<AuthenticationBloc>().add(
-                                LogIn(
-                                  username: loginController.text,
-                                  password: passwordController.text,
-                                ),
-                              );
-                        }
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  TextButton(
-                    onPressed: () => Get.toNamed('/reset'),
-                    child: const Text(
-                      'Забыли пароль?',
-                      style: TextStyle(color: KivachColors.green),
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () => Get.toNamed('/registration/qr'),
-                    child: const Text(
-                      'Зарегистрироваться',
-                      style: TextStyle(color: KivachColors.green),
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
           ),

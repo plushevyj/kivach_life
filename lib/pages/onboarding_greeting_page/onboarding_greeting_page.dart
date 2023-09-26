@@ -89,7 +89,9 @@ class GreetingOnboardingPage extends StatelessWidget {
                     );
                   },
                   effect: const ExpandingDotsEffect(
-                      expansionFactor: 2, activeDotColor: KivachColors.green),
+                    expansionFactor: 2,
+                    activeDotColor: KivachColors.green,
+                  ),
                   controller: onboardingController.pageController,
                   count: onboardingController.onboardingPagesList.length,
                 ),

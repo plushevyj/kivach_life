@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
+import '../../core/themes/light_theme.dart';
 import '/models/onboarding_info/onboarding_info.dart';
 
 class OnboardingInfoWidget extends StatelessWidget {
@@ -19,14 +21,17 @@ class OnboardingInfoWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SvgPicture.asset(onboardingInfo.image),
+          SvgPicture.asset(
+            onboardingInfo.image,
+            width: isSmallScreen ? 250 : null,
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Text(
               onboardingInfo.title,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 18,
+              style: TextStyle(
+                fontSize: isSmallScreen ? 16 : 18,
                 fontWeight: FontWeight.w500,
               ),
             ),
