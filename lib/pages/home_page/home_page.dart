@@ -85,7 +85,7 @@ class HomePage extends StatelessWidget {
       body: Stack(
         children: [
           Obx(
-            child: Padding(
+            () => Padding(
               padding: EdgeInsets.only(
                 top: GetPlatform.isIOS
                     ? (homePageController.isInternalSite.value
