@@ -38,6 +38,7 @@ class HomePage extends StatelessWidget {
         .addPostFrameCallback((_) => FlutterNativeSplash.remove());
     final navBarIndexNotifier = ValueNotifier(0);
     final homePageController = Get.put(HomePageController());
+    final avatarController = Get.put(AvatarController());
     webViewController
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x00000000))
@@ -80,43 +81,88 @@ class HomePage extends StatelessWidget {
       );
     load(route: '/');
     return Scaffold(
-      backgroundColor: const Color(0xFFF3F5F6),
-      extendBodyBehindAppBar: true,
-      body: Stack(
-        children: [
-          Obx(
-            () => Padding(
-              padding: EdgeInsets.only(
-                top: GetPlatform.isIOS
-                    ? (homePageController.isInternalSite.value
-                        ? kToolbarHeight
-                        : kToolbarHeight * 2)
-                    : (homePageController.isInternalSite.value
-                        ? Get.statusBarHeight - kToolbarHeight
-                        : (Get.statusBarHeight - kToolbarHeight) * 2),
-              ),
-              child: WebViewWidget(
-                controller: webViewController,
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(
-              top: GetPlatform.isIOS
-                  ? kToolbarHeight
-                  : Get.statusBarHeight - kToolbarHeight,
-            ),
-            child: Obx(
-              () => CustomAppBar(
-                customAppBarController: homePageController,
-                webViewController: webViewController,
-                width: homePageController.isInternalSite.value
-                    ? Get.width - 60
-                    : Get.width - 5,
+      appBar: AppBar(
+        backgroundColor: const Color(0xFFF3F5F6),
+        centerTitle: false,
+        leadingWidth: 96,
+        leading: Row(
+          children: [
+            Obx(
+              () => IconButton(
+                onPressed: homePageController.canGoBack.value
+                    ? () => webViewController.goBack()
+                    : null,
+                icon: Icon(
+                  Platform.isIOS
+                      ? Icons.arrow_back_ios
+                      : Icons.arrow_back_outlined,
+                  color: homePageController.canGoBack.value
+                      ? Colors.black
+                      : Colors.grey,
+                ),
               ),
             ),
+            Obx(
+              () => IconButton(
+                onPressed: homePageController.canGoForward.value
+                    ? () => webViewController.goForward()
+                    : null,
+                icon: Icon(
+                  Platform.isIOS
+                      ? Icons.arrow_forward_ios
+                      : Icons.arrow_forward_outlined,
+                  color: homePageController.canGoForward.value
+                      ? Colors.black
+                      : Colors.grey,
+                ),
+              ),
+            ),
+          ],
+        ),
+        title: Row(
+          children: [
+            Obx(
+              () => Skeletonizer(
+                enabled: avatarController.avatarLoading.value,
+                child: CircleAvatar(
+                  radius: 20,
+                  backgroundColor: const Color(0xFFD7D7D7),
+                  foregroundImage: avatarController.image?.image,
+                  child: const Icon(
+                    Icons.person,
+                    size: 20,
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+            if (Get.put(AccountController()).profile.value != null)
+              Flexible(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: Text(
+                    Get.put(AccountController())
+                        .profile
+                        .value!
+                        .patient
+                        .firstname,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(fontSize: 18),
+                  ),
+                ),
+              ),
+          ],
+        ),
+        actions: [
+          IconButton(
+            onPressed: () => Get.toNamed('/settings'),
+            icon: const Icon(Icons.settings, size: 30),
           ),
         ],
+      ),
+      body: WebViewWidget(
+        controller: webViewController,
       ),
       bottomNavigationBar: ValueListenableBuilder(
         valueListenable: navBarIndexNotifier,
@@ -173,103 +219,5 @@ class HomePage extends StatelessWidget {
     };
     webViewController.loadRequest(Uri.parse('${dotenv.get('BASE_URL')}$route'),
         headers: headers);
-  }
-}
-
-class CustomAppBar extends StatelessWidget {
-  const CustomAppBar({
-    super.key,
-    required this.customAppBarController,
-    required this.webViewController,
-    this.width,
-  });
-
-  final HomePageController customAppBarController;
-  final WebViewController webViewController;
-  final double? width;
-
-  @override
-  Widget build(BuildContext context) {
-    final avatarController = Get.put(AvatarController());
-    return Container(
-      height: kToolbarHeight,
-      width: width,
-      alignment: Alignment.centerLeft,
-      child: Row(
-        children: [
-          Expanded(
-            child: Row(
-              children: [
-                Obx(
-                  () => IconButton(
-                    onPressed: customAppBarController.canGoBack.value
-                        ? () => webViewController.goBack()
-                        : null,
-                    icon: Icon(
-                      Platform.isIOS
-                          ? Icons.arrow_back_ios
-                          : Icons.arrow_back_outlined,
-                      color: customAppBarController.canGoBack.value
-                          ? Colors.black
-                          : Colors.grey,
-                    ),
-                  ),
-                ),
-                Obx(
-                  () => IconButton(
-                    onPressed: customAppBarController.canGoForward.value
-                        ? () => webViewController.goForward()
-                        : null,
-                    icon: Icon(
-                      Platform.isIOS
-                          ? Icons.arrow_forward_ios
-                          : Icons.arrow_forward_outlined,
-                      color: customAppBarController.canGoForward.value
-                          ? Colors.black
-                          : Colors.grey,
-                    ),
-                  ),
-                ),
-                Obx(
-                  () => Skeletonizer(
-                    enabled: avatarController.avatarLoading.value,
-                    child: CircleAvatar(
-                      radius: 20,
-                      backgroundColor: const Color(0xFFD7D7D7),
-                      foregroundImage: avatarController.image?.image,
-                      child: const Icon(
-                        Icons.person,
-                        size: 20,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                if (Get.put(AccountController()).profile.value != null)
-                  Flexible(
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 10),
-                      child: Text(
-                        Get.put(AccountController())
-                            .profile
-                            .value!
-                            .patient
-                            .firstname,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(fontSize: 18),
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-          ),
-          IconButton(
-            onPressed: () => Get.toNamed('/settings'),
-            icon: const Icon(Icons.settings, size: 30),
-          ),
-        ],
-      ),
-    );
   }
 }
