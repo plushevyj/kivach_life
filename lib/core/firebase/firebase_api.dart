@@ -24,18 +24,27 @@ class FirebaseApi {
     );
     FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
     FirebaseMessaging.onMessage.listen(_handleMessage);
+    FirebaseMessaging.onBackgroundMessage(_handleBackGroundMessage);
   }
 
   Future<void> sendToken() async {
     final fCMToken = await _firebaseMessaging.getToken();
     if (fCMToken != null) {
       print(fCMToken);
-      // await const PushNotificationsRepository()
-      //     .setTokenPushNotifications(token: fCMToken);
+      await const PushNotificationsRepository()
+          .setTokenPushNotifications(token: fCMToken);
     }
   }
 
   void _handleMessage(RemoteMessage message) {
+    if (kDebugMode) {
+      print(
+          'message = ${message.notification?.title} : ${message.notification?.body}');
+    }
+    showNotificationAlert(message);
+  }
+
+  Future<void> _handleBackGroundMessage(RemoteMessage message) async {
     if (kDebugMode) {
       print(
           'message = ${message.notification?.title} : ${message.notification?.body}');

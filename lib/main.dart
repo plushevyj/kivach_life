@@ -49,7 +49,7 @@ class App extends StatelessWidget {
             listener: (context, state) async {
               if (state is Authenticated) {
                 Get.offNamed('/local_auth');
-                await FirebaseApi().sendToken();
+                // await FirebaseApi().sendToken();
                 // } else if (state is Unauthenticated) {
                 //   Get.offAllNamed('/local_auth');
               } else {
