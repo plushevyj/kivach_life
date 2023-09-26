@@ -87,9 +87,13 @@ class HomePage extends StatelessWidget {
           Obx(
             () => Padding(
               padding: EdgeInsets.only(
-                top: homePageController.isInternalSite.value
-                    ? kToolbarHeight
-                    : kToolbarHeight * 2,
+                top: GetPlatform.isIOS
+                    ? (homePageController.isInternalSite.value
+                        ? kToolbarHeight
+                        : kToolbarHeight * 2)
+                    : (homePageController.isInternalSite.value
+                        ? Get.statusBarHeight - kToolbarHeight
+                        : (Get.statusBarHeight - kToolbarHeight) * 2),
               ),
               child: WebViewWidget(
                 controller: webViewController,
@@ -97,7 +101,11 @@ class HomePage extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: kToolbarHeight),
+            padding: EdgeInsets.only(
+              top: GetPlatform.isIOS
+                  ? kToolbarHeight
+                  : Get.statusBarHeight - kToolbarHeight,
+            ),
             child: Obx(
               () => CustomAppBar(
                 customAppBarController: homePageController,
@@ -263,23 +271,5 @@ class CustomAppBar extends StatelessWidget {
         ],
       ),
     );
-  }
-}
-
-class LeadingOfCustomAppBar extends StatelessWidget {
-  const LeadingOfCustomAppBar({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
-}
-
-class ActionsOfCustomAppBar extends StatelessWidget {
-  const ActionsOfCustomAppBar({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
   }
 }

@@ -8,7 +8,7 @@ import '../../../modules/registration/controller/registration_controller.dart';
 import '../../../widgets/inputs/button_for_form.dart';
 import '../../../widgets/inputs/text_field_for_form.dart';
 
-class RegistrationPage extends StatefulWidget {
+class RegistrationPage extends StatelessWidget {
   const RegistrationPage({
     Key? key,
     required this.registrationToken,
@@ -19,14 +19,9 @@ class RegistrationPage extends StatefulWidget {
   final ProfilePreview profilePreview;
 
   @override
-  State<RegistrationPage> createState() => _RegistrationPageState();
-}
-
-class _RegistrationPageState extends State<RegistrationPage> {
-  @override
   Widget build(BuildContext context) {
-    final registrationController = Get.put(
-        RegistrationController(registrationToken: widget.registrationToken));
+    final registrationController =
+        Get.put(RegistrationController(registrationToken: registrationToken));
     return Scaffold(
       appBar: AppBar(
         title: const Text('Заполните форму'),
@@ -41,7 +36,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
               children: [
                 const SizedBox(height: 20),
                 Text(
-                  'Здравствуйте, ${widget.profilePreview.fullname}.',
+                  'Здравствуйте, ${profilePreview.fullname}.',
                   style: const TextStyle(fontSize: 16),
                 ),
                 const SizedBox(height: 20),
@@ -72,17 +67,25 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   key: registrationController.formPhoneInputKey,
                   child: InternationalPhoneNumberInput(
                     locale: 'RU',
-                    onInputChanged: (_) {},
+                    onInputChanged: (_) {
+                      print(registrationController.phoneFieldController.text);
+                      registrationController.phoneFieldController.text =
+                          registrationController.phoneFieldController.text
+                              .replaceAll(RegExp(r'[a-zA-Zа-яА-ЯёЁ.,]'), '');
+                      registrationController.phoneFieldController.text;
+                    },
                     onInputValidated: (value) {
                       registrationController.isValidatePhoneNumber(value);
                       print(
                           'registrationController.isValidatePhoneNumber = ${registrationController.isValidatePhoneNumber}');
                     },
+                    spaceBetweenSelectorAndTextField: 0,
+                    selectorButtonOnErrorPadding: 0,
                     onSaved: (number) {
                       registrationController.number = number;
                     },
                     selectorConfig: const SelectorConfig(
-                      selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
+                      selectorType: PhoneInputSelectorType.DIALOG,
                     ),
                     searchBoxDecoration: const InputDecoration(
                       labelText:
@@ -100,11 +103,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     initialValue: registrationController.number,
                     textFieldController:
                         registrationController.phoneFieldController,
-                    formatInput: true,
                     keyboardType: const TextInputType.numberWithOptions(
-                      signed: true,
-                      decimal: true,
+                      signed: false,
+                      decimal: false,
                     ),
+                    formatInput: true,
                     inputDecoration: const InputDecoration(
                       labelText: 'Номер телефона',
                     ),
@@ -187,6 +190,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     onPressed: () {
                       registrationController.formPhoneInputKey.currentState
                           ?.save();
+                      print(registrationController.number);
                       registrationController.register(Get.context!);
                     },
                   ),

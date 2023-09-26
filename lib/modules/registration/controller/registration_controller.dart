@@ -42,6 +42,19 @@ class RegistrationController extends GetxController {
   final _tokenRepository = const TokenRepository();
 
   @override
+  void onInit() {
+    usernameFieldController.addListener(() => errorTextUsername.value = null);
+    emailFieldController.addListener(() => errorTextEmail.value = null);
+    phoneFieldController.addListener(() => errorTextPhone.value = null);
+    firstPasswordFieldController
+        .addListener(() => errorTextFirstPassword.value = null);
+    secondPasswordFieldController
+        .addListener(() => errorTextSecondPassword.value = null);
+    isAgree.listen((_) => errorTextAgree.value = null);
+    super.onInit();
+  }
+
+  @override
   void dispose() {
     usernameFieldController.dispose();
     emailFieldController.dispose();
