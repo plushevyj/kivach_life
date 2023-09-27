@@ -26,5 +26,6 @@ class PushNotificationsRepository {
       ),
     );
     print('response.data = ${response.data}');
+    print('response.headers = ${response.headers}');
   }
 }

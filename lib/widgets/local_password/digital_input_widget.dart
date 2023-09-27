@@ -1,3 +1,4 @@
+import 'package:doctor/core/themes/light_theme.dart';
 import 'package:flutter/material.dart';
 
 class DigitalInput extends StatelessWidget {
@@ -49,7 +50,7 @@ class DigitalInput extends StatelessWidget {
                 onPressed: isEnabled ? () => enter(number) : null,
                 icon: Text(
                   number.toString(),
-                  style: const TextStyle(fontSize: 30),
+                  style: TextStyle(fontSize: isSmallScreen ? 26 : 30),
                 ),
               ),
             )
@@ -61,9 +62,9 @@ class DigitalInput extends StatelessWidget {
             : const SizedBox.shrink(),
         IconButton(
           onPressed: isEnabled ? () => enter(0) : null,
-          icon: const Text(
+          icon: Text(
             '0',
-            style: TextStyle(fontSize: 30),
+            style: TextStyle(fontSize: isSmallScreen ? 26 : 30),
           ),
         ),
         ValueListenableBuilder(

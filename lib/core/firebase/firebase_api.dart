@@ -29,8 +29,8 @@ class FirebaseApi {
 
   Future<void> sendToken() async {
     final fCMToken = await _firebaseMessaging.getToken();
+    print('fCMToken = $fCMToken');
     if (fCMToken != null) {
-      print(fCMToken);
       await const PushNotificationsRepository()
           .setTokenPushNotifications(token: fCMToken);
     }

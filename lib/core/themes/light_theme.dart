@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-final isSmallScreen = Get.width <= 360;
+final isSmallScreen = Get.width <= 400 || Get.height <= 550;
+// final isSmallScreen = Get.height <= 412;
 
 const pagePadding = EdgeInsets.symmetric(horizontal: 20);
 

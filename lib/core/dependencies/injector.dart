@@ -19,8 +19,8 @@ import 'observer.dart';
 Future<void> initializeDependencies() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await FirebaseApi().initNotifications();
+  // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  // await FirebaseApi().initNotifications();
   await dotenv.load();
   Bloc.observer = Observer();
   await Hive.initFlutter();

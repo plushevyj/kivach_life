@@ -64,8 +64,6 @@ class BiometricSettingsBloc
       if (kDebugMode) {
         print('error: ${error.toString()}');
       }
-      showErrorAlert(
-          'Произошла ошибка биометрической авторизации на устройстве');
       emit(const ErrorBiometricSettings(
           'Произошла ошибка биометрической авторизации на устройстве'));
     }

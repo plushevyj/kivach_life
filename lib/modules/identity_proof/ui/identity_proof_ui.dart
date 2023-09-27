@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:doctor/core/themes/light_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -57,14 +58,14 @@ Future<bool> identityProof({String? password}) async {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Text(
+                  Text(
                     'ВВЕДИТЕ КОД-ПАРОЛЬ',
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: isSmallScreen ? 16 : 18,
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 25),
                   SizedBox(
                     width: 150,
                     child: DigitalField(
@@ -72,13 +73,13 @@ Future<bool> identityProof({String? password}) async {
                       maxLength: maxLengthLocalPassword,
                     ),
                   ),
-                  const SizedBox(height: 150),
+                  SizedBox(height: Get.height * (isSmallScreen ? 0.1 : 0.15)),
                   DigitalInput(
                     controller: controller.inputController,
                     maxLength: maxLengthLocalPassword,
                     isEnabled: controller.enableDialButtons.value,
                     leftWidget: localAuthSettings.$2
-                        ? Icon(Platform.isIOS ? Icons.face : Icons.fingerprint)
+                        ? const Icon(Icons.fingerprint)
                         : null,
                     leftWidgetAction: localAuthSettings.$2
                         ? () => controller.biometricAction()

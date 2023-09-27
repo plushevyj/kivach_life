@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
@@ -15,6 +16,9 @@ import 'modules/reset_password/bloc/reset_password_bloc.dart';
 
 void main() async {
   await initializeDependencies();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
   runApp(const App());
 }
 
@@ -23,6 +27,8 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('Get.width = ${Get.width}');
+    print('Get.height = ${Get.height}');
     final localPasswordSettingBloc = LocalPasswordSettingBloc();
     return MultiBlocProvider(
       providers: [
@@ -49,7 +55,7 @@ class App extends StatelessWidget {
             listener: (context, state) async {
               if (state is Authenticated) {
                 Get.offNamed('/local_auth');
-                // await FirebaseApi().sendToken();
+                await FirebaseApi().sendToken();
                 // } else if (state is Unauthenticated) {
                 //   Get.offAllNamed('/local_auth');
               } else {

@@ -23,7 +23,7 @@ class OnboardingInfoWidget extends StatelessWidget {
         children: [
           SvgPicture.asset(
             onboardingInfo.image,
-            width: isSmallScreen ? 250 : null,
+            height: isSmallScreen ? 300 : null,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),

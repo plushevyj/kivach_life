@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -80,7 +78,7 @@ class SettingsPage extends StatelessWidget {
                     if (settingsPageController.canAuthByBiometric.value)
                       _SettingButton(
                         title: 'По отпечатку пальца или скану лица',
-                        icon: Platform.isIOS ? Icons.face : Icons.fingerprint,
+                        icon: Icons.fingerprint,
                         onPressed: () => Get.context!
                             .read<BiometricSettingsBloc>()
                             .add(EnableBiometricsLogin(

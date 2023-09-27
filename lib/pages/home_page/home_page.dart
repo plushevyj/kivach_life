@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import '../../modules/account/controllers/account_controller.dart';
-import '../../modules/account/controllers/avatar_controller.dart';
 import '/core/themes/light_theme.dart';
 import '/modules/authentication/repository/token_repository.dart';
 import 'home_page_controller.dart';
+import 'layout/app_bar/appbar_for_small_screen.dart';
+import 'layout/body/body_for_large_screen.dart';
+import 'layout/body/body_for_small_screen.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
@@ -38,7 +38,6 @@ class HomePage extends StatelessWidget {
         .addPostFrameCallback((_) => FlutterNativeSplash.remove());
     final navBarIndexNotifier = ValueNotifier(0);
     final homePageController = Get.put(HomePageController());
-    final avatarController = Get.put(AvatarController());
     webViewController
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x00000000))
@@ -81,89 +80,23 @@ class HomePage extends StatelessWidget {
       );
     load(route: '/');
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xFFF3F5F6),
-        centerTitle: false,
-        leadingWidth: 96,
-        leading: Row(
-          children: [
-            Obx(
-              () => IconButton(
-                onPressed: homePageController.canGoBack.value
-                    ? () => webViewController.goBack()
-                    : null,
-                icon: Icon(
-                  Platform.isIOS
-                      ? Icons.arrow_back_ios
-                      : Icons.arrow_back_outlined,
-                  color: homePageController.canGoBack.value
-                      ? Colors.black
-                      : Colors.grey,
-                ),
-              ),
+      extendBodyBehindAppBar: !isSmallScreen,
+      backgroundColor: const Color(0xFFF3F5F6),
+      // appBar: isSmallScreen
+      //     ? AppBarForSmallScreen(
+      //         webViewController: webViewController,
+      //         homePageController: homePageController,
+      //       )
+      //     : null,
+      body: isSmallScreen
+          ? BodyForLargeScreen(
+              homePageController: homePageController,
+              webViewController: webViewController,
+            )
+          : BodyForLargeScreen(
+              homePageController: homePageController,
+              webViewController: webViewController,
             ),
-            Obx(
-              () => IconButton(
-                onPressed: homePageController.canGoForward.value
-                    ? () => webViewController.goForward()
-                    : null,
-                icon: Icon(
-                  Platform.isIOS
-                      ? Icons.arrow_forward_ios
-                      : Icons.arrow_forward_outlined,
-                  color: homePageController.canGoForward.value
-                      ? Colors.black
-                      : Colors.grey,
-                ),
-              ),
-            ),
-          ],
-        ),
-        title: Row(
-          children: [
-            Obx(
-              () => Skeletonizer(
-                enabled: avatarController.avatarLoading.value,
-                child: CircleAvatar(
-                  radius: 20,
-                  backgroundColor: const Color(0xFFD7D7D7),
-                  foregroundImage: avatarController.image?.image,
-                  child: const Icon(
-                    Icons.person,
-                    size: 20,
-                    color: Colors.grey,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(width: 10),
-            if (Get.put(AccountController()).profile.value != null)
-              Flexible(
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: Text(
-                    Get.put(AccountController())
-                        .profile
-                        .value!
-                        .patient
-                        .firstname,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                ),
-              ),
-          ],
-        ),
-        actions: [
-          IconButton(
-            onPressed: () => Get.toNamed('/settings'),
-            icon: const Icon(Icons.settings, size: 30),
-          ),
-        ],
-      ),
-      body: WebViewWidget(
-        controller: webViewController,
-      ),
       bottomNavigationBar: ValueListenableBuilder(
         valueListenable: navBarIndexNotifier,
         builder: (_, currentIndex, __) {

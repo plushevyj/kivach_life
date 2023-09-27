@@ -1,5 +1,3 @@
-import 'dart:io' show Platform;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -64,7 +62,7 @@ class LocalAuthPage extends StatelessWidget {
                     () => Skeletonizer(
                       enabled: avatarController.avatarLoading.value,
                       child: CircleAvatar(
-                        radius: 40,
+                        radius: isSmallScreen ? 36 : 40,
                         backgroundColor: const Color(0xFFD7D7D7),
                         foregroundImage: avatarController.image?.image,
                         child: const Icon(
@@ -83,18 +81,20 @@ class LocalAuthPage extends StatelessWidget {
                       maxLength: maxLengthLocalPassword,
                     ),
                   ),
-                  const SizedBox(height: 150),
+                  SizedBox(height: Get.height * (isSmallScreen ? 0.1 : 0.15)),
                   Obx(
                     () => DigitalInput(
                       controller: localPasswordPageController.password,
                       maxLength: maxLengthLocalPassword,
                       isEnabled:
                           localPasswordPageController.enableDialButtons.value,
-                      leftWidget: const Text('ВЫЙТИ'),
+                      leftWidget: Text(
+                        'ВЫЙТИ',
+                        style: TextStyle(fontSize: isSmallScreen ? 12 : null),
+                      ),
                       leftWidgetAction: () => showLogOutAlert(),
                       rightWidget: state.localAuthenticationSetting.$2
-                          ? Icon(
-                              Platform.isIOS ? Icons.face : Icons.fingerprint)
+                          ? const Icon(Icons.fingerprint)
                           : null,
                       rightWidgetAction: state.localAuthenticationSetting.$2
                           ? () => Get.context!
