@@ -33,7 +33,7 @@ class LocalAuthenticationBloc
       ..deleteBiometricSetting();
     var localAuthSettings =
         await _localAuthenticationRepository.checkLocalAuthenticationSettings();
-    // emit(LocallyNotAuthenticated(localAuthSettings));
+    emit(LocallyNotAuthenticated(localAuthSettings));
   }
 
   Future<void> _onLocallyAuthStarted(

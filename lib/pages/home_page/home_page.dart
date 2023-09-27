@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -10,9 +8,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 import '/core/themes/light_theme.dart';
 import '/modules/authentication/repository/token_repository.dart';
 import 'home_page_controller.dart';
-import 'layout/app_bar/appbar_for_small_screen.dart';
 import 'layout/body/body_for_large_screen.dart';
-import 'layout/body/body_for_small_screen.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);

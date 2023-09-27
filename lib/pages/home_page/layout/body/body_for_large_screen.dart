@@ -17,7 +17,6 @@ class BodyForLargeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appBarPosition = (kToolbarHeight - Get.statusBarHeight).abs();
     return SafeArea(
       child: Stack(
         children: [

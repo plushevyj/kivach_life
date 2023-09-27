@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../core/themes/light_theme.dart';
-
 class VisibilityTextController extends GetxController {
   final visibilityText = true.obs;
 }

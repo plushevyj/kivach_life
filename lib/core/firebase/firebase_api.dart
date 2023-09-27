@@ -8,28 +8,28 @@ class FirebaseApi {
   final _firebaseMessaging = FirebaseMessaging.instance;
 
   Future<void> initNotifications() async {
-    await _firebaseMessaging.setForegroundNotificationPresentationOptions(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
+    print('qwertyui1');
     await _firebaseMessaging.requestPermission(
       alert: true,
       announcement: true,
       badge: true,
       carPlay: true,
-      criticalAlert: true,
+      // criticalAlert: true,
       provisional: true,
       sound: true,
     );
+    await _firebaseMessaging.setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+    print('qwertyui1');
     FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
     FirebaseMessaging.onMessage.listen(_handleMessage);
-    FirebaseMessaging.onBackgroundMessage(_handleBackGroundMessage);
   }
 
   Future<void> sendToken() async {
     final fCMToken = await _firebaseMessaging.getToken();
-    print('fCMToken = $fCMToken');
     if (fCMToken != null) {
       await const PushNotificationsRepository()
           .setTokenPushNotifications(token: fCMToken);
@@ -37,14 +37,6 @@ class FirebaseApi {
   }
 
   void _handleMessage(RemoteMessage message) {
-    if (kDebugMode) {
-      print(
-          'message = ${message.notification?.title} : ${message.notification?.body}');
-    }
-    showNotificationAlert(message);
-  }
-
-  Future<void> _handleBackGroundMessage(RemoteMessage message) async {
     if (kDebugMode) {
       print(
           'message = ${message.notification?.title} : ${message.notification?.body}');

@@ -1,3 +1,6 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,6 +10,7 @@ import 'core/dependencies/injector.dart';
 import 'core/firebase/firebase_api.dart';
 import 'core/pages.dart';
 import 'core/themes/light_theme.dart';
+import 'firebase_options.dart';
 import 'modules/biometric_settings/bloc/biometric_settings_bloc.dart';
 import 'modules/local_authentication/bloc/local_authentication_bloc.dart';
 import 'modules/local_password_settings/bloc/local_password_settings_bloc.dart';
@@ -14,8 +18,18 @@ import 'modules/authentication/bloc/authentication_bloc.dart';
 import 'modules/in_app_update/bloc/in_app_update_bloc.dart';
 import 'modules/reset_password/bloc/reset_password_bloc.dart';
 
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // await Firebase.initializeApp(name: 'Kivach Live', options: DefaultFirebaseOptions.currentPlatform);
+
+  if (kDebugMode) {
+    print(
+        'message = ${message.notification?.title} : ${message.notification?.body}');
+  }
+}
+
 void main() async {
   await initializeDependencies();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
@@ -27,8 +41,6 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('Get.width = ${Get.width}');
-    print('Get.height = ${Get.height}');
     final localPasswordSettingBloc = LocalPasswordSettingBloc();
     return MultiBlocProvider(
       providers: [
