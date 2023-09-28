@@ -50,20 +50,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBWTlDD1W12OtTQkygSD39-SKTHjBGIIZY',
-    appId: '1:1042088801612:android:c22dd98d0550a436b48be9',
-    messagingSenderId: '1042088801612',
-    projectId: 'kivach-life',
-    storageBucket: 'kivach-life.appspot.com',
+    apiKey: 'AIzaSyC7dxedYlj__DWYgZG9ieooi3Kb8TbFNtg',
+    appId: '1:138952236791:android:d8a068527c18d07037fdf2',
+    messagingSenderId: '138952236791',
+    projectId: 'kivach-test',
+    storageBucket: 'kivach-test.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyC8EP5eAycqoOYYJ1iYG2Vjo8UQ68aXm0A',
-    appId: '1:1042088801612:ios:122d708200a259a1b48be9',
-    messagingSenderId: '1042088801612',
-    projectId: 'kivach-life',
-    storageBucket: 'kivach-life.appspot.com',
-    androidClientId: '1042088801612-8ubv8636lmbbn0254kob1s6ctkpor9b1.apps.googleusercontent.com',
+    apiKey: 'AIzaSyAiLfl3s8n8tATg21Z0mN_Gk0-kIp-gfeA',
+    appId: '1:138952236791:ios:4cdb4cf9f35605c537fdf2',
+    messagingSenderId: '138952236791',
+    projectId: 'kivach-test',
+    storageBucket: 'kivach-test.appspot.com',
+    iosClientId: '138952236791-86b8alkruakjiqvvp8mld3hq4qv4knsk.apps.googleusercontent.com',
     iosBundleId: 'test.kivach.doctor',
   );
 }

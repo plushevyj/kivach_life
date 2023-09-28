@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:doctor/widgets/alerts.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 
@@ -22,6 +23,19 @@ class DioClient {
       }
       ..interceptors.add(
         InterceptorsWrapper(
+          onRequest: (options, handler) {
+            print('\n\n\n');
+            print('=========REQUEST=========');
+            print(options.path);
+            print('data = ${options.data}');
+            print('headers = ${options.headers}');
+            print('\n\n\n');
+            if (options.path == '/api/push-token/set')
+              showSuccessAlert(
+                  '${options.path}\n data = ${options.data} \n headers = ${options.headers}',
+                  duration: Duration(seconds: 60));
+            handler.next(options);
+          },
           onError: _throwError,
         ),
       );

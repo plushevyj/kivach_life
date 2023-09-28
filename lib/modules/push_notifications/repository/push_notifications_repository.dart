@@ -13,7 +13,7 @@ class PushNotificationsRepository {
     required String token,
   }) async {
     final data = {'token': token};
-    final response = await handleRequest(
+    await handleRequest(
       () => _dio.post(
         '/api/push-token/set',
         data: data,
@@ -25,7 +25,5 @@ class PushNotificationsRepository {
         ),
       ),
     );
-    print('response.data = ${response.data}');
-    print('response.headers = ${response.headers}');
   }
 }

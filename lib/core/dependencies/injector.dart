@@ -21,14 +21,11 @@ import 'observer.dart';
 Future<void> initializeDependencies() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  print('kek1');
   await Firebase.initializeApp(
     name: 'kivach-life',
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  print('kek2');
   await FirebaseApi().initNotifications();
-  print('kek3');
   await dotenv.load();
   Bloc.observer = Observer();
   await Hive.initFlutter();

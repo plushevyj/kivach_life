@@ -1,5 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 
 import '../../modules/push_notifications/repository/push_notifications_repository.dart';
 import '/widgets/alerts.dart';
@@ -8,14 +10,9 @@ class FirebaseApi {
   final _firebaseMessaging = FirebaseMessaging.instance;
 
   Future<void> initNotifications() async {
-    print('qwertyui1');
     await _firebaseMessaging.requestPermission(
       alert: true,
-      announcement: true,
       badge: true,
-      carPlay: true,
-      // criticalAlert: true,
-      provisional: true,
       sound: true,
     );
     await _firebaseMessaging.setForegroundNotificationPresentationOptions(
@@ -23,24 +20,19 @@ class FirebaseApi {
       badge: true,
       sound: true,
     );
-    print('qwertyui1');
-    FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
-    FirebaseMessaging.onMessage.listen(_handleMessage);
   }
 
   Future<void> sendToken() async {
-    final fCMToken = await _firebaseMessaging.getToken();
-    if (fCMToken != null) {
-      await const PushNotificationsRepository()
-          .setTokenPushNotifications(token: fCMToken);
+    try {
+      final fCMToken = await _firebaseMessaging.getToken();
+      await Clipboard.setData(ClipboardData(text: fCMToken.toString()));
+      if (fCMToken != null) {
+        await const PushNotificationsRepository()
+            .setTokenPushNotifications(token: fCMToken);
+      }
+    } catch (error) {
+      showErrorAlert(error.toString());
+      await Clipboard.setData(ClipboardData(text: error.toString()));
     }
-  }
-
-  void _handleMessage(RemoteMessage message) {
-    if (kDebugMode) {
-      print(
-          'message = ${message.notification?.title} : ${message.notification?.body}');
-    }
-    showNotificationAlert(message);
   }
 }
