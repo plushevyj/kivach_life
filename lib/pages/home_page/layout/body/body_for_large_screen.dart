@@ -20,8 +20,16 @@ class BodyForLargeScreen extends StatelessWidget {
     return SafeArea(
       child: Stack(
         children: [
-          WebViewWidget(
-            controller: webViewController,
+          Obx(
+            () => Container(
+              padding: EdgeInsets.only(
+                  top: homePageController.isInternalSite.value
+                      ? 0
+                      : kToolbarHeight),
+              child: WebViewWidget(
+                controller: webViewController,
+              ),
+            ),
           ),
           Obx(
             () => AppBarForLargeScreen(

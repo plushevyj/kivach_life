@@ -31,13 +31,13 @@ void showNotificationAlert(RemoteMessage message,
   Get.snackbar(
     message.notification?.title ?? 'Уведомление',
     message.notification?.body ?? '404',
-    mainButton: TextButton(
-      child: const Text(
-        'Перейти',
-        style: TextStyle(color: Colors.blue),
-      ),
-      onPressed: () {},
-    ),
+    // mainButton: TextButton(
+    //   child: const Text(
+    //     'Перейти',
+    //     style: TextStyle(color: Colors.blue),
+    //   ),
+    //   onPressed: () {},
+    // ),
     duration: duration,
     boxShadows: [
       BoxShadow(

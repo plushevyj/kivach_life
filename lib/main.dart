@@ -14,18 +14,13 @@ import 'modules/local_password_settings/bloc/local_password_settings_bloc.dart';
 import 'modules/authentication/bloc/authentication_bloc.dart';
 import 'modules/in_app_update/bloc/in_app_update_bloc.dart';
 import 'modules/reset_password/bloc/reset_password_bloc.dart';
-import 'widgets/alerts.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
-Future<void> _handleMessage(RemoteMessage message) async {
-  showNotificationAlert(message);
-}
 
 void main() async {
   await initializeDependencies();
+
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
-  FirebaseMessaging.onMessage.listen((_) {});
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:doctor/widgets/alerts.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -65,23 +67,6 @@ class DioClient {
       }
     }
     handler.reject(error);
-
-    // String? exceptionText;
-    // if (error.response != null) {
-    //   exceptionText = error.response?.data['detail'].toString();
-    // } else {
-    //   switch (error.error.runtimeType) {
-    //     case SocketException:
-    //       error.error.toString().contains('Failed host lookup')
-    //           ? exceptionText = 'Ошибка подключения к серверу'
-    //           : exceptionText = 'Отсутствует подключение к интернету';
-    //       break;
-    //     default:
-    //       exceptionText = 'Возникло исключение:\n${error.error}';
-    //   }
-    //   return;
-    // }
-    // if (exceptionText != null) throw exceptionText;
   }
 }
 

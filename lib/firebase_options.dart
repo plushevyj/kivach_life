@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyC7dxedYlj__DWYgZG9ieooi3Kb8TbFNtg',
-    appId: '1:138952236791:android:d8a068527c18d07037fdf2',
+    appId: '1:138952236791:android:c21110c7c76bc2ce37fdf2',
     messagingSenderId: '138952236791',
     projectId: 'kivach-test',
     storageBucket: 'kivach-test.appspot.com',
@@ -59,11 +59,10 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAiLfl3s8n8tATg21Z0mN_Gk0-kIp-gfeA',
-    appId: '1:138952236791:ios:4cdb4cf9f35605c537fdf2',
+    appId: '1:138952236791:ios:21032ae6410557a837fdf2',
     messagingSenderId: '138952236791',
     projectId: 'kivach-test',
     storageBucket: 'kivach-test.appspot.com',
-    iosClientId: '138952236791-86b8alkruakjiqvvp8mld3hq4qv4knsk.apps.googleusercontent.com',
-    iosBundleId: 'test.kivach.doctor',
+    iosBundleId: 'ru.kivach.doctor',
   );
 }

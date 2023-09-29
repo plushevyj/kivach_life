@@ -20,6 +20,11 @@ class FirebaseApi {
       badge: true,
       sound: true,
     );
+    FirebaseMessaging.onMessage.listen((message) {});
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      print('ekekekekekekekekekekkeke');
+      showNotificationAlert(message);
+    });
   }
 
   Future<void> sendToken() async {
