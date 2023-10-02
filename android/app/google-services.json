@@ -1,40 +1,123 @@
 {
   "project_info": {
-    "project_number": "138952236791",
-    "project_id": "kivach-test",
-    "storage_bucket": "kivach-test.appspot.com"
+    "project_number": "1042088801612",
+    "project_id": "kivach-life",
+    "storage_bucket": "kivach-life.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:138952236791:android:d8a068527c18d07037fdf2",
+        "mobilesdk_app_id": "1:1042088801612:android:68985958da2bbabeb48be9",
         "android_client_info": {
-          "package_name": "test.kivach.doctor"
+          "package_name": "ru.kivach.doctor"
         }
       },
       "oauth_client": [
         {
-          "client_id": "138952236791-th78oldnpl69olbdcibus8ea85qn57m2.apps.googleusercontent.com",
+          "client_id": "1042088801612-4u8fn9cqcl9puvfme0dmif7b8ffu2bi3.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC7dxedYlj__DWYgZG9ieooi3Kb8TbFNtg"
+          "current_key": "AIzaSyBWTlDD1W12OtTQkygSD39-SKTHjBGIIZY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "138952236791-th78oldnpl69olbdcibus8ea85qn57m2.apps.googleusercontent.com",
+              "client_id": "1042088801612-4u8fn9cqcl9puvfme0dmif7b8ffu2bi3.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "138952236791-86b8alkruakjiqvvp8mld3hq4qv4knsk.apps.googleusercontent.com",
+              "client_id": "1042088801612-v3s5iokr6hiv259mas43s25lmi69fesd.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "test.kivach.doctor"
+                "bundle_id": "com.kivach.life",
+                "app_store_id": "1594326685"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1042088801612:android:a070828516cbd0e2b48be9",
+        "android_client_info": {
+          "package_name": "ru.kivach.life"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1042088801612-8ubv8636lmbbn0254kob1s6ctkpor9b1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ru.kivach.life",
+            "certificate_hash": "e5a601b1630757a9c08397072dc468d87f5e6cb9"
+          }
+        },
+        {
+          "client_id": "1042088801612-4u8fn9cqcl9puvfme0dmif7b8ffu2bi3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWTlDD1W12OtTQkygSD39-SKTHjBGIIZY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1042088801612-4u8fn9cqcl9puvfme0dmif7b8ffu2bi3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1042088801612-v3s5iokr6hiv259mas43s25lmi69fesd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.kivach.life",
+                "app_store_id": "1594326685"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1042088801612:android:c22dd98d0550a436b48be9",
+        "android_client_info": {
+          "package_name": "test.kivach.doctor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1042088801612-4u8fn9cqcl9puvfme0dmif7b8ffu2bi3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWTlDD1W12OtTQkygSD39-SKTHjBGIIZY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1042088801612-4u8fn9cqcl9puvfme0dmif7b8ffu2bi3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1042088801612-v3s5iokr6hiv259mas43s25lmi69fesd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.kivach.life",
+                "app_store_id": "1594326685"
               }
             }
           ]

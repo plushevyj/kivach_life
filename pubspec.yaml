@@ -3,7 +3,7 @@ description: Мобильное приложение Кивач
 
 publish_to: 'none'
 
-version: 1.0.0+1
+version: 3.0.0+1
 
 environment:
   sdk: '>=3.0.5 <4.0.0'
@@ -44,6 +44,7 @@ dependencies:
   webview_flutter_wkwebview: ^3.7.4
   url_launcher: ^6.1.14
   fk_user_agent: ^2.1.0
+  playx_version_update: ^0.0.3
 
 dev_dependencies:
   flutter_test:

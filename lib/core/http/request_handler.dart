@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 
@@ -15,6 +17,9 @@ Future<Response> handleRequest(dynamic request) async {
       'Error is: ${error.error}\n'
       'Data is: ${error.response != null ? error.response!.data : 'NULL'}',
     );
+    if (error.error.runtimeType == SocketException) {
+      throw 'Ошибка соединения с сервером или отсутствует подключение к интернету';
+    }
     throw error.response?.data['message'] ?? error.error;
   } catch (error) {
     rethrow;

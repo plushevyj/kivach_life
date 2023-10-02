@@ -1,9 +1,10 @@
 import 'dart:async';
 
-import 'package:doctor/core/themes/light_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+
+import '/core/themes/light_theme.dart';
 import '/widgets/local_password/digital_field.dart';
 import '/widgets/local_password/digital_input_widget.dart';
 import '../controller/identity_proof_controller.dart';

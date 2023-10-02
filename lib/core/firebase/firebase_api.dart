@@ -1,9 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 
-import '../../modules/push_notifications/repository/push_notifications_repository.dart';
+import '/modules/push_notifications/repository/push_notifications_repository.dart';
 import '/widgets/alerts.dart';
 
 class FirebaseApi {
@@ -22,7 +19,6 @@ class FirebaseApi {
     );
     FirebaseMessaging.onMessage.listen((message) {});
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      print('ekekekekekekekekekekkeke');
       showNotificationAlert(message);
     });
   }
@@ -30,14 +26,12 @@ class FirebaseApi {
   Future<void> sendToken() async {
     try {
       final fCMToken = await _firebaseMessaging.getToken();
-      await Clipboard.setData(ClipboardData(text: fCMToken.toString()));
       if (fCMToken != null) {
         await const PushNotificationsRepository()
             .setTokenPushNotifications(token: fCMToken);
       }
     } catch (error) {
       showErrorAlert(error.toString());
-      await Clipboard.setData(ClipboardData(text: error.toString()));
     }
   }
 }

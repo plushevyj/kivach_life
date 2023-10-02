@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:doctor/widgets/alerts.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 
 import '/modules/authentication/repository/login_repository.dart';
+import '/widgets/alerts.dart';
 import '/modules/authentication/repository/token_repository.dart';
 
 class DioClient {
@@ -25,19 +25,19 @@ class DioClient {
       }
       ..interceptors.add(
         InterceptorsWrapper(
-          onRequest: (options, handler) {
-            print('\n\n\n');
-            print('=========REQUEST=========');
-            print(options.path);
-            print('data = ${options.data}');
-            print('headers = ${options.headers}');
-            print('\n\n\n');
-            if (options.path == '/api/push-token/set')
-              showSuccessAlert(
-                  '${options.path}\n data = ${options.data} \n headers = ${options.headers}',
-                  duration: Duration(seconds: 60));
-            handler.next(options);
-          },
+          // onRequest: (options, handler) {
+          //   print('\n\n\n');
+          //   print('=========REQUEST=========');
+          //   print(options.path);
+          //   print('data = ${options.data}');
+          //   print('headers = ${options.headers}');
+          //   print('\n\n\n');
+          //   if (options.path == '/api/push-token/set')
+          //     showSuccessAlert(
+          //         '${options.path}\n data = ${options.data} \n headers = ${options.headers}',
+          //         duration: Duration(seconds: 60));
+          //   handler.next(options);
+          // },
           onError: _throwError,
         ),
       );

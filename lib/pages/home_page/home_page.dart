@@ -4,6 +4,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
 import '/core/themes/light_theme.dart';
 import '/modules/authentication/repository/token_repository.dart';
@@ -13,13 +14,17 @@ import 'layout/body/body_for_large_screen.dart';
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
 
-  static PlatformWebViewControllerCreationParams params =
-      // WebViewPlatform.instance is WebKitWebViewPlatform
-      // ? WebKitWebViewControllerCreationParams(
-      //     allowsInlineMediaPlayback: true,
-      //     mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{})
-      // :
-      const PlatformWebViewControllerCreationParams();
+  static PlatformWebViewControllerCreationParams params = (() {
+    if (GetPlatform.isIOS) {
+      return const PlatformWebViewControllerCreationParams();
+    } else {
+      return WebViewPlatform.instance is WebKitWebViewPlatform
+          ? WebKitWebViewControllerCreationParams(
+              allowsInlineMediaPlayback: true,
+              mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{})
+          : const PlatformWebViewControllerCreationParams();
+    }
+  })();
 
   final webViewController = WebViewController.fromPlatformCreationParams(
     params,
