@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
 import '../../../modules/authentication/repository/token_repository.dart';
 import 'profile_settings_page_controller.dart';
@@ -9,23 +10,43 @@ import 'profile_settings_page_controller.dart';
 class ProfileSettingPage extends StatelessWidget {
   ProfileSettingPage({super.key});
 
-  static PlatformWebViewControllerCreationParams params =
-      // WebViewPlatform.instance is WebKitWebViewPlatform
-      // ? WebKitWebViewControllerCreationParams(
-      //     allowsInlineMediaPlayback: true,
-      //     mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{})
-      // :
-      const PlatformWebViewControllerCreationParams();
+  static PlatformWebViewControllerCreationParams params = (() {
+    print('kek');
+    print(
+        'WebViewPlatform.instance is WebKitWebViewPlatform = ${WebViewPlatform.instance is WebKitWebViewPlatform}');
+    if (GetPlatform.isIOS) {
+      return const PlatformWebViewControllerCreationParams();
+    } else {
+      // return WebViewPlatform.instance is WebKitWebViewPlatform
+      //     ? WebKitWebViewControllerCreationParams(
+      //         allowsInlineMediaPlayback: true,
+      //         mediaTypesRequiringUserAction: const {
+      //           PlaybackMediaTypes.audio,
+      //           PlaybackMediaTypes.video,
+      //         },
+      //       )
+      //     : const PlatformWebViewControllerCreationParams();
+      return WebKitWebViewControllerCreationParams(
+        allowsInlineMediaPlayback: true,
+        mediaTypesRequiringUserAction: const {
+          PlaybackMediaTypes.audio,
+          PlaybackMediaTypes.video,
+        },
+      );
+    }
+  })();
 
   final webViewController = WebViewController.fromPlatformCreationParams(
     params,
     onPermissionRequest: (request) {
+      print('request = ${request.types}');
       request.grant();
     },
   );
 
   @override
   Widget build(BuildContext context) {
+    print('params = ${params}');
     Get.put(ProfileSettingsPageController());
     webViewController
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
@@ -64,3 +85,4 @@ class ProfileSettingPage extends StatelessWidget {
         headers: headers);
   }
 }
+
