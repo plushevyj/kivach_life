@@ -41,6 +41,7 @@ class ResetPasswordBloc extends Bloc<ResetPasswordEvent, ResetPasswordState> {
         throw 'Неизвестный номер телефона';
       }
       emit(const SuccessNumber());
+      emit(const ReadyToSendCode());
     } catch (error) {
       emit(ErrorResetPasswordState(error.toString()));
     }

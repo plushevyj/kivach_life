@@ -54,30 +54,23 @@ class RegistrationPage extends StatelessWidget {
                   controller: registrationController.emailFieldController,
                   hint: 'Email',
                   errorText: registrationController.errorTextEmail.value,
-                  // validator: registrationController.validatorEmail,z
                 ),
                 const SizedBox(height: 20),
-                // TextFieldForForm(
-                //   controller: registrationController.phoneFieldController,
-                //   hint: 'Телефон',
-                //   errorText: registrationController.errorTextPhone.value,
-                //   // validator: registrationController.validatorPhone,
-                // ),
                 Form(
                   key: registrationController.formPhoneInputKey,
                   child: InternationalPhoneNumberInput(
                     locale: 'RU',
                     onInputChanged: (_) {
-                      print(registrationController.phoneFieldController.text);
+                      final cursorPosition =
+                          registrationController.phoneFieldController.selection;
                       registrationController.phoneFieldController.text =
                           registrationController.phoneFieldController.text
                               .replaceAll(RegExp(r'[a-zA-Zа-яА-ЯёЁ.,]'), '');
-                      registrationController.phoneFieldController.text;
+                      registrationController.phoneFieldController.selection =
+                          cursorPosition;
                     },
                     onInputValidated: (value) {
                       registrationController.isValidatePhoneNumber(value);
-                      print(
-                          'registrationController.isValidatePhoneNumber = ${registrationController.isValidatePhoneNumber}');
                     },
                     spaceBetweenSelectorAndTextField: 0,
                     selectorButtonOnErrorPadding: 0,

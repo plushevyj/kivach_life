@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
-import '../pages/reset_page/code_reset_page.dart';
-import '../pages/reset_page/reset_page.dart';
+import '../pages/reset_page/code_reset_page/code_reset_page.dart';
+import '../pages/reset_page/reset_page/reset_page.dart';
 import '/pages/onboarding_greeting_page/onboarding_greeting_page.dart';
 import '/pages/onboarding_settings_page/onboarding_settings_page.dart';
 import '/pages/auth_page/auth_page.dart';

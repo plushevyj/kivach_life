@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
-import '../../core/themes/light_theme.dart';
+import '../../../core/themes/light_theme.dart';
 import 'code_reset_controller.dart';
 import '/modules/authentication/bloc/authentication_bloc.dart';
 import '/modules/reset_password/bloc/reset_password_bloc.dart';
@@ -19,12 +19,12 @@ class SMSCodePage extends StatelessWidget {
     return BlocListener<ResetPasswordBloc, ResetPasswordState>(
       listener: (context, state) {
         codeResetController.isLoading(false);
-        if (state is SuccessCode) {
+        if (state is SuccessNumber) {
+          codeResetController.startTimer();
+        } else if (state is SuccessCode) {
           Get.context!
               .read<AuthenticationBloc>()
               .add(const AuthenticateByToken());
-        } else if (state is SuccessNumber) {
-          codeResetController.startTimer();
         } else if (state is ErrorResetPasswordState) {
           showErrorAlert(state.error);
           Get.context!
@@ -76,9 +76,10 @@ class SMSCodePage extends StatelessWidget {
                 () => ButtonForForm(
                   onPressed: !codeResetController.isLoading.value
                       ? () {
-                          codeResetController.isLoading(true);
                           if (codeResetController
                               .textController.text.isNotEmpty) {
+                            codeResetController.isLoading(true);
+
                             Get.context!.read<ResetPasswordBloc>().add(SendCode(
                                 code: codeResetController.textController.text));
                           }

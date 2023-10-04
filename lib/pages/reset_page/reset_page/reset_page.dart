@@ -5,8 +5,8 @@ import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 import '/modules/reset_password/bloc/reset_password_bloc.dart';
 import '/widgets/inputs/button_for_form.dart';
-import '../../core/themes/light_theme.dart';
-import '../../widgets/alerts.dart';
+import '../../../core/themes/light_theme.dart';
+import '../../../widgets/alerts.dart';
 import 'reset_controller.dart';
 
 class ResetPage extends StatelessWidget {
@@ -46,7 +46,17 @@ class ResetPage extends StatelessWidget {
                 const SizedBox(height: 20),
                 InternationalPhoneNumberInput(
                   locale: 'RU',
-                  onInputChanged: (_) {},
+                  onInputChanged: (_) {
+                    final cursorPosition =
+                        resetPageController.phoneFieldController.selection;
+                    resetPageController.phoneFieldController.text =
+                        resetPageController.phoneFieldController.text
+                            .replaceAll(RegExp(r'[a-zA-Zа-яА-ЯёЁ.,]'), '');
+                    resetPageController.phoneFieldController.selection =
+                        cursorPosition;
+                  },
+                  spaceBetweenSelectorAndTextField: 0,
+                  selectorButtonOnErrorPadding: 0,
                   onInputValidated: (value) {
                     resetPageController.isValidate(value);
                   },
@@ -63,13 +73,18 @@ class ResetPage extends StatelessWidget {
                   autoValidateMode: AutovalidateMode.always,
                   selectorTextStyle: const TextStyle(color: Colors.black),
                   initialValue: resetPageController.number,
-                  textFieldController: resetPageController.controller,
+                  textFieldController: resetPageController.phoneFieldController,
                   formatInput: true,
                   keyboardType: const TextInputType.numberWithOptions(
                     signed: true,
                     decimal: true,
                   ),
-                  errorMessage: 'Неверный номер',
+                  validator: (_) {
+                    if (!resetPageController.isValidate.value) {
+                      return 'Неверный номер';
+                    }
+                    return null;
+                  },
                   inputDecoration: const InputDecoration(
                     labelText: 'Номер телефона',
                   ),
@@ -77,19 +92,11 @@ class ResetPage extends StatelessWidget {
                 const SizedBox(height: 20),
                 Obx(
                   () => ButtonForForm(
-                    onPressed: resetPageController.isValidate.value &&
-                            !resetPageController.isLoading.value
-                        ? () {
-                            resetPageController.isLoading(true);
-                            resetPageController.formKey.currentState?.save();
-                            Get.context!.read<ResetPasswordBloc>().add(
-                                  SendNumber(
-                                    phone: resetPageController
-                                            .number.phoneNumber ??
-                                        '',
-                                  ),
-                                );
-                          }
+                    onPressed: !resetPageController.isLoading.value &&
+                            resetPageController.isValidate.value &&
+                            resetPageController
+                                .phoneFieldController.text.isNotEmpty
+                        ? () => resetPageController.sendPhoneNumber()
                         : null,
                     text: !resetPageController.isLoading.value
                         ? 'Получить код подтверждения'

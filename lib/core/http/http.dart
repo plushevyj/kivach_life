@@ -1,11 +1,8 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 
 import '/modules/authentication/repository/login_repository.dart';
-import '/widgets/alerts.dart';
 import '/modules/authentication/repository/token_repository.dart';
 
 class DioClient {

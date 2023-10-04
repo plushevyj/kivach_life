@@ -31,12 +31,12 @@ class RegistrationController extends GetxController {
 
   final keyForm = GlobalKey<FormState>();
 
-  var errorTextUsername = RxnString(null),
-      errorTextEmail = RxnString(null),
-      errorTextPhone = RxnString(null),
-      errorTextFirstPassword = RxnString(null),
-      errorTextSecondPassword = RxnString(null),
-      errorTextAgree = RxnString(null);
+  var errorTextUsername = RxnString(null);
+  var errorTextEmail = RxnString(null);
+  var errorTextPhone = RxnString(null);
+  var errorTextFirstPassword = RxnString(null);
+  var errorTextSecondPassword = RxnString(null);
+  var errorTextAgree = RxnString(null);
 
   final _registrationRepository = const RegistrationRepository();
   final _tokenRepository = const TokenRepository();
@@ -87,9 +87,7 @@ class RegistrationController extends GetxController {
       BlocProvider.of<AuthenticationBloc>(Get.context!)
           .add(const AuthenticateByToken());
     } on DioException catch (error) {
-      if (error.response!.statusCode! >= 500) {
-        showErrorAlert('Запрос не выполнен.');
-      } else if (error.response!.statusCode! >= 400) {
+      if (error.response!.statusCode! == 400) {
         final message = await ConvertTo<RegistrationErrorModel>().item(
             error.response?.data['message'], RegistrationErrorModel.fromJson);
         errorTextUsername.value = message.username?.first;
