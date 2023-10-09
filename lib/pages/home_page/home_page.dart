@@ -153,5 +153,7 @@ class HomePage extends StatelessWidget {
     };
     webViewController.loadRequest(Uri.parse('${dotenv.get('BASE_URL')}$route'),
         headers: headers);
+
+    webViewController;
   }
 }
