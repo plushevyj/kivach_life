@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:intl_phone_field/country_picker_dialog.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 
+import '../code_reset_page/code_reset_page.dart';
 import '/modules/reset_password/bloc/reset_password_bloc.dart';
 import '/widgets/inputs/button_for_form.dart';
 import '../../../core/themes/light_theme.dart';
@@ -19,95 +22,84 @@ class ResetPage extends StatelessWidget {
       listener: (context, state) {
         resetPageController.isLoading(false);
         if (state is SuccessNumber) {
-          Get.offNamed('/reset/sms');
+          Get.to(SMSCodePage(remainingTime: state.remainingTime));
         } else if (state is ErrorResetPasswordState) {
           showErrorAlert(state.error);
+          resetPageController.isLoading(false);
           Get.context!
               .read<ResetPasswordBloc>()
-              .add(const ResetPasswordEventInitial());
+              .add(const GetReadyToSendData());
         }
       },
       child: Scaffold(
         appBar: AppBar(),
         body: Padding(
           padding: pagePadding,
-          child: Form(
-            key: resetPageController.formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  'Восстановление пароля',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: KivachColors.green,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'Восстановление пароля',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: KivachColors.green,
+                ),
+              ),
+              const SizedBox(height: 20),
+              IntlPhoneField(
+                decoration: const InputDecoration(
+                  labelText: 'Номер телефона',
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(),
                   ),
                 ),
-                const SizedBox(height: 20),
-                InternationalPhoneNumberInput(
-                  locale: 'RU',
-                  onInputChanged: (_) {
-                    final cursorPosition =
-                        resetPageController.phoneFieldController.selection;
-                    resetPageController.phoneFieldController.text =
-                        resetPageController.phoneFieldController.text
-                            .replaceAll(RegExp(r'[a-zA-Zа-яА-ЯёЁ.,]'), '');
-                    resetPageController.phoneFieldController.selection =
-                        cursorPosition;
-                  },
-                  spaceBetweenSelectorAndTextField: 0,
-                  selectorButtonOnErrorPadding: 0,
-                  onInputValidated: (value) {
-                    resetPageController.isValidate(value);
-                  },
-                  onSaved: (number) {
-                    resetPageController.number = number;
-                  },
-                  selectorConfig: const SelectorConfig(
-                    selectorType: PhoneInputSelectorType.DIALOG,
-                  ),
-                  searchBoxDecoration: const InputDecoration(
-                    labelText: 'Поиск по наименованиям стран и кодов регионов',
-                  ),
-                  ignoreBlank: false,
-                  autoValidateMode: AutovalidateMode.always,
-                  selectorTextStyle: const TextStyle(color: Colors.black),
-                  initialValue: resetPageController.number,
-                  textFieldController: resetPageController.phoneFieldController,
-                  formatInput: true,
-                  keyboardType: const TextInputType.numberWithOptions(
-                    signed: true,
-                    decimal: true,
-                  ),
-                  validator: (_) {
-                    if (!resetPageController.isValidate.value) {
-                      return 'Неверный номер';
-                    }
-                    return null;
-                  },
-                  inputDecoration: const InputDecoration(
-                    labelText: 'Номер телефона',
-                  ),
+                onChanged: (_) {
+                  resetPageController.phoneErrorMessage = null;
+                },
+                initialCountryCode: 'RU',
+                invalidNumberMessage: 'Неверный номер',
+                disableAutoFillHints: true,
+                autovalidateMode: AutovalidateMode.always,
+                disableLengthCheck: true,
+                languageCode: 'RU',
+                validator: (number) async {
+                  resetPageController.phone = number!.completeNumber;
+                  if (number.number.length < 10) {
+                    resetPageController.isValidate(false);
+                    return 'Неверный номер';
+                  }
+                  resetPageController.isValidate(true);
+                  return resetPageController.phoneErrorMessage;
+                },
+                pickerDialogStyle: PickerDialogStyle(
+                  backgroundColor: Colors.white,
+                  countryNameStyle:
+                      const TextStyle(fontWeight: FontWeight.normal),
+                  searchFieldInputDecoration: null,
+                  searchFieldPadding: null,
                 ),
-                const SizedBox(height: 20),
-                Obx(
-                  () => ButtonForForm(
-                    onPressed: !resetPageController.isLoading.value &&
-                            resetPageController.isValidate.value &&
-                            resetPageController
-                                .phoneFieldController.text.isNotEmpty
-                        ? () => resetPageController.sendPhoneNumber()
-                        : null,
-                    text: !resetPageController.isLoading.value
-                        ? 'Получить код подтверждения'
-                        : null,
-                    child: resetPageController.isLoading.value
-                        ? const CircularProgressIndicator(color: Colors.white)
-                        : null,
-                  ),
-                )
-              ],
-            ),
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  LengthLimitingTextInputFormatter(14),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Obx(
+                () => ButtonForForm(
+                  onPressed: !resetPageController.isLoading.value &&
+                          resetPageController.isValidate.value
+                      ? () => resetPageController
+                          .sendPhoneNumber(resetPageController.phone)
+                      : null,
+                  text: !resetPageController.isLoading.value
+                      ? 'Получить код подтверждения'
+                      : null,
+                  child: resetPageController.isLoading.value
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : null,
+                ),
+              )
+            ],
           ),
         ),
       ),

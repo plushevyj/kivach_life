@@ -107,11 +107,12 @@ class _$RegistrationErrorModelCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_RegistrationErrorModelCopyWith<$Res>
+abstract class _$$RegistrationErrorModelImplCopyWith<$Res>
     implements $RegistrationErrorModelCopyWith<$Res> {
-  factory _$$_RegistrationErrorModelCopyWith(_$_RegistrationErrorModel value,
-          $Res Function(_$_RegistrationErrorModel) then) =
-      __$$_RegistrationErrorModelCopyWithImpl<$Res>;
+  factory _$$RegistrationErrorModelImplCopyWith(
+          _$RegistrationErrorModelImpl value,
+          $Res Function(_$RegistrationErrorModelImpl) then) =
+      __$$RegistrationErrorModelImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -126,12 +127,13 @@ abstract class _$$_RegistrationErrorModelCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_RegistrationErrorModelCopyWithImpl<$Res>
+class __$$RegistrationErrorModelImplCopyWithImpl<$Res>
     extends _$RegistrationErrorModelCopyWithImpl<$Res,
-        _$_RegistrationErrorModel>
-    implements _$$_RegistrationErrorModelCopyWith<$Res> {
-  __$$_RegistrationErrorModelCopyWithImpl(_$_RegistrationErrorModel _value,
-      $Res Function(_$_RegistrationErrorModel) _then)
+        _$RegistrationErrorModelImpl>
+    implements _$$RegistrationErrorModelImplCopyWith<$Res> {
+  __$$RegistrationErrorModelImplCopyWithImpl(
+      _$RegistrationErrorModelImpl _value,
+      $Res Function(_$RegistrationErrorModelImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -143,7 +145,7 @@ class __$$_RegistrationErrorModelCopyWithImpl<$Res>
     Object? plainPassword = freezed,
     Object? agreeTerms = freezed,
   }) {
-    return _then(_$_RegistrationErrorModel(
+    return _then(_$RegistrationErrorModelImpl(
       username: freezed == username
           ? _value._username
           : username // ignore: cast_nullable_to_non_nullable
@@ -170,10 +172,10 @@ class __$$_RegistrationErrorModelCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_RegistrationErrorModel
+class _$RegistrationErrorModelImpl
     with DiagnosticableTreeMixin
     implements _RegistrationErrorModel {
-  const _$_RegistrationErrorModel(
+  const _$RegistrationErrorModelImpl(
       {final List<String>? username,
       final List<String>? email,
       final List<String>? phone,
@@ -184,8 +186,8 @@ class _$_RegistrationErrorModel
         _phone = phone,
         _agreeTerms = agreeTerms;
 
-  factory _$_RegistrationErrorModel.fromJson(Map<String, dynamic> json) =>
-      _$$_RegistrationErrorModelFromJson(json);
+  factory _$RegistrationErrorModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$RegistrationErrorModelImplFromJson(json);
 
   final List<String>? _username;
   @override
@@ -250,7 +252,7 @@ class _$_RegistrationErrorModel
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_RegistrationErrorModel &&
+            other is _$RegistrationErrorModelImpl &&
             const DeepCollectionEquality().equals(other._username, _username) &&
             const DeepCollectionEquality().equals(other._email, _email) &&
             const DeepCollectionEquality().equals(other._phone, _phone) &&
@@ -273,13 +275,13 @@ class _$_RegistrationErrorModel
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_RegistrationErrorModelCopyWith<_$_RegistrationErrorModel> get copyWith =>
-      __$$_RegistrationErrorModelCopyWithImpl<_$_RegistrationErrorModel>(
-          this, _$identity);
+  _$$RegistrationErrorModelImplCopyWith<_$RegistrationErrorModelImpl>
+      get copyWith => __$$RegistrationErrorModelImplCopyWithImpl<
+          _$RegistrationErrorModelImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_RegistrationErrorModelToJson(
+    return _$$RegistrationErrorModelImplToJson(
       this,
     );
   }
@@ -291,10 +293,10 @@ abstract class _RegistrationErrorModel implements RegistrationErrorModel {
       final List<String>? email,
       final List<String>? phone,
       final PlainPassword? plainPassword,
-      final List<String>? agreeTerms}) = _$_RegistrationErrorModel;
+      final List<String>? agreeTerms}) = _$RegistrationErrorModelImpl;
 
   factory _RegistrationErrorModel.fromJson(Map<String, dynamic> json) =
-      _$_RegistrationErrorModel.fromJson;
+      _$RegistrationErrorModelImpl.fromJson;
 
   @override
   List<String>? get username;
@@ -308,6 +310,6 @@ abstract class _RegistrationErrorModel implements RegistrationErrorModel {
   List<String>? get agreeTerms;
   @override
   @JsonKey(ignore: true)
-  _$$_RegistrationErrorModelCopyWith<_$_RegistrationErrorModel> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$RegistrationErrorModelImplCopyWith<_$RegistrationErrorModelImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

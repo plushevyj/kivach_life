@@ -1,24 +1,22 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-// ignore_for_file: non_constant_identifier_names
-
 part of 'plain_password.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_RegistrationErrorModel _$$_RegistrationErrorModelFromJson(
+_$RegistrationErrorModelImpl _$$RegistrationErrorModelImplFromJson(
         Map<String, dynamic> json) =>
-    _$_RegistrationErrorModel(
+    _$RegistrationErrorModelImpl(
       first:
           (json['first'] as List<dynamic>?)?.map((e) => e as String).toList(),
       second:
           (json['second'] as List<dynamic>?)?.map((e) => e as String).toList(),
     );
 
-Map<String, dynamic> _$$_RegistrationErrorModelToJson(
-        _$_RegistrationErrorModel instance) =>
+Map<String, dynamic> _$$RegistrationErrorModelImplToJson(
+        _$RegistrationErrorModelImpl instance) =>
     <String, dynamic>{
       'first': instance.first,
       'second': instance.second,

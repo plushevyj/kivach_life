@@ -17,7 +17,8 @@ Future<Response> handleRequest(dynamic request) async {
       'Error is: ${error.error}\n'
       'Data is: ${error.response != null ? error.response!.data : 'NULL'}',
     );
-    if (error.error.runtimeType == SocketException) {
+    if (error.error.runtimeType == SocketException ||
+        error.error.runtimeType == HandshakeException) {
       throw 'Ошибка соединения с сервером или отсутствует подключение к интернету';
     }
     throw error.response?.data['message'] ?? error.error;

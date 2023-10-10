@@ -20,12 +20,12 @@ Profile _$ProfileFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Profile {
-  String? get email => throw _privateConstructorUsedError;
+  String get email => throw _privateConstructorUsedError;
   List<String> get roles => throw _privateConstructorUsedError;
   String get username => throw _privateConstructorUsedError;
   Patient get patient => throw _privateConstructorUsedError;
   bool get notificationEnabled => throw _privateConstructorUsedError;
-  String? get phone => throw _privateConstructorUsedError;
+  String get phone => throw _privateConstructorUsedError;
   Avatar? get avatar => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -39,12 +39,12 @@ abstract class $ProfileCopyWith<$Res> {
       _$ProfileCopyWithImpl<$Res, Profile>;
   @useResult
   $Res call(
-      {String? email,
+      {String email,
       List<String> roles,
       String username,
       Patient patient,
       bool notificationEnabled,
-      String? phone,
+      String phone,
       Avatar? avatar});
 
   $PatientCopyWith<$Res> get patient;
@@ -64,19 +64,19 @@ class _$ProfileCopyWithImpl<$Res, $Val extends Profile>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? email = freezed,
+    Object? email = null,
     Object? roles = null,
     Object? username = null,
     Object? patient = null,
     Object? notificationEnabled = null,
-    Object? phone = freezed,
+    Object? phone = null,
     Object? avatar = freezed,
   }) {
     return _then(_value.copyWith(
-      email: freezed == email
+      email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       roles: null == roles
           ? _value.roles
           : roles // ignore: cast_nullable_to_non_nullable
@@ -93,10 +93,10 @@ class _$ProfileCopyWithImpl<$Res, $Val extends Profile>
           ? _value.notificationEnabled
           : notificationEnabled // ignore: cast_nullable_to_non_nullable
               as bool,
-      phone: freezed == phone
+      phone: null == phone
           ? _value.phone
           : phone // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       avatar: freezed == avatar
           ? _value.avatar
           : avatar // ignore: cast_nullable_to_non_nullable
@@ -126,19 +126,19 @@ class _$ProfileCopyWithImpl<$Res, $Val extends Profile>
 }
 
 /// @nodoc
-abstract class _$$_ProfileCopyWith<$Res> implements $ProfileCopyWith<$Res> {
-  factory _$$_ProfileCopyWith(
-          _$_Profile value, $Res Function(_$_Profile) then) =
-      __$$_ProfileCopyWithImpl<$Res>;
+abstract class _$$ProfileImplCopyWith<$Res> implements $ProfileCopyWith<$Res> {
+  factory _$$ProfileImplCopyWith(
+          _$ProfileImpl value, $Res Function(_$ProfileImpl) then) =
+      __$$ProfileImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
-      {String? email,
+      {String email,
       List<String> roles,
       String username,
       Patient patient,
       bool notificationEnabled,
-      String? phone,
+      String phone,
       Avatar? avatar});
 
   @override
@@ -148,28 +148,29 @@ abstract class _$$_ProfileCopyWith<$Res> implements $ProfileCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_ProfileCopyWithImpl<$Res>
-    extends _$ProfileCopyWithImpl<$Res, _$_Profile>
-    implements _$$_ProfileCopyWith<$Res> {
-  __$$_ProfileCopyWithImpl(_$_Profile _value, $Res Function(_$_Profile) _then)
+class __$$ProfileImplCopyWithImpl<$Res>
+    extends _$ProfileCopyWithImpl<$Res, _$ProfileImpl>
+    implements _$$ProfileImplCopyWith<$Res> {
+  __$$ProfileImplCopyWithImpl(
+      _$ProfileImpl _value, $Res Function(_$ProfileImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? email = freezed,
+    Object? email = null,
     Object? roles = null,
     Object? username = null,
     Object? patient = null,
     Object? notificationEnabled = null,
-    Object? phone = freezed,
+    Object? phone = null,
     Object? avatar = freezed,
   }) {
-    return _then(_$_Profile(
-      email: freezed == email
+    return _then(_$ProfileImpl(
+      email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       roles: null == roles
           ? _value._roles
           : roles // ignore: cast_nullable_to_non_nullable
@@ -186,10 +187,10 @@ class __$$_ProfileCopyWithImpl<$Res>
           ? _value.notificationEnabled
           : notificationEnabled // ignore: cast_nullable_to_non_nullable
               as bool,
-      phone: freezed == phone
+      phone: null == phone
           ? _value.phone
           : phone // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       avatar: freezed == avatar
           ? _value.avatar
           : avatar // ignore: cast_nullable_to_non_nullable
@@ -200,8 +201,8 @@ class __$$_ProfileCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_Profile with DiagnosticableTreeMixin implements _Profile {
-  const _$_Profile(
+class _$ProfileImpl with DiagnosticableTreeMixin implements _Profile {
+  const _$ProfileImpl(
       {required this.email,
       required final List<String> roles,
       required this.username,
@@ -211,11 +212,11 @@ class _$_Profile with DiagnosticableTreeMixin implements _Profile {
       required this.avatar})
       : _roles = roles;
 
-  factory _$_Profile.fromJson(Map<String, dynamic> json) =>
-      _$$_ProfileFromJson(json);
+  factory _$ProfileImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ProfileImplFromJson(json);
 
   @override
-  final String? email;
+  final String email;
   final List<String> _roles;
   @override
   List<String> get roles {
@@ -231,7 +232,7 @@ class _$_Profile with DiagnosticableTreeMixin implements _Profile {
   @override
   final bool notificationEnabled;
   @override
-  final String? phone;
+  final String phone;
   @override
   final Avatar? avatar;
 
@@ -258,7 +259,7 @@ class _$_Profile with DiagnosticableTreeMixin implements _Profile {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Profile &&
+            other is _$ProfileImpl &&
             (identical(other.email, email) || other.email == email) &&
             const DeepCollectionEquality().equals(other._roles, _roles) &&
             (identical(other.username, username) ||
@@ -285,12 +286,12 @@ class _$_Profile with DiagnosticableTreeMixin implements _Profile {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ProfileCopyWith<_$_Profile> get copyWith =>
-      __$$_ProfileCopyWithImpl<_$_Profile>(this, _$identity);
+  _$$ProfileImplCopyWith<_$ProfileImpl> get copyWith =>
+      __$$ProfileImplCopyWithImpl<_$ProfileImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ProfileToJson(
+    return _$$ProfileImplToJson(
       this,
     );
   }
@@ -298,18 +299,18 @@ class _$_Profile with DiagnosticableTreeMixin implements _Profile {
 
 abstract class _Profile implements Profile {
   const factory _Profile(
-      {required final String? email,
+      {required final String email,
       required final List<String> roles,
       required final String username,
       required final Patient patient,
       required final bool notificationEnabled,
-      required final String? phone,
-      required final Avatar? avatar}) = _$_Profile;
+      required final String phone,
+      required final Avatar? avatar}) = _$ProfileImpl;
 
-  factory _Profile.fromJson(Map<String, dynamic> json) = _$_Profile.fromJson;
+  factory _Profile.fromJson(Map<String, dynamic> json) = _$ProfileImpl.fromJson;
 
   @override
-  String? get email;
+  String get email;
   @override
   List<String> get roles;
   @override
@@ -319,11 +320,11 @@ abstract class _Profile implements Profile {
   @override
   bool get notificationEnabled;
   @override
-  String? get phone;
+  String get phone;
   @override
   Avatar? get avatar;
   @override
   @JsonKey(ignore: true)
-  _$$_ProfileCopyWith<_$_Profile> get copyWith =>
+  _$$ProfileImplCopyWith<_$ProfileImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

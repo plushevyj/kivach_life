@@ -1,14 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-// ignore_for_file: non_constant_identifier_names
-
 part of 'patient_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_Patient _$$_PatientFromJson(Map<String, dynamic> json) => _$_Patient(
+_$PatientImpl _$$PatientImplFromJson(Map<String, dynamic> json) =>
+    _$PatientImpl(
       firstname: json['firstname'] as String,
       lastname: json['lastname'] as String,
       middlename: json['middlename'] as String?,
@@ -16,7 +15,7 @@ _$_Patient _$$_PatientFromJson(Map<String, dynamic> json) => _$_Patient(
       sex: json['sex'] as String,
     );
 
-Map<String, dynamic> _$$_PatientToJson(_$_Patient instance) =>
+Map<String, dynamic> _$$PatientImplToJson(_$PatientImpl instance) =>
     <String, dynamic>{
       'firstname': instance.firstname,
       'lastname': instance.lastname,

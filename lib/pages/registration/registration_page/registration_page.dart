@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:intl_phone_field/country_picker_dialog.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 
 import '/models/profile_preview_model/profile_preview_model.dart';
 import '/core/themes/light_theme.dart';
@@ -20,8 +22,8 @@ class RegistrationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final registrationController =
-        Get.put(RegistrationController(registrationToken: registrationToken));
+    final registrationController = Get.put(RegistrationController(
+        registrationToken: registrationToken, userData: profilePreview.user));
     return Scaffold(
       appBar: AppBar(
         title: const Text('Заполните форму'),
@@ -36,7 +38,7 @@ class RegistrationPage extends StatelessWidget {
               children: [
                 const SizedBox(height: 20),
                 Text(
-                  'Здравствуйте, ${profilePreview.fullname}.',
+                  'Здравствуйте, ${profilePreview.firstname} ${profilePreview.middlename}.',
                   style: const TextStyle(fontSize: 16),
                 ),
                 const SizedBox(height: 20),
@@ -56,55 +58,44 @@ class RegistrationPage extends StatelessWidget {
                   errorText: registrationController.errorTextEmail.value,
                 ),
                 const SizedBox(height: 20),
-                Form(
-                  key: registrationController.formPhoneInputKey,
-                  child: InternationalPhoneNumberInput(
-                    locale: 'RU',
-                    onInputChanged: (_) {
-                      final cursorPosition =
-                          registrationController.phoneFieldController.selection;
-                      registrationController.phoneFieldController.text =
-                          registrationController.phoneFieldController.text
-                              .replaceAll(RegExp(r'[a-zA-Zа-яА-ЯёЁ.,]'), '');
-                      registrationController.phoneFieldController.selection =
-                          cursorPosition;
-                    },
-                    onInputValidated: (value) {
-                      registrationController.isValidatePhoneNumber(value);
-                    },
-                    spaceBetweenSelectorAndTextField: 0,
-                    selectorButtonOnErrorPadding: 0,
-                    onSaved: (number) {
-                      registrationController.number = number;
-                    },
-                    selectorConfig: const SelectorConfig(
-                      selectorType: PhoneInputSelectorType.DIALOG,
+                IntlPhoneField(
+                  controller: registrationController.phoneFieldController,
+                  decoration: InputDecoration(
+                    labelText: 'Номер телефона',
+                    border: const OutlineInputBorder(
+                      borderSide: BorderSide(),
                     ),
-                    searchBoxDecoration: const InputDecoration(
-                      labelText:
-                          'Поиск по наименованиям стран и кодов регионов',
-                    ),
-                    validator: (_) {
-                      if (!registrationController.isValidatePhoneNumber.value) {
-                        return 'Неверный номер';
-                      }
-                      return registrationController.errorTextPhone.value;
-                    },
-                    ignoreBlank: false,
-                    autoValidateMode: AutovalidateMode.always,
-                    selectorTextStyle: const TextStyle(color: Colors.black),
-                    initialValue: registrationController.number,
-                    textFieldController:
-                        registrationController.phoneFieldController,
-                    keyboardType: const TextInputType.numberWithOptions(
-                      signed: false,
-                      decimal: false,
-                    ),
-                    formatInput: true,
-                    inputDecoration: const InputDecoration(
-                      labelText: 'Номер телефона',
-                    ),
+                    errorText: registrationController.errorTextPhone.value,
                   ),
+                  onChanged: (_) {
+                    registrationController.errorTextPhone.value = null;
+                  },
+                  initialCountryCode: registrationController.initialCountryCode,
+                  invalidNumberMessage: 'Неверный номер',
+                  disableAutoFillHints: true,
+                  autovalidateMode: AutovalidateMode.always,
+                  disableLengthCheck: true,
+                  languageCode: 'RU',
+                  validator: (number) async {
+                    registrationController.phone = number!.completeNumber;
+                    if (number.number.length < 10) {
+                      registrationController.isValidatePhoneNumber(false);
+                      return 'Неверный номер';
+                    }
+                    registrationController.isValidatePhoneNumber(true);
+                    return null;
+                  },
+                  pickerDialogStyle: PickerDialogStyle(
+                    backgroundColor: Colors.white,
+                    countryNameStyle:
+                        const TextStyle(fontWeight: FontWeight.normal),
+                    searchFieldInputDecoration: null,
+                    searchFieldPadding: null,
+                  ),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    LengthLimitingTextInputFormatter(14),
+                  ],
                 ),
                 const SizedBox(height: 20),
                 TextFieldForForm(
@@ -114,7 +105,6 @@ class RegistrationPage extends StatelessWidget {
                   isPassword: true,
                   errorText:
                       registrationController.errorTextFirstPassword.value,
-                  // validator: registrationController.validatorFirstPassword,
                 ),
                 const SizedBox(height: 20),
                 TextFieldForForm(
@@ -124,7 +114,6 @@ class RegistrationPage extends StatelessWidget {
                   isPassword: true,
                   errorText:
                       registrationController.errorTextSecondPassword.value,
-                  // validator: registrationController.validatorSecondPassword,
                 ),
                 const SizedBox(height: 20),
                 Row(
@@ -184,7 +173,6 @@ class RegistrationPage extends StatelessWidget {
                     onPressed: () {
                       registrationController.formPhoneInputKey.currentState
                           ?.save();
-                      print(registrationController.number);
                       registrationController.register(Get.context!);
                     },
                   ),

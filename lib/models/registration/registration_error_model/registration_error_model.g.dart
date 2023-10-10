@@ -1,16 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-// ignore_for_file: non_constant_identifier_names
-
 part of 'registration_error_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_RegistrationErrorModel _$$_RegistrationErrorModelFromJson(
+_$RegistrationErrorModelImpl _$$RegistrationErrorModelImplFromJson(
         Map<String, dynamic> json) =>
-    _$_RegistrationErrorModel(
+    _$RegistrationErrorModelImpl(
       username: (json['username'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
@@ -27,8 +25,8 @@ _$_RegistrationErrorModel _$$_RegistrationErrorModelFromJson(
           .toList(),
     );
 
-Map<String, dynamic> _$$_RegistrationErrorModelToJson(
-        _$_RegistrationErrorModel instance) =>
+Map<String, dynamic> _$$RegistrationErrorModelImplToJson(
+        _$RegistrationErrorModelImpl instance) =>
     <String, dynamic>{
       'username': instance.username,
       'email': instance.email,

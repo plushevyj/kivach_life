@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 
+import '../../../core/utils/convert_to.dart';
+import '../../../models/reset_phone/reset_phone_error_model/reset_password_error_model.dart';
 import '/modules/authentication/repository/token_repository.dart';
 import '../repository/reset_password_repository.dart';
 
@@ -12,7 +16,7 @@ class ResetPasswordBloc extends Bloc<ResetPasswordEvent, ResetPasswordState> {
     on<ResetPasswordEventInitial>(_onResetPasswordEventInitial);
     on<SendNumber>(_onSendNumber);
     on<SendCode>(_onSendCode);
-    on<GetReadyToSendCode>(_onGetReadyToSendCode);
+    on<GetReadyToSendData>(_onGetReadyToSendData);
   }
 
   final _resetPasswordRepository = ResetPasswordRepository();
@@ -32,26 +36,28 @@ class ResetPasswordBloc extends Bloc<ResetPasswordEvent, ResetPasswordState> {
     Emitter<ResetPasswordState> emit,
   ) async {
     try {
+      int? remainingTime;
       if (event.phone != null) {
         _phone = event.phone;
       }
       if (_phone != null) {
-        await _resetPasswordRepository.checkNumber(phone: _phone!);
+        remainingTime =
+            await _resetPasswordRepository.checkNumber(phone: _phone!);
       } else {
         throw 'Неизвестный номер телефона';
       }
-      emit(const SuccessNumber());
-      emit(const ReadyToSendCode());
+      emit(SuccessNumber(remainingTime: remainingTime));
+      emit(const ReadyToSendData());
     } catch (error) {
       emit(ErrorResetPasswordState(error.toString()));
     }
   }
 
-  void _onGetReadyToSendCode(
-    GetReadyToSendCode event,
+  void _onGetReadyToSendData(
+    GetReadyToSendData event,
     Emitter<ResetPasswordState> emit,
   ) {
-    emit(const ReadyToSendCode());
+    emit(const ReadyToSendData());
   }
 
   void _onSendCode(

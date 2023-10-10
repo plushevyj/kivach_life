@@ -60,19 +60,21 @@ class _$AvatarCopyWithImpl<$Res, $Val extends Avatar>
 }
 
 /// @nodoc
-abstract class _$$_AvatarCopyWith<$Res> implements $AvatarCopyWith<$Res> {
-  factory _$$_AvatarCopyWith(_$_Avatar value, $Res Function(_$_Avatar) then) =
-      __$$_AvatarCopyWithImpl<$Res>;
+abstract class _$$AvatarImplCopyWith<$Res> implements $AvatarCopyWith<$Res> {
+  factory _$$AvatarImplCopyWith(
+          _$AvatarImpl value, $Res Function(_$AvatarImpl) then) =
+      __$$AvatarImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String? file});
 }
 
 /// @nodoc
-class __$$_AvatarCopyWithImpl<$Res>
-    extends _$AvatarCopyWithImpl<$Res, _$_Avatar>
-    implements _$$_AvatarCopyWith<$Res> {
-  __$$_AvatarCopyWithImpl(_$_Avatar _value, $Res Function(_$_Avatar) _then)
+class __$$AvatarImplCopyWithImpl<$Res>
+    extends _$AvatarCopyWithImpl<$Res, _$AvatarImpl>
+    implements _$$AvatarImplCopyWith<$Res> {
+  __$$AvatarImplCopyWithImpl(
+      _$AvatarImpl _value, $Res Function(_$AvatarImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -80,7 +82,7 @@ class __$$_AvatarCopyWithImpl<$Res>
   $Res call({
     Object? file = freezed,
   }) {
-    return _then(_$_Avatar(
+    return _then(_$AvatarImpl(
       file: freezed == file
           ? _value.file
           : file // ignore: cast_nullable_to_non_nullable
@@ -91,11 +93,11 @@ class __$$_AvatarCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_Avatar with DiagnosticableTreeMixin implements _Avatar {
-  const _$_Avatar({required this.file});
+class _$AvatarImpl with DiagnosticableTreeMixin implements _Avatar {
+  const _$AvatarImpl({required this.file});
 
-  factory _$_Avatar.fromJson(Map<String, dynamic> json) =>
-      _$$_AvatarFromJson(json);
+  factory _$AvatarImpl.fromJson(Map<String, dynamic> json) =>
+      _$$AvatarImplFromJson(json);
 
   @override
   final String? file;
@@ -117,7 +119,7 @@ class _$_Avatar with DiagnosticableTreeMixin implements _Avatar {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Avatar &&
+            other is _$AvatarImpl &&
             (identical(other.file, file) || other.file == file));
   }
 
@@ -128,26 +130,26 @@ class _$_Avatar with DiagnosticableTreeMixin implements _Avatar {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_AvatarCopyWith<_$_Avatar> get copyWith =>
-      __$$_AvatarCopyWithImpl<_$_Avatar>(this, _$identity);
+  _$$AvatarImplCopyWith<_$AvatarImpl> get copyWith =>
+      __$$AvatarImplCopyWithImpl<_$AvatarImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_AvatarToJson(
+    return _$$AvatarImplToJson(
       this,
     );
   }
 }
 
 abstract class _Avatar implements Avatar {
-  const factory _Avatar({required final String? file}) = _$_Avatar;
+  const factory _Avatar({required final String? file}) = _$AvatarImpl;
 
-  factory _Avatar.fromJson(Map<String, dynamic> json) = _$_Avatar.fromJson;
+  factory _Avatar.fromJson(Map<String, dynamic> json) = _$AvatarImpl.fromJson;
 
   @override
   String? get file;
   @override
   @JsonKey(ignore: true)
-  _$$_AvatarCopyWith<_$_Avatar> get copyWith =>
+  _$$AvatarImplCopyWith<_$AvatarImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

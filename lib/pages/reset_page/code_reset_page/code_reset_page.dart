@@ -11,25 +11,23 @@ import '/widgets/inputs/button_for_form.dart';
 import '/widgets/inputs/text_field_for_form.dart';
 
 class SMSCodePage extends StatelessWidget {
-  const SMSCodePage({super.key});
+  const SMSCodePage({super.key, this.remainingTime});
+
+  final int? remainingTime;
 
   @override
   Widget build(BuildContext context) {
-    final codeResetController = Get.put(CodeResetController());
+    final codeResetController =
+        Get.put(CodeResetController(remainingTime: remainingTime ?? 60));
     return BlocListener<ResetPasswordBloc, ResetPasswordState>(
       listener: (context, state) {
         codeResetController.isLoading(false);
         if (state is SuccessNumber) {
-          codeResetController.startTimer();
+          codeResetController.startTimer(state.remainingTime ?? 60);
         } else if (state is SuccessCode) {
           Get.context!
               .read<AuthenticationBloc>()
               .add(const AuthenticateByToken());
-        } else if (state is ErrorResetPasswordState) {
-          showErrorAlert(state.error);
-          Get.context!
-              .read<ResetPasswordBloc>()
-              .add(const GetReadyToSendCode());
         }
       },
       child: Scaffold(
@@ -79,7 +77,6 @@ class SMSCodePage extends StatelessWidget {
                           if (codeResetController
                               .textController.text.isNotEmpty) {
                             codeResetController.isLoading(true);
-
                             Get.context!.read<ResetPasswordBloc>().add(SendCode(
                                 code: codeResetController.textController.text));
                           }

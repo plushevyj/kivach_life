@@ -89,10 +89,10 @@ class _$PatientCopyWithImpl<$Res, $Val extends Patient>
 }
 
 /// @nodoc
-abstract class _$$_PatientCopyWith<$Res> implements $PatientCopyWith<$Res> {
-  factory _$$_PatientCopyWith(
-          _$_Patient value, $Res Function(_$_Patient) then) =
-      __$$_PatientCopyWithImpl<$Res>;
+abstract class _$$PatientImplCopyWith<$Res> implements $PatientCopyWith<$Res> {
+  factory _$$PatientImplCopyWith(
+          _$PatientImpl value, $Res Function(_$PatientImpl) then) =
+      __$$PatientImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -104,10 +104,11 @@ abstract class _$$_PatientCopyWith<$Res> implements $PatientCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_PatientCopyWithImpl<$Res>
-    extends _$PatientCopyWithImpl<$Res, _$_Patient>
-    implements _$$_PatientCopyWith<$Res> {
-  __$$_PatientCopyWithImpl(_$_Patient _value, $Res Function(_$_Patient) _then)
+class __$$PatientImplCopyWithImpl<$Res>
+    extends _$PatientCopyWithImpl<$Res, _$PatientImpl>
+    implements _$$PatientImplCopyWith<$Res> {
+  __$$PatientImplCopyWithImpl(
+      _$PatientImpl _value, $Res Function(_$PatientImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -119,7 +120,7 @@ class __$$_PatientCopyWithImpl<$Res>
     Object? birthdate = null,
     Object? sex = null,
   }) {
-    return _then(_$_Patient(
+    return _then(_$PatientImpl(
       firstname: null == firstname
           ? _value.firstname
           : firstname // ignore: cast_nullable_to_non_nullable
@@ -146,16 +147,16 @@ class __$$_PatientCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_Patient with DiagnosticableTreeMixin implements _Patient {
-  const _$_Patient(
+class _$PatientImpl with DiagnosticableTreeMixin implements _Patient {
+  const _$PatientImpl(
       {required this.firstname,
       required this.lastname,
       required this.middlename,
       required this.birthdate,
       required this.sex});
 
-  factory _$_Patient.fromJson(Map<String, dynamic> json) =>
-      _$$_PatientFromJson(json);
+  factory _$PatientImpl.fromJson(Map<String, dynamic> json) =>
+      _$$PatientImplFromJson(json);
 
   @override
   final String firstname;
@@ -189,7 +190,7 @@ class _$_Patient with DiagnosticableTreeMixin implements _Patient {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Patient &&
+            other is _$PatientImpl &&
             (identical(other.firstname, firstname) ||
                 other.firstname == firstname) &&
             (identical(other.lastname, lastname) ||
@@ -209,12 +210,12 @@ class _$_Patient with DiagnosticableTreeMixin implements _Patient {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_PatientCopyWith<_$_Patient> get copyWith =>
-      __$$_PatientCopyWithImpl<_$_Patient>(this, _$identity);
+  _$$PatientImplCopyWith<_$PatientImpl> get copyWith =>
+      __$$PatientImplCopyWithImpl<_$PatientImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_PatientToJson(
+    return _$$PatientImplToJson(
       this,
     );
   }
@@ -226,9 +227,9 @@ abstract class _Patient implements Patient {
       required final String lastname,
       required final String? middlename,
       required final String birthdate,
-      required final String sex}) = _$_Patient;
+      required final String sex}) = _$PatientImpl;
 
-  factory _Patient.fromJson(Map<String, dynamic> json) = _$_Patient.fromJson;
+  factory _Patient.fromJson(Map<String, dynamic> json) = _$PatientImpl.fromJson;
 
   @override
   String get firstname;
@@ -242,6 +243,6 @@ abstract class _Patient implements Patient {
   String get sex;
   @override
   @JsonKey(ignore: true)
-  _$$_PatientCopyWith<_$_Patient> get copyWith =>
+  _$$PatientImplCopyWith<_$PatientImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

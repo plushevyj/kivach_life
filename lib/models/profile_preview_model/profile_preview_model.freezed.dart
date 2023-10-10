@@ -21,7 +21,12 @@ ProfilePreview _$ProfilePreviewFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ProfilePreview {
   int get id => throw _privateConstructorUsedError;
-  String get fullname => throw _privateConstructorUsedError;
+  String get firstname => throw _privateConstructorUsedError;
+  String get lastname => throw _privateConstructorUsedError;
+  String? get middlename => throw _privateConstructorUsedError;
+  String get birthdate => throw _privateConstructorUsedError;
+  String get sex => throw _privateConstructorUsedError;
+  User? get user => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +40,16 @@ abstract class $ProfilePreviewCopyWith<$Res> {
           ProfilePreview value, $Res Function(ProfilePreview) then) =
       _$ProfilePreviewCopyWithImpl<$Res, ProfilePreview>;
   @useResult
-  $Res call({int id, String fullname});
+  $Res call(
+      {int id,
+      String firstname,
+      String lastname,
+      String? middlename,
+      String birthdate,
+      String sex,
+      User? user});
+
+  $UserCopyWith<$Res>? get user;
 }
 
 /// @nodoc
@@ -52,77 +66,166 @@ class _$ProfilePreviewCopyWithImpl<$Res, $Val extends ProfilePreview>
   @override
   $Res call({
     Object? id = null,
-    Object? fullname = null,
+    Object? firstname = null,
+    Object? lastname = null,
+    Object? middlename = freezed,
+    Object? birthdate = null,
+    Object? sex = null,
+    Object? user = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      fullname: null == fullname
-          ? _value.fullname
-          : fullname // ignore: cast_nullable_to_non_nullable
+      firstname: null == firstname
+          ? _value.firstname
+          : firstname // ignore: cast_nullable_to_non_nullable
               as String,
+      lastname: null == lastname
+          ? _value.lastname
+          : lastname // ignore: cast_nullable_to_non_nullable
+              as String,
+      middlename: freezed == middlename
+          ? _value.middlename
+          : middlename // ignore: cast_nullable_to_non_nullable
+              as String?,
+      birthdate: null == birthdate
+          ? _value.birthdate
+          : birthdate // ignore: cast_nullable_to_non_nullable
+              as String,
+      sex: null == sex
+          ? _value.sex
+          : sex // ignore: cast_nullable_to_non_nullable
+              as String,
+      user: freezed == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as User?,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $UserCopyWith<$Res>? get user {
+    if (_value.user == null) {
+      return null;
+    }
+
+    return $UserCopyWith<$Res>(_value.user!, (value) {
+      return _then(_value.copyWith(user: value) as $Val);
+    });
   }
 }
 
 /// @nodoc
-abstract class _$$_ProfilePreviewCopyWith<$Res>
+abstract class _$$ProfilePreviewImplCopyWith<$Res>
     implements $ProfilePreviewCopyWith<$Res> {
-  factory _$$_ProfilePreviewCopyWith(
-          _$_ProfilePreview value, $Res Function(_$_ProfilePreview) then) =
-      __$$_ProfilePreviewCopyWithImpl<$Res>;
+  factory _$$ProfilePreviewImplCopyWith(_$ProfilePreviewImpl value,
+          $Res Function(_$ProfilePreviewImpl) then) =
+      __$$ProfilePreviewImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, String fullname});
+  $Res call(
+      {int id,
+      String firstname,
+      String lastname,
+      String? middlename,
+      String birthdate,
+      String sex,
+      User? user});
+
+  @override
+  $UserCopyWith<$Res>? get user;
 }
 
 /// @nodoc
-class __$$_ProfilePreviewCopyWithImpl<$Res>
-    extends _$ProfilePreviewCopyWithImpl<$Res, _$_ProfilePreview>
-    implements _$$_ProfilePreviewCopyWith<$Res> {
-  __$$_ProfilePreviewCopyWithImpl(
-      _$_ProfilePreview _value, $Res Function(_$_ProfilePreview) _then)
+class __$$ProfilePreviewImplCopyWithImpl<$Res>
+    extends _$ProfilePreviewCopyWithImpl<$Res, _$ProfilePreviewImpl>
+    implements _$$ProfilePreviewImplCopyWith<$Res> {
+  __$$ProfilePreviewImplCopyWithImpl(
+      _$ProfilePreviewImpl _value, $Res Function(_$ProfilePreviewImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? id = null,
-    Object? fullname = null,
+    Object? firstname = null,
+    Object? lastname = null,
+    Object? middlename = freezed,
+    Object? birthdate = null,
+    Object? sex = null,
+    Object? user = freezed,
   }) {
-    return _then(_$_ProfilePreview(
+    return _then(_$ProfilePreviewImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      fullname: null == fullname
-          ? _value.fullname
-          : fullname // ignore: cast_nullable_to_non_nullable
+      firstname: null == firstname
+          ? _value.firstname
+          : firstname // ignore: cast_nullable_to_non_nullable
               as String,
+      lastname: null == lastname
+          ? _value.lastname
+          : lastname // ignore: cast_nullable_to_non_nullable
+              as String,
+      middlename: freezed == middlename
+          ? _value.middlename
+          : middlename // ignore: cast_nullable_to_non_nullable
+              as String?,
+      birthdate: null == birthdate
+          ? _value.birthdate
+          : birthdate // ignore: cast_nullable_to_non_nullable
+              as String,
+      sex: null == sex
+          ? _value.sex
+          : sex // ignore: cast_nullable_to_non_nullable
+              as String,
+      user: freezed == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as User?,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$_ProfilePreview
+class _$ProfilePreviewImpl
     with DiagnosticableTreeMixin
     implements _ProfilePreview {
-  const _$_ProfilePreview({required this.id, required this.fullname});
+  const _$ProfilePreviewImpl(
+      {required this.id,
+      required this.firstname,
+      required this.lastname,
+      required this.middlename,
+      required this.birthdate,
+      required this.sex,
+      required this.user});
 
-  factory _$_ProfilePreview.fromJson(Map<String, dynamic> json) =>
-      _$$_ProfilePreviewFromJson(json);
+  factory _$ProfilePreviewImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ProfilePreviewImplFromJson(json);
 
   @override
   final int id;
   @override
-  final String fullname;
+  final String firstname;
+  @override
+  final String lastname;
+  @override
+  final String? middlename;
+  @override
+  final String birthdate;
+  @override
+  final String sex;
+  @override
+  final User? user;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ProfilePreview(id: $id, fullname: $fullname)';
+    return 'ProfilePreview(id: $id, firstname: $firstname, lastname: $lastname, middlename: $middlename, birthdate: $birthdate, sex: $sex, user: $user)';
   }
 
   @override
@@ -131,32 +234,47 @@ class _$_ProfilePreview
     properties
       ..add(DiagnosticsProperty('type', 'ProfilePreview'))
       ..add(DiagnosticsProperty('id', id))
-      ..add(DiagnosticsProperty('fullname', fullname));
+      ..add(DiagnosticsProperty('firstname', firstname))
+      ..add(DiagnosticsProperty('lastname', lastname))
+      ..add(DiagnosticsProperty('middlename', middlename))
+      ..add(DiagnosticsProperty('birthdate', birthdate))
+      ..add(DiagnosticsProperty('sex', sex))
+      ..add(DiagnosticsProperty('user', user));
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ProfilePreview &&
+            other is _$ProfilePreviewImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.fullname, fullname) ||
-                other.fullname == fullname));
+            (identical(other.firstname, firstname) ||
+                other.firstname == firstname) &&
+            (identical(other.lastname, lastname) ||
+                other.lastname == lastname) &&
+            (identical(other.middlename, middlename) ||
+                other.middlename == middlename) &&
+            (identical(other.birthdate, birthdate) ||
+                other.birthdate == birthdate) &&
+            (identical(other.sex, sex) || other.sex == sex) &&
+            (identical(other.user, user) || other.user == user));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, fullname);
+  int get hashCode => Object.hash(
+      runtimeType, id, firstname, lastname, middlename, birthdate, sex, user);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ProfilePreviewCopyWith<_$_ProfilePreview> get copyWith =>
-      __$$_ProfilePreviewCopyWithImpl<_$_ProfilePreview>(this, _$identity);
+  _$$ProfilePreviewImplCopyWith<_$ProfilePreviewImpl> get copyWith =>
+      __$$ProfilePreviewImplCopyWithImpl<_$ProfilePreviewImpl>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ProfilePreviewToJson(
+    return _$$ProfilePreviewImplToJson(
       this,
     );
   }
@@ -165,17 +283,32 @@ class _$_ProfilePreview
 abstract class _ProfilePreview implements ProfilePreview {
   const factory _ProfilePreview(
       {required final int id,
-      required final String fullname}) = _$_ProfilePreview;
+      required final String firstname,
+      required final String lastname,
+      required final String? middlename,
+      required final String birthdate,
+      required final String sex,
+      required final User? user}) = _$ProfilePreviewImpl;
 
   factory _ProfilePreview.fromJson(Map<String, dynamic> json) =
-      _$_ProfilePreview.fromJson;
+      _$ProfilePreviewImpl.fromJson;
 
   @override
   int get id;
   @override
-  String get fullname;
+  String get firstname;
+  @override
+  String get lastname;
+  @override
+  String? get middlename;
+  @override
+  String get birthdate;
+  @override
+  String get sex;
+  @override
+  User? get user;
   @override
   @JsonKey(ignore: true)
-  _$$_ProfilePreviewCopyWith<_$_ProfilePreview> get copyWith =>
+  _$$ProfilePreviewImplCopyWith<_$ProfilePreviewImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -1,21 +1,32 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-// ignore_for_file: non_constant_identifier_names
-
 part of 'profile_preview_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_ProfilePreview _$$_ProfilePreviewFromJson(Map<String, dynamic> json) =>
-    _$_ProfilePreview(
+_$ProfilePreviewImpl _$$ProfilePreviewImplFromJson(Map<String, dynamic> json) =>
+    _$ProfilePreviewImpl(
       id: json['id'] as int,
-      fullname: json['fullname'] as String,
+      firstname: json['firstname'] as String,
+      lastname: json['lastname'] as String,
+      middlename: json['middlename'] as String?,
+      birthdate: json['birthdate'] as String,
+      sex: json['sex'] as String,
+      user: json['user'] == null
+          ? null
+          : User.fromJson(json['user'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$_ProfilePreviewToJson(_$_ProfilePreview instance) =>
+Map<String, dynamic> _$$ProfilePreviewImplToJson(
+        _$ProfilePreviewImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'fullname': instance.fullname,
+      'firstname': instance.firstname,
+      'lastname': instance.lastname,
+      'middlename': instance.middlename,
+      'birthdate': instance.birthdate,
+      'sex': instance.sex,
+      'user': instance.user,
     };

@@ -34,7 +34,6 @@ dependencies:
   store_redirect: ^2.0.1
   package_info_plus: ^4.1.0
   skeletonizer: ^0.7.0
-  intl_phone_number_input: ^0.7.3+1
   permission_handler: ^10.4.5
   firebase_core: ^2.15.1
   firebase_messaging: ^14.6.7
@@ -45,6 +44,7 @@ dependencies:
   url_launcher: ^6.1.14
   fk_user_agent: ^2.1.0
   playx_version_update: ^0.0.3
+  intl_phone_field: ^3.2.0
 
 dev_dependencies:
   flutter_test:

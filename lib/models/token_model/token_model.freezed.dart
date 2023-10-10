@@ -68,22 +68,22 @@ class _$TokenModelCopyWithImpl<$Res, $Val extends TokenModel>
 }
 
 /// @nodoc
-abstract class _$$_TokenModelCopyWith<$Res>
+abstract class _$$TokenModelImplCopyWith<$Res>
     implements $TokenModelCopyWith<$Res> {
-  factory _$$_TokenModelCopyWith(
-          _$_TokenModel value, $Res Function(_$_TokenModel) then) =
-      __$$_TokenModelCopyWithImpl<$Res>;
+  factory _$$TokenModelImplCopyWith(
+          _$TokenModelImpl value, $Res Function(_$TokenModelImpl) then) =
+      __$$TokenModelImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String token, String refresh_token});
 }
 
 /// @nodoc
-class __$$_TokenModelCopyWithImpl<$Res>
-    extends _$TokenModelCopyWithImpl<$Res, _$_TokenModel>
-    implements _$$_TokenModelCopyWith<$Res> {
-  __$$_TokenModelCopyWithImpl(
-      _$_TokenModel _value, $Res Function(_$_TokenModel) _then)
+class __$$TokenModelImplCopyWithImpl<$Res>
+    extends _$TokenModelCopyWithImpl<$Res, _$TokenModelImpl>
+    implements _$$TokenModelImplCopyWith<$Res> {
+  __$$TokenModelImplCopyWithImpl(
+      _$TokenModelImpl _value, $Res Function(_$TokenModelImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -92,7 +92,7 @@ class __$$_TokenModelCopyWithImpl<$Res>
     Object? token = null,
     Object? refresh_token = null,
   }) {
-    return _then(_$_TokenModel(
+    return _then(_$TokenModelImpl(
       token: null == token
           ? _value.token
           : token // ignore: cast_nullable_to_non_nullable
@@ -107,11 +107,11 @@ class __$$_TokenModelCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_TokenModel with DiagnosticableTreeMixin implements _TokenModel {
-  const _$_TokenModel({required this.token, required this.refresh_token});
+class _$TokenModelImpl with DiagnosticableTreeMixin implements _TokenModel {
+  const _$TokenModelImpl({required this.token, required this.refresh_token});
 
-  factory _$_TokenModel.fromJson(Map<String, dynamic> json) =>
-      _$$_TokenModelFromJson(json);
+  factory _$TokenModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$TokenModelImplFromJson(json);
 
   @override
   final String token;
@@ -136,7 +136,7 @@ class _$_TokenModel with DiagnosticableTreeMixin implements _TokenModel {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_TokenModel &&
+            other is _$TokenModelImpl &&
             (identical(other.token, token) || other.token == token) &&
             (identical(other.refresh_token, refresh_token) ||
                 other.refresh_token == refresh_token));
@@ -149,12 +149,12 @@ class _$_TokenModel with DiagnosticableTreeMixin implements _TokenModel {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_TokenModelCopyWith<_$_TokenModel> get copyWith =>
-      __$$_TokenModelCopyWithImpl<_$_TokenModel>(this, _$identity);
+  _$$TokenModelImplCopyWith<_$TokenModelImpl> get copyWith =>
+      __$$TokenModelImplCopyWithImpl<_$TokenModelImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_TokenModelToJson(
+    return _$$TokenModelImplToJson(
       this,
     );
   }
@@ -163,10 +163,10 @@ class _$_TokenModel with DiagnosticableTreeMixin implements _TokenModel {
 abstract class _TokenModel implements TokenModel {
   const factory _TokenModel(
       {required final String token,
-      required final String refresh_token}) = _$_TokenModel;
+      required final String refresh_token}) = _$TokenModelImpl;
 
   factory _TokenModel.fromJson(Map<String, dynamic> json) =
-      _$_TokenModel.fromJson;
+      _$TokenModelImpl.fromJson;
 
   @override
   String get token;
@@ -174,6 +174,6 @@ abstract class _TokenModel implements TokenModel {
   String get refresh_token;
   @override
   @JsonKey(ignore: true)
-  _$$_TokenModelCopyWith<_$_TokenModel> get copyWith =>
+  _$$TokenModelImplCopyWith<_$TokenModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

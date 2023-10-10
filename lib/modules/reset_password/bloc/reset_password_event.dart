@@ -20,8 +20,8 @@ class SendNumber extends ResetPasswordEvent {
   List<Object?> get props => [phone];
 }
 
-class GetReadyToSendCode extends ResetPasswordEvent {
-  const GetReadyToSendCode();
+class GetReadyToSendData extends ResetPasswordEvent {
+  const GetReadyToSendData();
 }
 
 class SendCode extends ResetPasswordEvent {

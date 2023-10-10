@@ -1,8 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:doctor/models/user/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:intl_phone_field/countries.dart';
 
 import '/widgets/alerts.dart';
 import '/modules/authentication/bloc/authentication_bloc.dart';
@@ -12,19 +13,21 @@ import '../../authentication/repository/token_repository.dart';
 import '../repository/registration_repository.dart';
 
 class RegistrationController extends GetxController {
-  RegistrationController({required this.registrationToken});
+  RegistrationController({required this.registrationToken, this.userData});
+
+  final String registrationToken;
+  final User? userData;
 
   final formPhoneInputKey = GlobalKey<FormState>();
-  var number = PhoneNumber(isoCode: 'RU');
+  var phone = '';
+  late final String initialCountryCode;
   final isValidatePhoneNumber = true.obs;
   final isLoading = false.obs;
   final activeRegistrationButton = false.obs;
 
-  final String registrationToken;
-
-  final usernameFieldController = TextEditingController();
-  final emailFieldController = TextEditingController();
-  final phoneFieldController = TextEditingController();
+  late final TextEditingController usernameFieldController;
+  late final TextEditingController emailFieldController;
+  late final TextEditingController phoneFieldController;
   final firstPasswordFieldController = TextEditingController();
   final secondPasswordFieldController = TextEditingController();
   final isAgree = false.obs;
@@ -43,9 +46,16 @@ class RegistrationController extends GetxController {
 
   @override
   void onInit() {
-    usernameFieldController.addListener(() => errorTextUsername.value = null);
-    emailFieldController.addListener(() => errorTextEmail.value = null);
-    phoneFieldController.addListener(() => errorTextPhone.value = null);
+    usernameFieldController = TextEditingController(text: userData?.username)
+      ..addListener(() => errorTextUsername.value = null);
+    emailFieldController = TextEditingController(text: userData?.email)
+      ..addListener(() => errorTextEmail.value = null);
+    final fullPhoneData = userData?.phone != null
+        ? separatePhoneAndDialCode(userData!.phone!)
+        : null;
+    initialCountryCode = fullPhoneData?.$3.code ?? 'RU';
+    phoneFieldController = TextEditingController(text: fullPhoneData?.$2)
+      ..addListener(() => errorTextPhone.value = null);
     firstPasswordFieldController
         .addListener(() => errorTextFirstPassword.value = null);
     secondPasswordFieldController
@@ -65,6 +75,30 @@ class RegistrationController extends GetxController {
     super.dispose();
   }
 
+  //(dialCode, basePartOfPhoneNumber, Country)
+  (String, String, Country)? separatePhoneAndDialCode(String fullPhone) {
+    fullPhone = fullPhone.substring(1);
+    Country? foundedCountry;
+    for (var country in countries) {
+      String dialCode = country.dialCode.toString();
+      if (fullPhone.startsWith(dialCode)) {
+        foundedCountry = country;
+      }
+    }
+    if (foundedCountry != null) {
+      var dialCode = fullPhone.substring(
+        0,
+        foundedCountry.dialCode.length,
+      );
+      var basePart = fullPhone.substring(
+        foundedCountry.dialCode.length,
+      );
+      print('руууууусь = $dialCode $basePart ${foundedCountry.name}');
+      return (dialCode, basePart, foundedCountry);
+    }
+    return null;
+  }
+
   void register(BuildContext context) async {
     errorTextUsername(null);
     errorTextEmail(null);
@@ -78,7 +112,7 @@ class RegistrationController extends GetxController {
         registrationToken: registrationToken,
         username: usernameFieldController.text,
         email: emailFieldController.text,
-        phone: number.phoneNumber ?? '',
+        phone: phone,
         firstPassword: firstPasswordFieldController.text,
         secondPassword: secondPasswordFieldController.text,
         agreeTerms: isAgree.value,
