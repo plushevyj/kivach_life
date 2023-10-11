@@ -38,7 +38,7 @@ class RegistrationPage extends StatelessWidget {
               children: [
                 const SizedBox(height: 20),
                 Text(
-                  'Здравствуйте, ${profilePreview.firstname} ${profilePreview.middlename}.',
+                  'Здравствуйте, ${profilePreview.firstname} ${profilePreview.lastname}.',
                   style: const TextStyle(fontSize: 16),
                 ),
                 const SizedBox(height: 20),
@@ -67,8 +67,9 @@ class RegistrationPage extends StatelessWidget {
                     ),
                     errorText: registrationController.errorTextPhone.value,
                   ),
-                  onChanged: (_) {
+                  onChanged: (number) {
                     registrationController.errorTextPhone.value = null;
+                    registrationController.phone = number.completeNumber;
                   },
                   initialCountryCode: registrationController.initialCountryCode,
                   invalidNumberMessage: 'Неверный номер',
@@ -77,12 +78,6 @@ class RegistrationPage extends StatelessWidget {
                   disableLengthCheck: true,
                   languageCode: 'RU',
                   validator: (number) async {
-                    registrationController.phone = number!.completeNumber;
-                    if (number.number.length < 10) {
-                      registrationController.isValidatePhoneNumber(false);
-                      return 'Неверный номер';
-                    }
-                    registrationController.isValidatePhoneNumber(true);
                     return null;
                   },
                   pickerDialogStyle: PickerDialogStyle(

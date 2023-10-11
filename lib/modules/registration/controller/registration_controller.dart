@@ -93,7 +93,6 @@ class RegistrationController extends GetxController {
       var basePart = fullPhone.substring(
         foundedCountry.dialCode.length,
       );
-      print('руууууусь = $dialCode $basePart ${foundedCountry.name}');
       return (dialCode, basePart, foundedCountry);
     }
     return null;
@@ -121,6 +120,9 @@ class RegistrationController extends GetxController {
       BlocProvider.of<AuthenticationBloc>(Get.context!)
           .add(const AuthenticateByToken());
     } on DioException catch (error) {
+      print('error = $error');
+      print(error.message);
+      print(error.response);
       if (error.response!.statusCode! == 400) {
         final message = await ConvertTo<RegistrationErrorModel>().item(
             error.response?.data['message'], RegistrationErrorModel.fromJson);
@@ -132,6 +134,7 @@ class RegistrationController extends GetxController {
         errorTextAgree.value = message.agreeTerms?.first;
       }
     } catch (error) {
+      print(error);
       showErrorAlert(error.toString());
     } finally {
       isLoading(false);

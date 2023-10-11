@@ -11,9 +11,6 @@ class ProfileSettingPage extends StatelessWidget {
   ProfileSettingPage({super.key});
 
   static PlatformWebViewControllerCreationParams params = (() {
-    print('kek');
-    print(
-        'WebViewPlatform.instance is WebKitWebViewPlatform = ${WebViewPlatform.instance is WebKitWebViewPlatform}');
     if (GetPlatform.isIOS) {
       return const PlatformWebViewControllerCreationParams();
     } else {
@@ -39,7 +36,6 @@ class ProfileSettingPage extends StatelessWidget {
   final webViewController = WebViewController.fromPlatformCreationParams(
     params,
     onPermissionRequest: (request) {
-      print('request = ${request.types}');
       request.grant();
     },
   );

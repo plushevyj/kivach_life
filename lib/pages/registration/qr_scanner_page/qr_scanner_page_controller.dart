@@ -92,7 +92,6 @@ class QRScannerPageController extends GetxController {
       }
       showErrorAlert('Неверный QR-код.');
     } catch (error) {
-      rethrow;
       showErrorAlert(error.toString());
     }
   }
