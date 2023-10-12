@@ -77,12 +77,12 @@ class AppBarForSmallScreen extends StatelessWidget
             ),
           ),
           const SizedBox(width: 10),
-          if (Get.put(AccountController()).profile.value != null)
+          if (Get.find<AccountController>().profile.value != null)
             Flexible(
               child: Padding(
                 padding: const EdgeInsets.only(right: 10),
                 child: Text(
-                  Get.put(AccountController()).profile.value!.patient.firstname,
+                  Get.find<AccountController>().profile.value!.patient.firstname,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(fontSize: 18),
                 ),

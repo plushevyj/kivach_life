@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 
 import '/core/http/request_handler.dart';
@@ -46,7 +45,7 @@ class RegistrationRepository {
       'registration_form[agreeTerms]': agreeTerms ? 1 : 0,
     };
     final response = await _dio.post(
-      '${dotenv.get('BASE_URL')}/api/register',
+      '/api/register',
       options: Options(
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',

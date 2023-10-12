@@ -13,13 +13,13 @@ import 'modules/local_authentication/bloc/local_authentication_bloc.dart';
 import 'modules/local_password_settings/bloc/local_password_settings_bloc.dart';
 import 'modules/authentication/bloc/authentication_bloc.dart';
 import 'modules/in_app_update/bloc/in_app_update_bloc.dart';
+import 'modules/opening_app/controllers/configuration_of_app_controller.dart';
 import 'modules/reset_password/bloc/reset_password_bloc.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
 
 void main() async {
   await initializeDependencies();
-
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,

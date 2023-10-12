@@ -2,13 +2,16 @@ import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:fk_user_agent/fk_user_agent.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../modules/opening_app/controllers/configuration_of_app_controller.dart';
 import '../firebase/firebase_api.dart';
 import '/firebase_options.dart';
 import '../http/http.dart';
@@ -25,12 +28,13 @@ Future<void> initializeDependencies() async {
   );
   await FirebaseApi().initNotifications();
   await dotenv.load();
+  Get.put(ConfigurationOfAppController(), permanent: true);
   Bloc.observer = Observer();
   await Hive.initFlutter();
   Hive
     ..registerAdapter(BiometricSettingsAdapter())
     ..registerAdapter(LocalPasswordAdapter());
-  GetIt.I.registerSingleton<Dio>(DioClient().dio);
+  // GetIt.I.registerSingleton<Dio>(DioClient().dio);
   await [Permission.camera, Permission.photos, Permission.storage].request();
   await FkUserAgent.init();
 }

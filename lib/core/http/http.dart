@@ -1,7 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../modules/opening_app/controllers/configuration_of_app_controller.dart';
 import '/modules/authentication/repository/login_repository.dart';
 import '/modules/authentication/repository/token_repository.dart';
 
@@ -11,10 +12,11 @@ class DioClient {
 
   final _tokenRepository = const TokenRepository();
   final _loginRepository = const LoginRepository();
-
+  final baseUrl =
+      Get.find<ConfigurationOfAppController>().configuration.value.BASE_URL;
   DioClient() {
     _dio
-      ..options.baseUrl = dotenv.get('BASE_URL')
+      ..options.baseUrl = baseUrl
       ..options.connectTimeout = const Duration(milliseconds: 10000)
       ..options.receiveTimeout = const Duration(milliseconds: 10000)
       ..options.headers = {

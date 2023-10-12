@@ -8,7 +8,7 @@ class ProfileSettingsPageController extends GetxController {
   @override
   void onClose() async {
     final profile = await const LoginRepository().logInByToken();
-    Get.put(AccountController(), permanent: true).profile(profile);
+    Get.find<AccountController>().profile(profile);
     Get.find<AvatarController>().onInit();
     super.onClose();
   }

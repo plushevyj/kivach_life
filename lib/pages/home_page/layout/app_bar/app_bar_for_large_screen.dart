@@ -77,12 +77,12 @@ class AppBarForLargeScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 10),
-                if (Get.put(AccountController()).profile.value != null)
+                if (Get.find<AccountController>().profile.value != null)
                   Flexible(
                     child: Padding(
                       padding: const EdgeInsets.only(right: 10),
                       child: Text(
-                        Get.put(AccountController())
+                        Get.find<AccountController>()
                             .profile
                             .value!
                             .patient

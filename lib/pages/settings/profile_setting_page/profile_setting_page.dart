@@ -5,10 +5,13 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
 import '../../../modules/authentication/repository/token_repository.dart';
+import '../../../modules/opening_app/controllers/configuration_of_app_controller.dart';
 import 'profile_settings_page_controller.dart';
 
 class ProfileSettingPage extends StatelessWidget {
   ProfileSettingPage({super.key});
+
+  final configuration = Get.find<ConfigurationOfAppController>().configuration.value;
 
   static PlatformWebViewControllerCreationParams params = (() {
     if (GetPlatform.isIOS) {
@@ -53,7 +56,7 @@ class ProfileSettingPage extends StatelessWidget {
           onPageFinished: (url) {},
           onWebResourceError: (error) {},
           onNavigationRequest: (NavigationRequest request) {
-            if (request.url.startsWith(dotenv.get('BASE_URL'))) {
+            if (request.url.startsWith(configuration.BASE_URL)) {
               return NavigationDecision.navigate;
             }
             return NavigationDecision.prevent;
@@ -77,7 +80,7 @@ class ProfileSettingPage extends StatelessWidget {
     final headers = {
       'X-Auth': 'Bearer $accessToken',
     };
-    webViewController.loadRequest(Uri.parse('${dotenv.get('BASE_URL')}$route'),
+    webViewController.loadRequest(Uri.parse('${configuration.BASE_URL}$route'),
         headers: headers);
   }
 }

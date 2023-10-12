@@ -3,8 +3,6 @@ import 'dart:convert';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../core/utils/convert_to.dart';
-import '../../../models/reset_phone/reset_phone_error_model/reset_password_error_model.dart';
 import '/modules/authentication/repository/token_repository.dart';
 import '../repository/reset_password_repository.dart';
 

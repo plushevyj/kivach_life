@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
+import '../../modules/opening_app/controllers/configuration_of_app_controller.dart';
 import '/core/themes/light_theme.dart';
 import '/modules/authentication/repository/token_repository.dart';
 import 'home_page_controller.dart';
@@ -33,6 +33,9 @@ class HomePage extends StatelessWidget {
     },
   );
 
+  final appConfiguration =
+      Get.find<ConfigurationOfAppController>().configuration.value;
+
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance
@@ -46,17 +49,18 @@ class HomePage extends StatelessWidget {
         NavigationDelegate(
           onPageStarted: (url) {
             homePageController
-                .isInternalSite(url.startsWith(dotenv.get('BASE_URL')));
+                .isInternalSite(url.startsWith(appConfiguration.BASE_URL));
           },
           onPageFinished: (url) async {
             homePageController.canGoBack(await webViewController.canGoBack());
             homePageController
                 .canGoForward(await webViewController.canGoForward());
-            if (url == '${dotenv.get('BASE_URL')}/') {
+            if (url == '${appConfiguration.BASE_URL}/') {
               navBarIndexNotifier.value = 0;
-            } else if (url.startsWith('${dotenv.get('BASE_URL')}/schedule')) {
+            } else if (url
+                .startsWith('${appConfiguration.BASE_URL}/schedule')) {
               navBarIndexNotifier.value = 1;
-            } else if (url.startsWith('${dotenv.get('BASE_URL')}/chat')) {
+            } else if (url.startsWith('${appConfiguration.BASE_URL}/chat')) {
               navBarIndexNotifier.value = 2;
             }
           },
@@ -66,7 +70,7 @@ class HomePage extends StatelessWidget {
                 (request.url.startsWith('https://play.google.com'))) {
               launchUrl(Uri.parse(request.url));
             }
-            if (request.url.startsWith(dotenv.get('BASE_URL')) ||
+            if (request.url.startsWith(appConfiguration.BASE_URL) ||
                 (request.url.startsWith('https://info.kivach.ru')) ||
                 (request.url.startsWith('https://kivach.diet')) ||
                 (request.url.startsWith('https://lecture.kivach.ru')) ||
@@ -105,17 +109,8 @@ class HomePage extends StatelessWidget {
             backgroundColor: null,
             currentIndex: currentIndex,
             onTap: (index) {
-              switch (index) {
-                case 0:
-                  navBarIndexNotifier.value = index;
-                  load(route: '/');
-                case 1:
-                  navBarIndexNotifier.value = index;
-                  load(route: '/schedule');
-                case 2:
-                  navBarIndexNotifier.value = index;
-                  load(route: '/chat');
-              }
+              navBarIndexNotifier.value = index;
+              load(route: appConfiguration.NAVBAR[index].route);
             },
             enableFeedback: false,
             selectedIconTheme: const IconThemeData(size: 24),
@@ -125,20 +120,35 @@ class HomePage extends StatelessWidget {
             selectedItemColor: KivachColors.green,
             unselectedItemColor: const Color(0xFFAEB2BA),
             type: BottomNavigationBarType.fixed,
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home_outlined),
-                label: 'Главная',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.calendar_today_outlined),
-                label: 'Расписание',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.chat_outlined),
-                label: 'Чат',
-              ),
-            ],
+            items: appConfiguration.NAVBAR
+                .map(
+                  (element) => BottomNavigationBarItem(
+                    // Icons.home_outlined
+                    icon: Icon(
+                      IconData(
+                        int.parse(element.icon),
+                        fontFamily: 'MaterialIcons',
+                      ),
+                    ),
+                    label: element.label,
+                  ),
+                )
+                .toList(),
+            // [
+            //   BottomNavigationBarItem(
+            //     // Icons.home_outlined
+            //     icon: Icon(IconData(61792, fontFamily: 'MaterialIcons')),
+            //     label: 'Главная',
+            //   ),
+            //   BottomNavigationBarItem(
+            //     icon: Icon(Icons.person),
+            //     label: 'Расписание',
+            //   ),
+            //   BottomNavigationBarItem(
+            //     icon: Icon(Icons.monetization_on_outlined),
+            //     label: 'Чат',
+            //   ),
+            // ],
           );
         },
       ),
@@ -151,7 +161,8 @@ class HomePage extends StatelessWidget {
       // 'X-Auth': 'Bearer $accessToken',
       'X-Auth': 'Bearer $accessToken',
     };
-    webViewController.loadRequest(Uri.parse('${dotenv.get('BASE_URL')}$route'),
+    webViewController.loadRequest(
+        Uri.parse('${appConfiguration.BASE_URL}$route'),
         headers: headers);
 
     webViewController;

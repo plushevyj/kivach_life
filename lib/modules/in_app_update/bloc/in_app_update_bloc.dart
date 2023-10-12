@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:playx_version_update/playx_version_update.dart';
 
+import '../../opening_app/controllers/configuration_of_app_controller.dart';
 import '../ui/in_app_update_ios_modal.dart';
 
 part 'in_app_update_event.dart';
@@ -25,7 +26,11 @@ class InAppUpdateBloc extends Bloc<InAppUpdateEvent, InAppUpdateState> {
     try {
       final currentVersion = (await PackageInfo.fromPlatform()).version;
       if (GetPlatform.isIOS) {
-        final response = await Dio().get(dotenv.get('ITUNES_URL_FOR_REQUEST'));
+        final response = await Dio().get(
+            Get.find<ConfigurationOfAppController>()
+                .configuration
+                .value
+                .ITUNES_URL_FOR_REQUEST);
         final versionFromAppStore =
             jsonDecode(response.data)['results'].first['version'];
 
