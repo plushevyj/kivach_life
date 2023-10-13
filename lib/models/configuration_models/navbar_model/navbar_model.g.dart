@@ -8,14 +8,14 @@ part of 'navbar_model.dart';
 
 _$NavbarModelImpl _$$NavbarModelImplFromJson(Map<String, dynamic> json) =>
     _$NavbarModelImpl(
-      icon: json['icon'] as String,
-      label: json['label'] as String,
-      route: json['route'] as String,
+      role: json['role'] as String,
+      menu: (json['menu'] as List<dynamic>)
+          .map((e) => NavbarMenu.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$NavbarModelImplToJson(_$NavbarModelImpl instance) =>
     <String, dynamic>{
-      'icon': instance.icon,
-      'label': instance.label,
-      'route': instance.route,
+      'role': instance.role,
+      'menu': instance.menu,
     };

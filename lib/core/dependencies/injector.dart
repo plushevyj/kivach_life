@@ -20,7 +20,7 @@ import '/models/local_password_model/local_password_model.dart';
 import 'observer.dart';
 
 Future<void> initializeDependencies() async {
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Firebase.initializeApp(
     name: 'kivach-life',
@@ -28,7 +28,8 @@ Future<void> initializeDependencies() async {
   );
   await FirebaseApi().initNotifications();
   await dotenv.load();
-  Get.put(ConfigurationOfAppController(), permanent: true);
+  final configurationOfAppController =
+      Get.put(ConfigurationOfAppController(), permanent: true);
   Bloc.observer = Observer();
   await Hive.initFlutter();
   Hive

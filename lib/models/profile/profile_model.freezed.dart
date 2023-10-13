@@ -20,13 +20,13 @@ Profile _$ProfileFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Profile {
-  String get email => throw _privateConstructorUsedError;
+  String? get email => throw _privateConstructorUsedError;
   List<String> get roles => throw _privateConstructorUsedError;
   String get username => throw _privateConstructorUsedError;
-  Patient get patient => throw _privateConstructorUsedError;
   bool get notificationEnabled => throw _privateConstructorUsedError;
   String get phone => throw _privateConstructorUsedError;
   Avatar? get avatar => throw _privateConstructorUsedError;
+  String get fullName => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -39,15 +39,14 @@ abstract class $ProfileCopyWith<$Res> {
       _$ProfileCopyWithImpl<$Res, Profile>;
   @useResult
   $Res call(
-      {String email,
+      {String? email,
       List<String> roles,
       String username,
-      Patient patient,
       bool notificationEnabled,
       String phone,
-      Avatar? avatar});
+      Avatar? avatar,
+      String fullName});
 
-  $PatientCopyWith<$Res> get patient;
   $AvatarCopyWith<$Res>? get avatar;
 }
 
@@ -64,19 +63,19 @@ class _$ProfileCopyWithImpl<$Res, $Val extends Profile>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? email = null,
+    Object? email = freezed,
     Object? roles = null,
     Object? username = null,
-    Object? patient = null,
     Object? notificationEnabled = null,
     Object? phone = null,
     Object? avatar = freezed,
+    Object? fullName = null,
   }) {
     return _then(_value.copyWith(
-      email: null == email
+      email: freezed == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       roles: null == roles
           ? _value.roles
           : roles // ignore: cast_nullable_to_non_nullable
@@ -85,10 +84,6 @@ class _$ProfileCopyWithImpl<$Res, $Val extends Profile>
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
               as String,
-      patient: null == patient
-          ? _value.patient
-          : patient // ignore: cast_nullable_to_non_nullable
-              as Patient,
       notificationEnabled: null == notificationEnabled
           ? _value.notificationEnabled
           : notificationEnabled // ignore: cast_nullable_to_non_nullable
@@ -101,15 +96,11 @@ class _$ProfileCopyWithImpl<$Res, $Val extends Profile>
           ? _value.avatar
           : avatar // ignore: cast_nullable_to_non_nullable
               as Avatar?,
+      fullName: null == fullName
+          ? _value.fullName
+          : fullName // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $PatientCopyWith<$Res> get patient {
-    return $PatientCopyWith<$Res>(_value.patient, (value) {
-      return _then(_value.copyWith(patient: value) as $Val);
-    });
   }
 
   @override
@@ -133,16 +124,14 @@ abstract class _$$ProfileImplCopyWith<$Res> implements $ProfileCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String email,
+      {String? email,
       List<String> roles,
       String username,
-      Patient patient,
       bool notificationEnabled,
       String phone,
-      Avatar? avatar});
+      Avatar? avatar,
+      String fullName});
 
-  @override
-  $PatientCopyWith<$Res> get patient;
   @override
   $AvatarCopyWith<$Res>? get avatar;
 }
@@ -158,19 +147,19 @@ class __$$ProfileImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? email = null,
+    Object? email = freezed,
     Object? roles = null,
     Object? username = null,
-    Object? patient = null,
     Object? notificationEnabled = null,
     Object? phone = null,
     Object? avatar = freezed,
+    Object? fullName = null,
   }) {
     return _then(_$ProfileImpl(
-      email: null == email
+      email: freezed == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       roles: null == roles
           ? _value._roles
           : roles // ignore: cast_nullable_to_non_nullable
@@ -179,10 +168,6 @@ class __$$ProfileImplCopyWithImpl<$Res>
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
               as String,
-      patient: null == patient
-          ? _value.patient
-          : patient // ignore: cast_nullable_to_non_nullable
-              as Patient,
       notificationEnabled: null == notificationEnabled
           ? _value.notificationEnabled
           : notificationEnabled // ignore: cast_nullable_to_non_nullable
@@ -195,6 +180,10 @@ class __$$ProfileImplCopyWithImpl<$Res>
           ? _value.avatar
           : avatar // ignore: cast_nullable_to_non_nullable
               as Avatar?,
+      fullName: null == fullName
+          ? _value.fullName
+          : fullName // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -206,17 +195,17 @@ class _$ProfileImpl with DiagnosticableTreeMixin implements _Profile {
       {required this.email,
       required final List<String> roles,
       required this.username,
-      required this.patient,
       required this.notificationEnabled,
       required this.phone,
-      required this.avatar})
+      required this.avatar,
+      required this.fullName})
       : _roles = roles;
 
   factory _$ProfileImpl.fromJson(Map<String, dynamic> json) =>
       _$$ProfileImplFromJson(json);
 
   @override
-  final String email;
+  final String? email;
   final List<String> _roles;
   @override
   List<String> get roles {
@@ -228,17 +217,17 @@ class _$ProfileImpl with DiagnosticableTreeMixin implements _Profile {
   @override
   final String username;
   @override
-  final Patient patient;
-  @override
   final bool notificationEnabled;
   @override
   final String phone;
   @override
   final Avatar? avatar;
+  @override
+  final String fullName;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Profile(email: $email, roles: $roles, username: $username, patient: $patient, notificationEnabled: $notificationEnabled, phone: $phone, avatar: $avatar)';
+    return 'Profile(email: $email, roles: $roles, username: $username, notificationEnabled: $notificationEnabled, phone: $phone, avatar: $avatar, fullName: $fullName)';
   }
 
   @override
@@ -249,10 +238,10 @@ class _$ProfileImpl with DiagnosticableTreeMixin implements _Profile {
       ..add(DiagnosticsProperty('email', email))
       ..add(DiagnosticsProperty('roles', roles))
       ..add(DiagnosticsProperty('username', username))
-      ..add(DiagnosticsProperty('patient', patient))
       ..add(DiagnosticsProperty('notificationEnabled', notificationEnabled))
       ..add(DiagnosticsProperty('phone', phone))
-      ..add(DiagnosticsProperty('avatar', avatar));
+      ..add(DiagnosticsProperty('avatar', avatar))
+      ..add(DiagnosticsProperty('fullName', fullName));
   }
 
   @override
@@ -264,11 +253,12 @@ class _$ProfileImpl with DiagnosticableTreeMixin implements _Profile {
             const DeepCollectionEquality().equals(other._roles, _roles) &&
             (identical(other.username, username) ||
                 other.username == username) &&
-            (identical(other.patient, patient) || other.patient == patient) &&
             (identical(other.notificationEnabled, notificationEnabled) ||
                 other.notificationEnabled == notificationEnabled) &&
             (identical(other.phone, phone) || other.phone == phone) &&
-            (identical(other.avatar, avatar) || other.avatar == avatar));
+            (identical(other.avatar, avatar) || other.avatar == avatar) &&
+            (identical(other.fullName, fullName) ||
+                other.fullName == fullName));
   }
 
   @JsonKey(ignore: true)
@@ -278,10 +268,10 @@ class _$ProfileImpl with DiagnosticableTreeMixin implements _Profile {
       email,
       const DeepCollectionEquality().hash(_roles),
       username,
-      patient,
       notificationEnabled,
       phone,
-      avatar);
+      avatar,
+      fullName);
 
   @JsonKey(ignore: true)
   @override
@@ -299,30 +289,30 @@ class _$ProfileImpl with DiagnosticableTreeMixin implements _Profile {
 
 abstract class _Profile implements Profile {
   const factory _Profile(
-      {required final String email,
+      {required final String? email,
       required final List<String> roles,
       required final String username,
-      required final Patient patient,
       required final bool notificationEnabled,
       required final String phone,
-      required final Avatar? avatar}) = _$ProfileImpl;
+      required final Avatar? avatar,
+      required final String fullName}) = _$ProfileImpl;
 
   factory _Profile.fromJson(Map<String, dynamic> json) = _$ProfileImpl.fromJson;
 
   @override
-  String get email;
+  String? get email;
   @override
   List<String> get roles;
   @override
   String get username;
-  @override
-  Patient get patient;
   @override
   bool get notificationEnabled;
   @override
   String get phone;
   @override
   Avatar? get avatar;
+  @override
+  String get fullName;
   @override
   @JsonKey(ignore: true)
   _$$ProfileImplCopyWith<_$ProfileImpl> get copyWith =>

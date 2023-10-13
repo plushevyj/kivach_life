@@ -82,7 +82,7 @@ class AppBarForSmallScreen extends StatelessWidget
               child: Padding(
                 padding: const EdgeInsets.only(right: 10),
                 child: Text(
-                  Get.find<AccountController>().profile.value!.patient.firstname,
+                  Get.find<AccountController>().profile.value!.username,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(fontSize: 18),
                 ),
@@ -100,6 +100,5 @@ class AppBarForSmallScreen extends StatelessWidget
   }
 
   @override
-  Size get preferredSize =>
-      const Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

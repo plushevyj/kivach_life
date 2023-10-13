@@ -1,3 +1,4 @@
+import 'package:doctor/modules/account/controllers/account_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
@@ -35,9 +36,13 @@ class HomePage extends StatelessWidget {
 
   final appConfiguration =
       Get.find<ConfigurationOfAppController>().configuration.value;
+  final profile = Get.find<AccountController>().profile.value;
 
   @override
   Widget build(BuildContext context) {
+    final navbar = appConfiguration.NAVBAR
+        .firstWhere((navbarModel) => profile!.roles.contains(navbarModel.role))
+        .menu;
     WidgetsBinding.instance
         .addPostFrameCallback((_) => FlutterNativeSplash.remove());
     final navBarIndexNotifier = ValueNotifier(0);
@@ -69,15 +74,18 @@ class HomePage extends StatelessWidget {
                 (request.url.startsWith('https://apps.apple.com')) ||
                 (request.url.startsWith('https://play.google.com'))) {
               launchUrl(Uri.parse(request.url));
+              return NavigationDecision.prevent;
             }
-            if (request.url.startsWith(appConfiguration.BASE_URL) ||
-                (request.url.startsWith('https://info.kivach.ru')) ||
-                (request.url.startsWith('https://kivach.diet')) ||
-                (request.url.startsWith('https://lecture.kivach.ru')) ||
-                (request.url.startsWith('https://kivach.ru')) ||
-                (request.url.startsWith('https://kivachlab.ru')) ||
-                (request.url.startsWith('https://www.youtube.com'))) {
-              return NavigationDecision.navigate;
+            for (var url in [
+              ...[
+                for (var browsableUrl in appConfiguration.INTENT_BROWSABLE_URIS)
+                  '${browsableUrl.scheme}${browsableUrl.host}',
+              ],
+              ...appConfiguration.ALLOWED_EXTERNAL_URLS
+            ]) {
+              if (request.url.startsWith(url)) {
+                return NavigationDecision.navigate;
+              }
             }
             return NavigationDecision.prevent;
           },
@@ -110,7 +118,7 @@ class HomePage extends StatelessWidget {
             currentIndex: currentIndex,
             onTap: (index) {
               navBarIndexNotifier.value = index;
-              load(route: appConfiguration.NAVBAR[index].route);
+              load(route: navbar[index].route);
             },
             enableFeedback: false,
             selectedIconTheme: const IconThemeData(size: 24),
@@ -120,7 +128,7 @@ class HomePage extends StatelessWidget {
             selectedItemColor: KivachColors.green,
             unselectedItemColor: const Color(0xFFAEB2BA),
             type: BottomNavigationBarType.fixed,
-            items: appConfiguration.NAVBAR
+            items: navbar
                 .map(
                   (element) => BottomNavigationBarItem(
                     // Icons.home_outlined

@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 
 import '../../../core/http/http.dart';
 import '../../account/controllers/account_controller.dart';
+import '../../local_authentication/repository/local_authentication_repository.dart';
 import '../../opening_app/repository/first_opening_app_repository.dart';
 import '../repository/login_repository.dart';
 import '../repository/token_repository.dart';
@@ -17,6 +18,7 @@ class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
   final LoginRepository loginRepository;
   final TokenRepository tokenRepository;
+  final _localAuthenticationRepository = const LocalAuthenticationRepository();
 
   AuthenticationBloc({
     this.loginRepository = const LoginRepository(),
@@ -42,6 +44,9 @@ class AuthenticationBloc
       final accessToken = await tokenRepository.getAccessToken();
       if (accessToken == null) {
         emit(const Unauthenticated());
+        _localAuthenticationRepository
+          ..deleteLocalPassword()
+          ..deleteBiometricSetting();
         return;
       }
       addAccessToken(accessToken: accessToken);
@@ -52,6 +57,9 @@ class AuthenticationBloc
       emit(AuthenticationError(error.toString()));
       tokenRepository.clearTokens();
       emit(const Unauthenticated());
+      _localAuthenticationRepository
+        ..deleteLocalPassword()
+        ..deleteBiometricSetting();
     }
   }
 
@@ -61,19 +69,27 @@ class AuthenticationBloc
   ) async {
     try {
       emit(const AuthenticationLoading());
+      print(11111111);
       final token = await loginRepository.logIn(
         username: event.username,
         password: event.password,
       );
+      print(22222222);
       tokenRepository.saveToken(token: token);
+      print(token);
       addAccessToken(accessToken: token.token);
+      print(33333333333);
       final profile = await loginRepository.logInByToken();
+      print(4444444444);
       Get.put(AccountController(), permanent: true).profile(profile);
       emit(const Authenticated());
     } catch (error) {
       emit(AuthenticationError(error.toString()));
       tokenRepository.clearTokens();
       emit(const Unauthenticated());
+      _localAuthenticationRepository
+        ..deleteLocalPassword()
+        ..deleteBiometricSetting();
     }
   }
 
@@ -81,5 +97,8 @@ class AuthenticationBloc
       LogOut event, Emitter<AuthenticationState> emit) async {
     await tokenRepository.clearTokens();
     emit(const Unauthenticated());
+    _localAuthenticationRepository
+      ..deleteLocalPassword()
+      ..deleteBiometricSetting();
   }
 }

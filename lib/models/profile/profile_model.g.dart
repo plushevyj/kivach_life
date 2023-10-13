@@ -8,15 +8,15 @@ part of 'profile_model.dart';
 
 _$ProfileImpl _$$ProfileImplFromJson(Map<String, dynamic> json) =>
     _$ProfileImpl(
-      email: json['email'] as String,
+      email: json['email'] as String?,
       roles: (json['roles'] as List<dynamic>).map((e) => e as String).toList(),
       username: json['username'] as String,
-      patient: Patient.fromJson(json['patient'] as Map<String, dynamic>),
       notificationEnabled: json['notificationEnabled'] as bool,
       phone: json['phone'] as String,
       avatar: json['avatar'] == null
           ? null
           : Avatar.fromJson(json['avatar'] as Map<String, dynamic>),
+      fullName: json['fullName'] as String,
     );
 
 Map<String, dynamic> _$$ProfileImplToJson(_$ProfileImpl instance) =>
@@ -24,8 +24,8 @@ Map<String, dynamic> _$$ProfileImplToJson(_$ProfileImpl instance) =>
       'email': instance.email,
       'roles': instance.roles,
       'username': instance.username,
-      'patient': instance.patient,
       'notificationEnabled': instance.notificationEnabled,
       'phone': instance.phone,
       'avatar': instance.avatar,
+      'fullName': instance.fullName,
     };

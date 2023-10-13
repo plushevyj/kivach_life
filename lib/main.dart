@@ -33,13 +33,16 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final localPasswordSettingBloc = LocalPasswordSettingBloc();
+    final authenticationBloc = AuthenticationBloc();
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => InAppUpdateBloc()),
         BlocProvider(
             create: (_) =>
-                AuthenticationBloc()..add(const AuthenticateByToken())),
-        BlocProvider(create: (_) => LocalAuthenticationBloc()),
+                authenticationBloc..add(const AuthenticateByToken())),
+        BlocProvider(
+            create: (_) => LocalAuthenticationBloc(
+                authenticationBloc: authenticationBloc)),
         BlocProvider(create: (_) => ResetPasswordBloc()),
         BlocProvider(create: (_) => localPasswordSettingBloc),
         BlocProvider(

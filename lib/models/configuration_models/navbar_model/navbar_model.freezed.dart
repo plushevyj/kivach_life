@@ -20,9 +20,8 @@ NavbarModel _$NavbarModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$NavbarModel {
-  String get icon => throw _privateConstructorUsedError;
-  String get label => throw _privateConstructorUsedError;
-  String get route => throw _privateConstructorUsedError;
+  String get role => throw _privateConstructorUsedError;
+  List<NavbarMenu> get menu => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +35,7 @@ abstract class $NavbarModelCopyWith<$Res> {
           NavbarModel value, $Res Function(NavbarModel) then) =
       _$NavbarModelCopyWithImpl<$Res, NavbarModel>;
   @useResult
-  $Res call({String icon, String label, String route});
+  $Res call({String role, List<NavbarMenu> menu});
 }
 
 /// @nodoc
@@ -52,23 +51,18 @@ class _$NavbarModelCopyWithImpl<$Res, $Val extends NavbarModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? icon = null,
-    Object? label = null,
-    Object? route = null,
+    Object? role = null,
+    Object? menu = null,
   }) {
     return _then(_value.copyWith(
-      icon: null == icon
-          ? _value.icon
-          : icon // ignore: cast_nullable_to_non_nullable
+      role: null == role
+          ? _value.role
+          : role // ignore: cast_nullable_to_non_nullable
               as String,
-      label: null == label
-          ? _value.label
-          : label // ignore: cast_nullable_to_non_nullable
-              as String,
-      route: null == route
-          ? _value.route
-          : route // ignore: cast_nullable_to_non_nullable
-              as String,
+      menu: null == menu
+          ? _value.menu
+          : menu // ignore: cast_nullable_to_non_nullable
+              as List<NavbarMenu>,
     ) as $Val);
   }
 }
@@ -81,7 +75,7 @@ abstract class _$$NavbarModelImplCopyWith<$Res>
       __$$NavbarModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String icon, String label, String route});
+  $Res call({String role, List<NavbarMenu> menu});
 }
 
 /// @nodoc
@@ -95,23 +89,18 @@ class __$$NavbarModelImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? icon = null,
-    Object? label = null,
-    Object? route = null,
+    Object? role = null,
+    Object? menu = null,
   }) {
     return _then(_$NavbarModelImpl(
-      icon: null == icon
-          ? _value.icon
-          : icon // ignore: cast_nullable_to_non_nullable
+      role: null == role
+          ? _value.role
+          : role // ignore: cast_nullable_to_non_nullable
               as String,
-      label: null == label
-          ? _value.label
-          : label // ignore: cast_nullable_to_non_nullable
-              as String,
-      route: null == route
-          ? _value.route
-          : route // ignore: cast_nullable_to_non_nullable
-              as String,
+      menu: null == menu
+          ? _value._menu
+          : menu // ignore: cast_nullable_to_non_nullable
+              as List<NavbarMenu>,
     ));
   }
 }
@@ -120,21 +109,25 @@ class __$$NavbarModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$NavbarModelImpl with DiagnosticableTreeMixin implements _NavbarModel {
   const _$NavbarModelImpl(
-      {required this.icon, required this.label, required this.route});
+      {required this.role, required final List<NavbarMenu> menu})
+      : _menu = menu;
 
   factory _$NavbarModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$NavbarModelImplFromJson(json);
 
   @override
-  final String icon;
+  final String role;
+  final List<NavbarMenu> _menu;
   @override
-  final String label;
-  @override
-  final String route;
+  List<NavbarMenu> get menu {
+    if (_menu is EqualUnmodifiableListView) return _menu;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_menu);
+  }
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'NavbarModel(icon: $icon, label: $label, route: $route)';
+    return 'NavbarModel(role: $role, menu: $menu)';
   }
 
   @override
@@ -142,9 +135,8 @@ class _$NavbarModelImpl with DiagnosticableTreeMixin implements _NavbarModel {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'NavbarModel'))
-      ..add(DiagnosticsProperty('icon', icon))
-      ..add(DiagnosticsProperty('label', label))
-      ..add(DiagnosticsProperty('route', route));
+      ..add(DiagnosticsProperty('role', role))
+      ..add(DiagnosticsProperty('menu', menu));
   }
 
   @override
@@ -152,14 +144,14 @@ class _$NavbarModelImpl with DiagnosticableTreeMixin implements _NavbarModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$NavbarModelImpl &&
-            (identical(other.icon, icon) || other.icon == icon) &&
-            (identical(other.label, label) || other.label == label) &&
-            (identical(other.route, route) || other.route == route));
+            (identical(other.role, role) || other.role == role) &&
+            const DeepCollectionEquality().equals(other._menu, _menu));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, icon, label, route);
+  int get hashCode => Object.hash(
+      runtimeType, role, const DeepCollectionEquality().hash(_menu));
 
   @JsonKey(ignore: true)
   @override
@@ -177,19 +169,16 @@ class _$NavbarModelImpl with DiagnosticableTreeMixin implements _NavbarModel {
 
 abstract class _NavbarModel implements NavbarModel {
   const factory _NavbarModel(
-      {required final String icon,
-      required final String label,
-      required final String route}) = _$NavbarModelImpl;
+      {required final String role,
+      required final List<NavbarMenu> menu}) = _$NavbarModelImpl;
 
   factory _NavbarModel.fromJson(Map<String, dynamic> json) =
       _$NavbarModelImpl.fromJson;
 
   @override
-  String get icon;
+  String get role;
   @override
-  String get label;
-  @override
-  String get route;
+  List<NavbarMenu> get menu;
   @override
   @JsonKey(ignore: true)
   _$$NavbarModelImplCopyWith<_$NavbarModelImpl> get copyWith =>
