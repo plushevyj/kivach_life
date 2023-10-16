@@ -28,8 +28,6 @@ Future<void> initializeDependencies() async {
   );
   await FirebaseApi().initNotifications();
   await dotenv.load();
-  final configurationOfAppController =
-      Get.put(ConfigurationOfAppController(), permanent: true);
   Bloc.observer = Observer();
   await Hive.initFlutter();
   Hive

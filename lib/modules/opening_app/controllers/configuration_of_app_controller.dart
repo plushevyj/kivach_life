@@ -7,14 +7,13 @@ import '../../../core/http/http.dart';
 import '../repository/configuration_of_app_repository.dart';
 
 class ConfigurationOfAppController extends GetxController {
-  late Rx<ConfigurationOfApp> configuration;
+  Rxn<ConfigurationOfApp> configuration = Rxn(null);
 
   @override
   void onInit() async {
-    configuration =
-        (await const ConfigurationOfAppRepository().getConfigurationOfApp())
-            .obs;
-    GetIt.I.registerSingleton<Dio>(DioClient().dio);
+    // configuration.value =
+    //     await const ConfigurationOfAppRepository().getConfigurationOfApp();
+    // GetIt.I.registerSingleton<Dio>(DioClient().dio);
     super.onInit();
   }
 }

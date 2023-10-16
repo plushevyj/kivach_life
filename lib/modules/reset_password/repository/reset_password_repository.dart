@@ -10,12 +10,12 @@ import '../../../core/utils/convert_to.dart';
 
 class ResetPasswordRepository {
   static final _dio = GetIt.I.get<Dio>();
-  final baseUrl = Get.find<ConfigurationOfAppController>().configuration.value.BASE_URL;
+  final baseUrl =
+      Get.find<ConfigurationOfAppController>().configuration.value?.BASE_URL;
 
   Future<int?> checkNumber({
     required String phone,
   }) async {
-
     final data = {'sms_pass_reset[phone]': phone};
     try {
       await _dio.post(

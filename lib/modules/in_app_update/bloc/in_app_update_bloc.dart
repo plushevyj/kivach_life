@@ -29,7 +29,7 @@ class InAppUpdateBloc extends Bloc<InAppUpdateEvent, InAppUpdateState> {
         final response = await Dio().get(
             Get.find<ConfigurationOfAppController>()
                 .configuration
-                .value
+                .value!
                 .ITUNES_URL_FOR_REQUEST);
         final versionFromAppStore =
             jsonDecode(response.data)['results'].first['version'];

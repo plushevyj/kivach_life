@@ -13,10 +13,10 @@ class DioClient {
   final _tokenRepository = const TokenRepository();
   final _loginRepository = const LoginRepository();
   final baseUrl =
-      Get.find<ConfigurationOfAppController>().configuration.value.BASE_URL;
+      Get.find<ConfigurationOfAppController>().configuration.value?.BASE_URL;
   DioClient() {
     _dio
-      ..options.baseUrl = baseUrl
+      ..options.baseUrl = baseUrl!
       ..options.connectTimeout = const Duration(milliseconds: 10000)
       ..options.receiveTimeout = const Duration(milliseconds: 10000)
       ..options.headers = {

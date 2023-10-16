@@ -29,7 +29,7 @@ class LoginRepository {
   }
 
   Future<TokenModel> refreshToken(String refreshToken) async {
-    final path = '${Get.find<ConfigurationOfAppController>().configuration.value.BASE_URL}/api/token/refresh';
+    final path = '${Get.find<ConfigurationOfAppController>().configuration.value?.BASE_URL}/api/token/refresh';
     final query = {
       'refresh_token': refreshToken,
     };

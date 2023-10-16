@@ -40,7 +40,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final navbar = appConfiguration.NAVBAR
+    final navbar = appConfiguration?.NAVBAR
         .firstWhere((navbarModel) => profile!.roles.contains(navbarModel.role))
         .menu;
     WidgetsBinding.instance
@@ -54,18 +54,18 @@ class HomePage extends StatelessWidget {
         NavigationDelegate(
           onPageStarted: (url) {
             homePageController
-                .isInternalSite(url.startsWith(appConfiguration.BASE_URL));
+                .isInternalSite(url.startsWith(appConfiguration!.BASE_URL));
           },
           onPageFinished: (url) async {
             homePageController.canGoBack(await webViewController.canGoBack());
             homePageController
                 .canGoForward(await webViewController.canGoForward());
-            if (url == '${appConfiguration.BASE_URL}/') {
+            if (url == '${appConfiguration?.BASE_URL}/') {
               navBarIndexNotifier.value = 0;
             } else if (url
-                .startsWith('${appConfiguration.BASE_URL}/schedule')) {
+                .startsWith('${appConfiguration?.BASE_URL}/schedule')) {
               navBarIndexNotifier.value = 1;
-            } else if (url.startsWith('${appConfiguration.BASE_URL}/chat')) {
+            } else if (url.startsWith('${appConfiguration?.BASE_URL}/chat')) {
               navBarIndexNotifier.value = 2;
             }
           },
@@ -78,10 +78,11 @@ class HomePage extends StatelessWidget {
             }
             for (var url in [
               ...[
-                for (var browsableUrl in appConfiguration.INTENT_BROWSABLE_URIS)
+                for (var browsableUrl
+                    in appConfiguration!.INTENT_BROWSABLE_URIS)
                   '${browsableUrl.scheme}${browsableUrl.host}',
               ],
-              ...appConfiguration.ALLOWED_EXTERNAL_URLS
+              ...?appConfiguration?.ALLOWED_EXTERNAL_URLS
             ]) {
               if (request.url.startsWith(url)) {
                 return NavigationDecision.navigate;
@@ -129,7 +130,7 @@ class HomePage extends StatelessWidget {
             unselectedItemColor: const Color(0xFFAEB2BA),
             type: BottomNavigationBarType.fixed,
             items: navbar
-                .map(
+                !.map(
                   (element) => BottomNavigationBarItem(
                     // Icons.home_outlined
                     icon: Icon(
@@ -170,7 +171,7 @@ class HomePage extends StatelessWidget {
       'X-Auth': 'Bearer $accessToken',
     };
     webViewController.loadRequest(
-        Uri.parse('${appConfiguration.BASE_URL}$route'),
+        Uri.parse('${appConfiguration?.BASE_URL}$route'),
         headers: headers);
 
     webViewController;

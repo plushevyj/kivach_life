@@ -14,7 +14,7 @@ class AvatarController extends GetxController {
     if (avatar != null) {
       avatarLoading(true);
       image = Image.network(
-          '${Get.find<ConfigurationOfAppController>().configuration.value.BASE_URL}$avatar');
+          '${Get.find<ConfigurationOfAppController>().configuration.value?.BASE_URL}$avatar');
       image?.image
           .resolve(const ImageConfiguration())
           .addListener(ImageStreamListener((_, __) {

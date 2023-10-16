@@ -1,11 +1,14 @@
+import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:get_it/get_it.dart';
 
 import 'core/dependencies/injector.dart';
 import 'core/firebase/firebase_api.dart';
+import 'core/http/http.dart';
 import 'core/pages.dart';
 import 'core/themes/light_theme.dart';
 import 'modules/biometric_settings/bloc/biometric_settings_bloc.dart';
@@ -13,6 +16,7 @@ import 'modules/local_authentication/bloc/local_authentication_bloc.dart';
 import 'modules/local_password_settings/bloc/local_password_settings_bloc.dart';
 import 'modules/authentication/bloc/authentication_bloc.dart';
 import 'modules/in_app_update/bloc/in_app_update_bloc.dart';
+import 'modules/opening_app/bloc/opening_app_bloc.dart';
 import 'modules/opening_app/controllers/configuration_of_app_controller.dart';
 import 'modules/reset_password/bloc/reset_password_bloc.dart';
 
@@ -36,10 +40,11 @@ class App extends StatelessWidget {
     final authenticationBloc = AuthenticationBloc();
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => InAppUpdateBloc()),
         BlocProvider(
             create: (_) =>
-                authenticationBloc..add(const AuthenticateByToken())),
+                OpeningAppBloc()..add(const GetConfigurationOfApp())),
+        BlocProvider(create: (_) => InAppUpdateBloc()),
+        BlocProvider(create: (_) => authenticationBloc),
         BlocProvider(
             create: (_) => LocalAuthenticationBloc(
                 authenticationBloc: authenticationBloc)),
@@ -57,16 +62,27 @@ class App extends StatelessWidget {
         darkTheme: ThemeData.light(),
         getPages: pages,
         builder: (context, child) {
-          return BlocListener<AuthenticationBloc, AuthenticationState>(
-            listener: (context, state) async {
-              if (state is Authenticated) {
-                await FirebaseApi().sendToken();
-                Get.offNamed('/local_auth');
+          return BlocBuilder<OpeningAppBloc, OpeningAppState>(
+            builder: (context, state) {
+              if (state is SuccessConfigurationOfApp) {
+                GetIt.I.registerSingleton<Dio>(DioClient().dio);
+                authenticationBloc.add(const AuthenticateByToken());
+                return BlocListener<AuthenticationBloc, AuthenticationState>(
+                  listener: (context, state) async {
+                    if (state is Authenticated) {
+                      await FirebaseApi().sendToken();
+                      Get.offNamed('/local_auth');
+                    } else {
+                      Get.offNamed('/auth');
+                    }
+                  },
+                  child: child,
+                );
               } else {
-                Get.offNamed('/auth');
+                // Get.context!.read<OpeningAppBloc>()..add(OpeningAppInitialEvent());
+                return const Text('kek');
               }
             },
-            child: child,
           );
         },
         initialRoute: '/loading',

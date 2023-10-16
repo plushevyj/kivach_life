@@ -56,7 +56,7 @@ class ProfileSettingPage extends StatelessWidget {
           onPageFinished: (url) {},
           onWebResourceError: (error) {},
           onNavigationRequest: (NavigationRequest request) {
-            if (request.url.startsWith(configuration.BASE_URL)) {
+            if (request.url.startsWith(configuration!.BASE_URL)) {
               return NavigationDecision.navigate;
             }
             return NavigationDecision.prevent;
@@ -80,7 +80,7 @@ class ProfileSettingPage extends StatelessWidget {
     final headers = {
       'X-Auth': 'Bearer $accessToken',
     };
-    webViewController.loadRequest(Uri.parse('${configuration.BASE_URL}$route'),
+    webViewController.loadRequest(Uri.parse('${configuration?.BASE_URL}$route'),
         headers: headers);
   }
 }
