@@ -103,20 +103,18 @@ class RegistrationPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20),
-                TextFieldForForm(
+                PasswordFieldForForm(
                   controller:
                       registrationController.firstPasswordFieldController,
                   hint: 'Пароль',
-                  isPassword: true,
                   errorText:
                       registrationController.errorTextFirstPassword.value,
                 ),
                 const SizedBox(height: 20),
-                TextFieldForForm(
+                PasswordFieldForForm(
                   controller:
                       registrationController.secondPasswordFieldController,
                   hint: 'Подтвердите пароль',
-                  isPassword: true,
                   errorText:
                       registrationController.errorTextSecondPassword.value,
                 ),

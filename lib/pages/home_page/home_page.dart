@@ -60,14 +60,10 @@ class HomePage extends StatelessWidget {
             homePageController.canGoBack(await webViewController.canGoBack());
             homePageController
                 .canGoForward(await webViewController.canGoForward());
-            if (url == '${appConfiguration?.BASE_URL}/') {
-              navBarIndexNotifier.value = 0;
-            } else if (url
-                .startsWith('${appConfiguration?.BASE_URL}/schedule')) {
-              navBarIndexNotifier.value = 1;
-            } else if (url.startsWith('${appConfiguration?.BASE_URL}/chat')) {
-              navBarIndexNotifier.value = 2;
-            }
+            final currentRoute = url.split(appConfiguration!.BASE_URL)[1];
+            navBarIndexNotifier.value = navbar!.lastIndexWhere(
+                (navbarElement) =>
+                    currentRoute.startsWith(navbarElement.route));
           },
           onNavigationRequest: (request) async {
             if (request.url.startsWith('tel:') ||
@@ -129,8 +125,8 @@ class HomePage extends StatelessWidget {
             selectedItemColor: KivachColors.green,
             unselectedItemColor: const Color(0xFFAEB2BA),
             type: BottomNavigationBarType.fixed,
-            items: navbar
-                !.map(
+            items: navbar!
+                .map(
                   (element) => BottomNavigationBarItem(
                     // Icons.home_outlined
                     icon: Icon(

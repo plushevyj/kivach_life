@@ -45,6 +45,8 @@ dependencies:
   fk_user_agent: ^2.1.0
   playx_version_update: ^0.0.3
   intl_phone_field: ^3.2.0
+  flutter_localization: ^0.1.14
+
 
 dev_dependencies:
   flutter_test:

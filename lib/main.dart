@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,7 +18,7 @@ import 'modules/local_password_settings/bloc/local_password_settings_bloc.dart';
 import 'modules/authentication/bloc/authentication_bloc.dart';
 import 'modules/in_app_update/bloc/in_app_update_bloc.dart';
 import 'modules/opening_app/bloc/opening_app_bloc.dart';
-import 'modules/opening_app/controllers/configuration_of_app_controller.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'modules/reset_password/bloc/reset_password_bloc.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
@@ -55,6 +56,14 @@ class App extends StatelessWidget {
                 localPasswordSettingBloc: localPasswordSettingBloc)),
       ],
       child: GetMaterialApp(
+        supportedLocales: const [Locale('ru', 'RU')],
+        locale: const Locale('ru'),
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          DefaultCupertinoLocalizations.delegate,
+        ],
         debugShowCheckedModeBanner: false,
         title: 'Kivach Life',
         theme: lightTheme,

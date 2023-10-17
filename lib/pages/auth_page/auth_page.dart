@@ -51,29 +51,19 @@ class AuthorizationPage extends StatelessWidget {
                         hint: 'Логин',
                       ),
                       const SizedBox(height: 20),
-                      TextFieldForForm(
+                      PasswordFieldForForm(
                         controller: passwordController,
                         hint: 'Пароль',
-                        isPassword: true,
-                        onSubmitted: (_) {
-                          if (loginController.text.isNotEmpty &&
-                              passwordController.text.isNotEmpty) {
-                            Get.context!.read<AuthenticationBloc>().add(
-                                  LogIn(
-                                    username: loginController.text,
-                                    password: passwordController.text,
-                                  ),
-                                );
-                          }
-                        },
                       ),
                       const SizedBox(height: 20),
                       Obx(
                         () => ButtonForForm(
-                          text:
-                              !authPageController.isLoading.value ? 'ВОЙТИ' : null,
+                          text: !authPageController.isLoading.value
+                              ? 'ВОЙТИ'
+                              : null,
                           child: authPageController.isLoading.value
-                              ? const CircularProgressIndicator(color: Colors.white)
+                              ? const CircularProgressIndicator(
+                                  color: Colors.white)
                               : null,
                           onPressed: () {
                             if (loginController.text.isNotEmpty &&

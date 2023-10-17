@@ -46,21 +46,39 @@ class RegistrationController extends GetxController {
 
   @override
   void onInit() {
-    usernameFieldController = TextEditingController(text: userData?.username)
-      ..addListener(() => errorTextUsername.value = null);
-    emailFieldController = TextEditingController(text: userData?.email)
-      ..addListener(() => errorTextEmail.value = null);
+    usernameFieldController = TextEditingController(text: userData?.username);
+    emailFieldController = TextEditingController(text: userData?.email);
     final fullPhoneData = userData?.phone != null
         ? separatePhoneAndDialCode(userData!.phone!)
         : null;
     initialCountryCode = fullPhoneData?.$2.code ?? 'RU';
-    phoneFieldController = TextEditingController(text: fullPhoneData?.$1)
-      ..addListener(() => errorTextPhone.value = null);
-    firstPasswordFieldController
-        .addListener(() => errorTextFirstPassword.value = null);
-    secondPasswordFieldController
-        .addListener(() => errorTextSecondPassword.value = null);
-    isAgree.listen((_) => errorTextAgree.value = null);
+    phoneFieldController = TextEditingController(text: fullPhoneData?.$1);
+    firstPasswordFieldController.addListener(() {
+      if (firstPasswordFieldController.text.isNotEmpty &&
+          firstPasswordFieldController.text.length < 6) {
+        errorTextFirstPassword.value = 'Пароль должен быть минимум 6 символов';
+      } else if (firstPasswordFieldController.text !=
+          secondPasswordFieldController.text) {
+        errorTextFirstPassword.value = 'Пароли не совпадают';
+      } else {
+        errorTextFirstPassword.value = null;
+      }
+    });
+    secondPasswordFieldController.addListener(() {
+      if (firstPasswordFieldController.text.isNotEmpty &&
+          firstPasswordFieldController.text.length < 6) {
+        errorTextFirstPassword.value = 'Пароль должен быть минимум 6 символов';
+      } else if (firstPasswordFieldController.text !=
+          secondPasswordFieldController.text) {
+        errorTextFirstPassword.value = 'Пароли не совпадают';
+      } else {
+        errorTextFirstPassword.value = null;
+      }
+    });
+    isAgree.listen((value) {
+      errorTextAgree.value =
+        value ? null : 'Вы должны согласиться с Условиями программы';
+    });
     super.onInit();
   }
 
