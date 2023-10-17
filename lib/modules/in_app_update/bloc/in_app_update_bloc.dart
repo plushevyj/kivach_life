@@ -33,9 +33,8 @@ class InAppUpdateBloc extends Bloc<InAppUpdateEvent, InAppUpdateState> {
                 .ITUNES_URL_FOR_REQUEST);
         final versionFromAppStore =
             jsonDecode(response.data)['results'].first['version'];
-
         if (versionFromAppStore != currentVersion) {
-          InAppUpdateUI().showInAppUpdateIOSModal();
+          InAppUpdateUI().showInAppUpdateIOSModal(Get.context!);
         }
       } else if (GetPlatform.isAndroid) {
         final result = await PlayxVersionUpdate.showInAppUpdateDialog(

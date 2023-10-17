@@ -19,7 +19,7 @@ class RegistrationController extends GetxController {
   final User? userData;
 
   final formPhoneInputKey = GlobalKey<FormState>();
-  var phone = '';
+  String? phone;
   late final String initialCountryCode;
   final isValidatePhoneNumber = true.obs;
   final isLoading = false.obs;
@@ -53,8 +53,8 @@ class RegistrationController extends GetxController {
     final fullPhoneData = userData?.phone != null
         ? separatePhoneAndDialCode(userData!.phone!)
         : null;
-    initialCountryCode = fullPhoneData?.$3.code ?? 'RU';
-    phoneFieldController = TextEditingController(text: fullPhoneData?.$2)
+    initialCountryCode = fullPhoneData?.$2.code ?? 'RU';
+    phoneFieldController = TextEditingController(text: fullPhoneData?.$1)
       ..addListener(() => errorTextPhone.value = null);
     firstPasswordFieldController
         .addListener(() => errorTextFirstPassword.value = null);
@@ -75,30 +75,27 @@ class RegistrationController extends GetxController {
     super.dispose();
   }
 
-  //(dialCode, basePartOfPhoneNumber, Country)
-  (String, String, Country)? separatePhoneAndDialCode(String fullPhone) {
+  //(basePartOfPhoneNumber, Country)
+  (String, Country)? separatePhoneAndDialCode(String fullPhone) {
     fullPhone = fullPhone.substring(1);
     Country? foundedCountry;
     for (var country in countries) {
+      //[dialCode] не имеет плюса впереди
       String dialCode = country.dialCode.toString();
       if (fullPhone.startsWith(dialCode)) {
         foundedCountry = country;
       }
     }
     if (foundedCountry != null) {
-      var dialCode = fullPhone.substring(
-        0,
-        foundedCountry.dialCode.length,
-      );
       var basePart = fullPhone.substring(
         foundedCountry.dialCode.length,
       );
-      return (dialCode, basePart, foundedCountry);
+      return (basePart, foundedCountry);
     }
     return null;
   }
 
-  void register(BuildContext context) async {
+  void register() async {
     errorTextUsername(null);
     errorTextEmail(null);
     errorTextPhone(null);
@@ -111,7 +108,7 @@ class RegistrationController extends GetxController {
         registrationToken: registrationToken,
         username: usernameFieldController.text,
         email: emailFieldController.text,
-        phone: phone,
+        phone: phone ?? '',
         firstPassword: firstPasswordFieldController.text,
         secondPassword: secondPasswordFieldController.text,
         agreeTerms: isAgree.value,
@@ -120,9 +117,6 @@ class RegistrationController extends GetxController {
       BlocProvider.of<AuthenticationBloc>(Get.context!)
           .add(const AuthenticateByToken());
     } on DioException catch (error) {
-      print('error = $error');
-      print(error.message);
-      print(error.response);
       if (error.response!.statusCode! == 400) {
         final message = await ConvertTo<RegistrationErrorModel>().item(
             error.response?.data['message'], RegistrationErrorModel.fromJson);
@@ -134,7 +128,6 @@ class RegistrationController extends GetxController {
         errorTextAgree.value = message.agreeTerms?.first;
       }
     } catch (error) {
-      print(error);
       showErrorAlert(error.toString());
     } finally {
       isLoading(false);

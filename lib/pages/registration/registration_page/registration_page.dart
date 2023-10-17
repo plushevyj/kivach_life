@@ -58,39 +58,49 @@ class RegistrationPage extends StatelessWidget {
                   errorText: registrationController.errorTextEmail.value,
                 ),
                 const SizedBox(height: 20),
-                IntlPhoneField(
-                  controller: registrationController.phoneFieldController,
-                  decoration: InputDecoration(
-                    labelText: 'Номер телефона',
-                    border: const OutlineInputBorder(
-                      borderSide: BorderSide(),
+                Form(
+                  key: registrationController.formPhoneInputKey,
+                  child: IntlPhoneField(
+                    controller: registrationController.phoneFieldController,
+                    decoration: InputDecoration(
+                      labelText: 'Номер телефона',
+                      border: const OutlineInputBorder(
+                        borderSide: BorderSide(),
+                      ),
+                      errorText: registrationController.errorTextPhone.value,
                     ),
-                    errorText: registrationController.errorTextPhone.value,
+                    onChanged: (number) {
+                      registrationController.errorTextPhone.value = null;
+                    },
+                    onSaved: (number) {
+                      registrationController.phone = number?.completeNumber;
+                    },
+                    initialCountryCode:
+                        registrationController.initialCountryCode,
+                    disableAutoFillHints: true,
+                    autovalidateMode: AutovalidateMode.always,
+                    disableLengthCheck: true,
+                    languageCode: 'RU',
+                    validator: (number) async {
+                      if (number?.number == null ||
+                          number!.number.isEmpty ||
+                          number.number.length >= 8) {
+                        return null;
+                      }
+                      return 'Неверный номер';
+                    },
+                    pickerDialogStyle: PickerDialogStyle(
+                      backgroundColor: Colors.white,
+                      countryNameStyle:
+                          const TextStyle(fontWeight: FontWeight.normal),
+                      searchFieldInputDecoration: null,
+                      searchFieldPadding: null,
+                    ),
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      LengthLimitingTextInputFormatter(14),
+                    ],
                   ),
-                  onChanged: (number) {
-                    registrationController.errorTextPhone.value = null;
-                    registrationController.phone = number.completeNumber;
-                  },
-                  initialCountryCode: registrationController.initialCountryCode,
-                  invalidNumberMessage: 'Неверный номер',
-                  disableAutoFillHints: true,
-                  autovalidateMode: AutovalidateMode.always,
-                  disableLengthCheck: true,
-                  languageCode: 'RU',
-                  validator: (number) async {
-                    return null;
-                  },
-                  pickerDialogStyle: PickerDialogStyle(
-                    backgroundColor: Colors.white,
-                    countryNameStyle:
-                        const TextStyle(fontWeight: FontWeight.normal),
-                    searchFieldInputDecoration: null,
-                    searchFieldPadding: null,
-                  ),
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                    LengthLimitingTextInputFormatter(14),
-                  ],
                 ),
                 const SizedBox(height: 20),
                 TextFieldForForm(
@@ -168,7 +178,7 @@ class RegistrationPage extends StatelessWidget {
                     onPressed: () {
                       registrationController.formPhoneInputKey.currentState
                           ?.save();
-                      registrationController.register(Get.context!);
+                      registrationController.register();
                     },
                   ),
                 ),

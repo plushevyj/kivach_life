@@ -65,7 +65,9 @@ class App extends StatelessWidget {
           return BlocBuilder<OpeningAppBloc, OpeningAppState>(
             builder: (context, state) {
               if (state is SuccessConfigurationOfApp) {
-                GetIt.I.registerSingleton<Dio>(DioClient().dio);
+                if (!GetIt.I.isRegistered<Dio>()) {
+                  GetIt.I.registerSingleton<Dio>(DioClient().dio);
+                }
                 authenticationBloc.add(const AuthenticateByToken());
                 return BlocListener<AuthenticationBloc, AuthenticationState>(
                   listener: (context, state) async {
@@ -79,8 +81,7 @@ class App extends StatelessWidget {
                   child: child,
                 );
               } else {
-                // Get.context!.read<OpeningAppBloc>()..add(OpeningAppInitialEvent());
-                return const Text('kek');
+                return const SizedBox.shrink();
               }
             },
           );

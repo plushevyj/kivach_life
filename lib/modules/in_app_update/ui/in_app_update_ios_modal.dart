@@ -4,9 +4,9 @@ import 'package:get/get.dart';
 import 'package:store_redirect/store_redirect.dart';
 
 class InAppUpdateUI {
-  void showInAppUpdateIOSModal() {
+  void showInAppUpdateIOSModal(BuildContext context) {
     showCupertinoDialog(
-      context: Get.context!,
+      context: context,
       builder: (ctx) {
         return Theme(
           data: ThemeData(

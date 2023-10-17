@@ -39,7 +39,7 @@ class QRScannerPageController extends GetxController {
 
   void onQRViewCreated(QRViewController controller) async {
     qrViewController = controller;
-    controller.scannedDataStream.listen((Barcode scanData) async {
+    controller.scannedDataStream.listen((scanData) async {
       try {
         if (errorAlertAllow.value &&
             scanData.format == BarcodeFormat.qrcode &&
@@ -84,10 +84,10 @@ class QRScannerPageController extends GetxController {
         final registrationToken = qrcode.split(pattern)[1];
         final profilePreview = await _registrationRepository
             .checkRegistrationToken(registrationToken);
-        Get.off(RegistrationPage(
-          registrationToken: registrationToken,
-          profilePreview: profilePreview,
-        ));
+        Get.off(() => RegistrationPage(
+              registrationToken: registrationToken,
+              profilePreview: profilePreview,
+            ));
         return;
       }
       showErrorAlert('Неверный QR-код.');
