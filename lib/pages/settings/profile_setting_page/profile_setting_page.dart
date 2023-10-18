@@ -11,7 +11,8 @@ import 'profile_settings_page_controller.dart';
 class ProfileSettingPage extends StatelessWidget {
   ProfileSettingPage({super.key});
 
-  final configuration = Get.find<ConfigurationOfAppController>().configuration.value;
+  final configuration =
+      Get.find<ConfigurationOfAppController>().configuration.value;
 
   static PlatformWebViewControllerCreationParams params = (() {
     if (GetPlatform.isIOS) {
@@ -26,13 +27,14 @@ class ProfileSettingPage extends StatelessWidget {
       //         },
       //       )
       //     : const PlatformWebViewControllerCreationParams();
-      return WebKitWebViewControllerCreationParams(
-        allowsInlineMediaPlayback: true,
-        mediaTypesRequiringUserAction: const {
-          PlaybackMediaTypes.audio,
-          PlaybackMediaTypes.video,
-        },
-      );
+      // return WebKitWebViewControllerCreationParams(
+      //   allowsInlineMediaPlayback: true,
+      //   mediaTypesRequiringUserAction: const {
+      //     PlaybackMediaTypes.audio,
+      //     PlaybackMediaTypes.video,
+      //   },
+      // );
+      return const PlatformWebViewControllerCreationParams();
     }
   })();
 
@@ -45,7 +47,6 @@ class ProfileSettingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('params = ${params}');
     Get.put(ProfileSettingsPageController());
     webViewController
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
@@ -84,4 +85,3 @@ class ProfileSettingPage extends StatelessWidget {
         headers: headers);
   }
 }
-

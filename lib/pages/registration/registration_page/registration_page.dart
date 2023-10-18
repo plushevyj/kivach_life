@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -145,9 +146,20 @@ class RegistrationPage extends StatelessWidget {
                     SizedBox(
                       width:
                           Get.width - pagePadding.left - pagePadding.right - 40,
-                      child: const Text(
-                        'Согласен с условиями пользовательского соглашения '
-                        'и политикой обработки персональных данных.',
+                      child: RichText(
+                        text: TextSpan(
+                          children: [
+                            const TextSpan(text: 'Согласен с '),
+                            TextSpan(
+                              text: 'условиями пользовательского соглашения '
+                                  'и политикой обработки персональных данных',
+                              recognizer: TapGestureRecognizer()..onTap = () {
+
+                              },
+                            ),
+                            const TextSpan(text: '.'),
+                          ],
+                        ),
                       ),
                     ),
                   ],

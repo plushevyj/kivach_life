@@ -92,21 +92,10 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: !isSmallScreen,
       backgroundColor: const Color(0xFFF3F5F6),
-      // appBar: isSmallScreen
-      //     ? AppBarForSmallScreen(
-      //         webViewController: webViewController,
-      //         homePageController: homePageController,
-      //       )
-      //     : null,
-      body: isSmallScreen
-          ? BodyForLargeScreen(
-              homePageController: homePageController,
-              webViewController: webViewController,
-            )
-          : BodyForLargeScreen(
-              homePageController: homePageController,
-              webViewController: webViewController,
-            ),
+      body: BodyForLargeScreen(
+        homePageController: homePageController,
+        webViewController: webViewController,
+      ),
       bottomNavigationBar: ValueListenableBuilder(
         valueListenable: navBarIndexNotifier,
         builder: (_, currentIndex, __) {
@@ -139,21 +128,6 @@ class HomePage extends StatelessWidget {
                   ),
                 )
                 .toList(),
-            // [
-            //   BottomNavigationBarItem(
-            //     // Icons.home_outlined
-            //     icon: Icon(IconData(61792, fontFamily: 'MaterialIcons')),
-            //     label: 'Главная',
-            //   ),
-            //   BottomNavigationBarItem(
-            //     icon: Icon(Icons.person),
-            //     label: 'Расписание',
-            //   ),
-            //   BottomNavigationBarItem(
-            //     icon: Icon(Icons.monetization_on_outlined),
-            //     label: 'Чат',
-            //   ),
-            // ],
           );
         },
       ),
@@ -163,12 +137,12 @@ class HomePage extends StatelessWidget {
   void load({required String route}) async {
     String? accessToken = await const TokenRepository().getAccessToken();
     final headers = {
-      // 'X-Auth': 'Bearer $accessToken',
       'X-Auth': 'Bearer $accessToken',
     };
     webViewController.loadRequest(
-        Uri.parse('${appConfiguration?.BASE_URL}$route'),
-        headers: headers);
+      Uri.parse('${appConfiguration?.BASE_URL}$route'),
+      headers: headers,
+    );
 
     webViewController;
   }

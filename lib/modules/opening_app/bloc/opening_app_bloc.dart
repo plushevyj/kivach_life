@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart' show Colors;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -11,6 +12,7 @@ part 'opening_app_state.dart';
 
 class OpeningAppBloc extends Bloc<OpeningAppEvent, OpeningAppState> {
   final _configurationOfAppRepository = const ConfigurationOfAppRepository();
+  var _showToast = true;
 
   OpeningAppBloc() : super(const OpeningAppInitialState()) {
     on<OpeningAppInitialEvent>(_onOpeningAppInitialEvent);
@@ -37,13 +39,17 @@ class OpeningAppBloc extends Bloc<OpeningAppEvent, OpeningAppState> {
       emit(const SuccessConfigurationOfApp());
     } catch (error) {
       await Future.delayed(const Duration(milliseconds: 500));
-      Fluttertoast.showToast(
+      if (_showToast) {
+        Fluttertoast.showToast(
           msg: 'Отсутствует подключение к интернету.',
+          backgroundColor: Colors.grey,
           toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          fontSize: 16.0
-      );
+          gravity: ToastGravity.BOTTOM,
+          fontSize: 16.0,
+          timeInSecForIosWeb: 5,
+        );
+      }
+      _showToast = false;
       emit(const OpeningAppInitialState());
       add(const GetConfigurationOfApp());
     }
