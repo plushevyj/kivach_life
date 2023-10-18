@@ -50,6 +50,7 @@ dependencies:
   fluttertoast: ^8.2.2
   document_viewer: ^0.0.1
   path_provider: ^2.1.1
+  webview_flutter_android: ^3.12.0
 
 flutter_localization:
   flutter:
