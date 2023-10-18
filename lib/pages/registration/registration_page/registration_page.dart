@@ -153,9 +153,10 @@ class RegistrationPage extends StatelessWidget {
                             TextSpan(
                               text: 'условиями пользовательского соглашения '
                                   'и политикой обработки персональных данных',
-                              recognizer: TapGestureRecognizer()..onTap = () {
-
-                              },
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  Get.toNamed('');
+                                },
                             ),
                             const TextSpan(text: '.'),
                           ],

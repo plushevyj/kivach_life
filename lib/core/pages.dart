@@ -28,4 +28,5 @@ final pages = [
       name: '/onboarding_settings', page: () => const OnboardingSettingsPage()),
   GetPage(name: '/reset', page: () => const ResetPage()),
   GetPage(name: '/reset/sms', page: () => const SMSCodePage()),
+  GetPage(name: '/agreement', page: () => const ),
 ];

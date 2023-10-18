@@ -233,6 +233,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.3.3"
+  document_viewer:
+    dependency: "direct main"
+    description:
+      name: document_viewer
+      sha256: "88bf7591c7c206f29d2198eb4dde3be9dccc4476d458dcd58ebd9cf4c090843d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.1"
+  docx_to_text:
+    dependency: transitive
+    description:
+      name: docx_to_text
+      sha256: d94e199bf9f36321cbd7701f82ce4874d7b94fd362a007fd4923ba9d57794664
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
   equatable:
     dependency: "direct main"
     description:
@@ -241,6 +257,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.5"
+  external_path:
+    dependency: transitive
+    description:
+      name: external_path
+      sha256: "2095c626fbbefe70d5a4afc9b1137172a68ee2c276e51c3c1283394485bea8f4"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.3"
   fake_async:
     dependency: transitive
     description:
@@ -877,6 +901,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.1"
+  pdf_viewer_plugin:
+    dependency: transitive
+    description:
+      name: pdf_viewer_plugin
+      sha256: "1202453cc01b7d15049916ba58b777c561519b682d4b28d8cce2759090a0e3c4"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.1"
+  pedantic:
+    dependency: transitive
+    description:
+      name: pedantic
+      sha256: "67fc27ed9639506c856c840ccce7594d0bdcd91bc8d53d6e52359449a1d50602"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.11.1"
   permission_handler:
     dependency: "direct main"
     description:
@@ -925,6 +965,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.4.0"
+  photo_view:
+    dependency: transitive
+    description:
+      name: photo_view
+      sha256: "8036802a00bae2a78fc197af8a158e3e2f7b500561ed23b4c458107685e645bb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.14.0"
   platform:
     dependency: transitive
     description:
