@@ -69,18 +69,13 @@ class AuthenticationBloc
   ) async {
     try {
       emit(const AuthenticationLoading());
-      print(11111111);
       final token = await loginRepository.logIn(
         username: event.username,
         password: event.password,
       );
-      print(22222222);
       tokenRepository.saveToken(token: token);
-      print(token);
       addAccessToken(accessToken: token.token);
-      print(33333333333);
       final profile = await loginRepository.logInByToken();
-      print(4444444444);
       Get.put(AccountController(), permanent: true).profile(profile);
       emit(const Authenticated());
     } catch (error) {

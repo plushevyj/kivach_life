@@ -2,7 +2,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 
 import '../avatar/avatar_model.dart';
-import '../patient/patient_model.dart';
 
 part 'profile_model.freezed.dart';
 part 'profile_model.g.dart';

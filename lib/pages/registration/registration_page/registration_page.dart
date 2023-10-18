@@ -159,12 +159,6 @@ class RegistrationPage extends StatelessWidget {
                               style: const TextStyle(
                                 color: KivachColors.green,
                               ),
-                              onEnter: (event) {
-                                print('event = $event');
-                              },
-                              onExit: (event) {
-                                print('event = $event');
-                              },
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                   Get.toNamed('/agreement');

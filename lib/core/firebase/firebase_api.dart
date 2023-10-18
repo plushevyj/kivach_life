@@ -17,9 +17,11 @@ class FirebaseApi {
       badge: true,
       sound: true,
     );
-    FirebaseMessaging.onMessage.listen((message) {});
+    FirebaseMessaging.onMessage.listen((message) {
+      print(message);
+    });
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      showNotificationAlert(message);
+      print(message);
     });
   }
 
