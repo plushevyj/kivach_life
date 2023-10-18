@@ -1,6 +1,6 @@
-import 'package:doctor/models/configuration_models/configuration_of_app/configuration_of_app.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 import '../controllers/configuration_of_app_controller.dart';
@@ -36,15 +36,16 @@ class OpeningAppBloc extends Bloc<OpeningAppEvent, OpeningAppState> {
           .value = configuration;
       emit(const SuccessConfigurationOfApp());
     } catch (error) {
-      await Future.delayed(const Duration(milliseconds: 1000));
+      await Future.delayed(const Duration(milliseconds: 500));
+      Fluttertoast.showToast(
+          msg: 'Отсутствует подключение к интернету.',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          fontSize: 16.0
+      );
       emit(const OpeningAppInitialState());
       add(const GetConfigurationOfApp());
-      print(error.toString());
-      print(error.toString());
-      print(error.toString());
-      print(error.toString());
-      print(error.toString());
-      print(error.toString());
     }
   }
 }
