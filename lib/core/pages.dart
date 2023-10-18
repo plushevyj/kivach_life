@@ -1,11 +1,12 @@
 import 'package:get/get.dart';
 
-import '../pages/reset_page/code_reset_page/code_reset_page.dart';
-import '../pages/reset_page/reset_page/reset_page.dart';
+import '/pages/documents_pages/document_view_page.dart';
+import '/pages/reset_page/code_reset_page/code_reset_page.dart';
+import '/pages/reset_page/reset_page/reset_page.dart';
 import '/pages/onboarding_greeting_page/onboarding_greeting_page.dart';
 import '/pages/onboarding_settings_page/onboarding_settings_page.dart';
 import '/pages/auth_page/auth_page.dart';
-import '../pages/loading_page.dart';
+import '/pages/loading_page.dart';
 import '/pages/registration/qr_scanner_page/qr_scanner_page.dart';
 import '/pages/home_page/home_page.dart';
 import '/pages/settings/settings_page/settings_page.dart';
@@ -28,5 +29,13 @@ final pages = [
       name: '/onboarding_settings', page: () => const OnboardingSettingsPage()),
   GetPage(name: '/reset', page: () => const ResetPage()),
   GetPage(name: '/reset/sms', page: () => const SMSCodePage()),
-  GetPage(name: '/agreement', page: () => const ),
+  GetPage(
+      name: '/agreement',
+      page: () => const DocumentViewPage(
+          title: 'Пользовательское соглашение', route: '/user_agreement.docx')),
+  GetPage(
+      name: '/personal_data_politics',
+      page: () => const DocumentViewPage(
+          title: 'Политика обработки персональных данных',
+          route: '/personal_data_politics.docx')),
 ];

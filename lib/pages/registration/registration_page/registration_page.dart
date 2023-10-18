@@ -148,14 +148,37 @@ class RegistrationPage extends StatelessWidget {
                           Get.width - pagePadding.left - pagePadding.right - 40,
                       child: RichText(
                         text: TextSpan(
+                          style: const TextStyle(
+                            fontSize: 15,
+                            color: Colors.black,
+                          ),
                           children: [
                             const TextSpan(text: 'Согласен с '),
                             TextSpan(
-                              text: 'условиями пользовательского соглашения '
-                                  'и политикой обработки персональных данных',
+                              text: 'условиями пользовательского соглашения',
+                              style: const TextStyle(
+                                color: KivachColors.green,
+                              ),
+                              onEnter: (event) {
+                                print('event = $event');
+                              },
+                              onExit: (event) {
+                                print('event = $event');
+                              },
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
-                                  Get.toNamed('');
+                                  Get.toNamed('/agreement');
+                                },
+                            ),
+                            const TextSpan(text: ' и '),
+                            TextSpan(
+                              text: 'политикой обработки персональных данных',
+                              style: const TextStyle(
+                                color: KivachColors.green,
+                              ),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  Get.toNamed('/personal_data_politics');
                                 },
                             ),
                             const TextSpan(text: '.'),
