@@ -3,12 +3,4 @@ import 'package:get/get.dart';
 
 class ConfigurationOfAppController extends GetxController {
   Rxn<ConfigurationOfApp> configuration = Rxn(null);
-
-  @override
-  void onInit() async {
-    // configuration.value =
-    //     await const ConfigurationOfAppRepository().getConfigurationOfApp();
-    // GetIt.I.registerSingleton<Dio>(DioClient().dio);
-    super.onInit();
-  }
 }
