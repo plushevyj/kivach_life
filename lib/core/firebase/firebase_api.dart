@@ -1,5 +1,9 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart' show Navigator;
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 
+import '../../modules/opening_app/controllers/configuration_of_app_controller.dart';
 import '/modules/push_notifications/repository/push_notifications_repository.dart';
 import '/widgets/alerts.dart';
 
@@ -17,11 +21,21 @@ class FirebaseApi {
       badge: true,
       sound: true,
     );
-    FirebaseMessaging.onMessage.listen((message) {
-      print(message);
+    FirebaseMessaging.onMessage.listen((message) async {
+      print(
+          'message.data = ${message.data} ${message.data['href'].runtimeType}');
+      Get.find<ConfigurationOfAppController>().url.value =
+          message.data['href']['url'];
+      print(
+          'Get.find<ConfigurationOfAppController>().url.value = ${Get.find<ConfigurationOfAppController>().url.value}');
+      //{"view":"web","url":"https:\/\/mobile-doctors.kivach.ru\/chat?conversation=0"}}
     });
-    FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      print(message);
+    FirebaseMessaging.onMessageOpenedApp.listen((message) async {
+      print(
+          'message.data = ${message.data} ${message.data['href'].runtimeType}');
+      Get.find<ConfigurationOfAppController>().url.value =
+          message.data['href']['url'];
+      print(Get.find<ConfigurationOfAppController>().url.value);
     });
   }
 

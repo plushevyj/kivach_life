@@ -77,7 +77,7 @@ class RegistrationController extends GetxController {
     });
     isAgree.listen((value) {
       errorTextAgree.value =
-        value ? null : 'Вы должны согласиться с Условиями программы';
+          value ? null : 'Вы должны согласиться с Условиями программы';
     });
     super.onInit();
   }

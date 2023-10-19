@@ -21,7 +21,9 @@ import 'modules/opening_app/bloc/opening_app_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'modules/reset_password/bloc/reset_password_bloc.dart';
 
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  Navigator.of(Get.context!).pushNamed('/home', arguments: message.data['url']);
+}
 
 void main() async {
   await initializeDependencies();

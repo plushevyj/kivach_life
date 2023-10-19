@@ -40,6 +40,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final arguments = (ModalRoute.of(context)?.settings.arguments);
+    print('arguments = $arguments');
     final navbar = appConfiguration?.NAVBAR
         .firstWhere((navbarModel) => profile!.roles.contains(navbarModel.role))
         .menu;
@@ -89,47 +91,53 @@ class HomePage extends StatelessWidget {
         ),
       );
     load(route: '/');
-    return Scaffold(
-      extendBodyBehindAppBar: !isSmallScreen,
-      backgroundColor: const Color(0xFFF3F5F6),
-      body: BodyForLargeScreen(
-        homePageController: homePageController,
-        webViewController: webViewController,
-      ),
-      bottomNavigationBar: ValueListenableBuilder(
-        valueListenable: navBarIndexNotifier,
-        builder: (_, currentIndex, __) {
-          return BottomNavigationBar(
-            backgroundColor: null,
-            currentIndex: currentIndex,
-            onTap: (index) {
-              navBarIndexNotifier.value = index;
-              load(route: navbar[index].route);
-            },
-            enableFeedback: false,
-            selectedIconTheme: const IconThemeData(size: 24),
-            unselectedIconTheme: const IconThemeData(size: 24),
-            selectedLabelStyle: const TextStyle(fontSize: 12),
-            unselectedLabelStyle: const TextStyle(fontSize: 12),
-            selectedItemColor: KivachColors.green,
-            unselectedItemColor: const Color(0xFFAEB2BA),
-            type: BottomNavigationBarType.fixed,
-            items: navbar!
-                .map(
-                  (element) => BottomNavigationBarItem(
-                    // Icons.home_outlined
-                    icon: Icon(
-                      IconData(
-                        int.parse(element.icon),
-                        fontFamily: 'MaterialIcons',
+    return WillPopScope(
+      onWillPop: () async {
+        webViewController.goBack();
+        return false;
+      },
+      child: Scaffold(
+        extendBodyBehindAppBar: !isSmallScreen,
+        backgroundColor: const Color(0xFFF3F5F6),
+        body: BodyForLargeScreen(
+          homePageController: homePageController,
+          webViewController: webViewController,
+        ),
+        bottomNavigationBar: ValueListenableBuilder(
+          valueListenable: navBarIndexNotifier,
+          builder: (_, currentIndex, __) {
+            return BottomNavigationBar(
+              backgroundColor: null,
+              currentIndex: currentIndex,
+              onTap: (index) {
+                navBarIndexNotifier.value = index;
+                load(route: navbar[index].route);
+              },
+              enableFeedback: false,
+              selectedIconTheme: const IconThemeData(size: 24),
+              unselectedIconTheme: const IconThemeData(size: 24),
+              selectedLabelStyle: const TextStyle(fontSize: 12),
+              unselectedLabelStyle: const TextStyle(fontSize: 12),
+              selectedItemColor: KivachColors.green,
+              unselectedItemColor: const Color(0xFFAEB2BA),
+              type: BottomNavigationBarType.fixed,
+              items: navbar!
+                  .map(
+                    (element) => BottomNavigationBarItem(
+                      // Icons.home_outlined
+                      icon: Icon(
+                        IconData(
+                          int.parse(element.icon),
+                          fontFamily: 'MaterialIcons',
+                        ),
                       ),
+                      label: element.label,
                     ),
-                    label: element.label,
-                  ),
-                )
-                .toList(),
-          );
-        },
+                  )
+                  .toList(),
+            );
+          },
+        ),
       ),
     );
   }

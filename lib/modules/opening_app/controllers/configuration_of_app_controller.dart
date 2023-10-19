@@ -2,5 +2,14 @@ import 'package:doctor/models/configuration_models/configuration_of_app/configur
 import 'package:get/get.dart';
 
 class ConfigurationOfAppController extends GetxController {
-  Rxn<ConfigurationOfApp> configuration = Rxn(null);
+  final configuration = Rxn<ConfigurationOfApp>(null);
+  final url = RxnString(null);
+
+  // @override
+  // void onInit() {
+  //   url.listen((url) {
+  //     Get.until((route) => Get.currentRoute == '/home');
+  //   });
+  //   super.onInit();
+  // }
 }
