@@ -20,42 +20,6 @@ class ProfileSettingPage extends StatelessWidget {
   final configuration =
       Get.find<ConfigurationOfAppController>().configuration.value;
 
-  // static PlatformWebViewControllerCreationParams params = (() {
-  //
-  //
-  //
-  //
-  //
-  //   if (GetPlatform.isIOS) {
-  //     return const PlatformWebViewControllerCreationParams();
-  //   } else {
-  //     // return WebViewPlatform.instance is WebKitWebViewPlatform
-  //     //     ? WebKitWebViewControllerCreationParams(
-  //     //         allowsInlineMediaPlayback: true,
-  //     //         mediaTypesRequiringUserAction: const {
-  //     //           PlaybackMediaTypes.audio,
-  //     //           PlaybackMediaTypes.video,
-  //     //         },
-  //     //       )
-  //     //     : const PlatformWebViewControllerCreationParams();
-  //     // return WebKitWebViewControllerCreationParams(
-  //     //   allowsInlineMediaPlayback: true,
-  //     //   mediaTypesRequiringUserAction: const {
-  //     //     PlaybackMediaTypes.audio,
-  //     //     PlaybackMediaTypes.video,
-  //     //   },
-  //     // );
-  //     return const PlatformWebViewControllerCreationParams();
-  //   }
-  // })();
-
-  // final webViewController = WebViewController.fromPlatformCreationParams(
-  //   params,
-  //   onPermissionRequest: (request) {
-  //     request.grant();
-  //   },
-  // );
-
   late final WebViewController webViewController;
 
   @override
@@ -69,9 +33,7 @@ class ProfileSettingPage extends StatelessWidget {
         params,
       );
       webViewController = WebViewController.fromPlatformCreationParams(params,
-          onPermissionRequest: (request) {
-        print('request.types = ${request.types}');
-      });
+          onPermissionRequest: (request) {});
     } else if (WebViewPlatform.instance is AndroidWebViewPlatform) {
       final androidWebViewController =
           (WebViewPlatform.instance as AndroidWebViewPlatform)
@@ -96,7 +58,7 @@ class ProfileSettingPage extends StatelessWidget {
           onPageFinished: (url) {},
           onWebResourceError: (error) {},
           onNavigationRequest: (NavigationRequest request) {
-            if (request.url.startsWith(configuration!.BASE_URL)) {
+            if (request.url.startsWith('${configuration!.BASE_URL}/profile')) {
               return NavigationDecision.navigate;
             }
             return NavigationDecision.prevent;
@@ -129,7 +91,7 @@ class ProfileSettingPage extends StatelessWidget {
       context: Get.context!,
       builder: (context) {
         return AlertDialog(
-          contentPadding: const EdgeInsets.only(top: 50),
+          actionsPadding: const EdgeInsets.symmetric(vertical: 10),
           actionsOverflowAlignment: OverflowBarAlignment.center,
           actions: [
             TextButton(

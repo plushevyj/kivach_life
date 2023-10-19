@@ -7,7 +7,7 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 
 import '/models/profile_preview_model/profile_preview_model.dart';
 import '/core/themes/light_theme.dart';
-import '../../../modules/registration/controller/registration_controller.dart';
+import 'registration_controller.dart';
 import '../../../widgets/inputs/button_for_form.dart';
 import '../../../widgets/inputs/text_field_for_form.dart';
 

@@ -32,7 +32,7 @@ class _DocumentViewPageState extends State<DocumentViewPage> {
     var status = await Permission.storage.status;
     if (!status.isGranted) {
       await Permission.storage.request();
-    } else {}
+    }
   }
 
   Future<String> getPersonalDataPolitics() async {

@@ -9,8 +9,8 @@ import '/widgets/alerts.dart';
 import '/modules/authentication/bloc/authentication_bloc.dart';
 import '../../../core/utils/convert_to.dart';
 import '../../../models/registration/registration_error_model/registration_error_model.dart';
-import '../../authentication/repository/token_repository.dart';
-import '../repository/registration_repository.dart';
+import '../../../modules/authentication/repository/token_repository.dart';
+import '../../../modules/registration/repository/registration_repository.dart';
 
 class RegistrationController extends GetxController {
   RegistrationController({required this.registrationToken, this.userData});
