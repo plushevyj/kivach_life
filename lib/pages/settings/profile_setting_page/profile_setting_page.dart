@@ -7,14 +7,12 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_android/webview_flutter_android.dart';
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
+import '../../../core/themes/light_theme.dart';
 import '../../../modules/authentication/repository/token_repository.dart';
 import '../../../modules/opening_app/controllers/configuration_of_app_controller.dart';
 import 'profile_settings_page_controller.dart';
 
-import 'package:image/image.dart' as image;
-import 'package:image_picker/image_picker.dart' as image_picker;
-import 'package:webview_flutter_android/webview_flutter_android.dart'
-    as webview_flutter_android;
+import 'package:image_picker/image_picker.dart';
 
 class ProfileSettingPage extends StatelessWidget {
   ProfileSettingPage({super.key});
@@ -65,7 +63,6 @@ class ProfileSettingPage extends StatelessWidget {
     Get.put(ProfileSettingsPageController());
     PlatformWebViewControllerCreationParams params =
         const PlatformWebViewControllerCreationParams();
-
     if (WebViewPlatform.instance is WebKitWebViewPlatform) {
       params = WebKitWebViewControllerCreationParams
           .fromPlatformWebViewControllerCreationParams(
@@ -76,46 +73,23 @@ class ProfileSettingPage extends StatelessWidget {
         print('request.types = ${request.types}');
       });
     } else if (WebViewPlatform.instance is AndroidWebViewPlatform) {
-      print(
-          'WebViewPlatform.instance is AndroidWebViewPlatform = ${WebViewPlatform.instance is AndroidWebViewPlatform}');
       final androidWebViewController =
           (WebViewPlatform.instance as AndroidWebViewPlatform)
               .createPlatformWebViewController(params);
       androidWebViewController
         ..setMediaPlaybackRequiresUserGesture(true)
         ..setOnShowFileSelector((params) async {
-          if (params.acceptTypes.any((type) => type == 'image/*')) {
-            final picker = image_picker.ImagePicker();
-            final photo = await picker.pickImage(
-                source: image_picker.ImageSource.gallery);
-
-            if (photo == null) {
-              return [];
-            }
-
-            final imageData = await photo.readAsBytes();
-            final decodedImage = image.decodeImage(imageData)!;
-            final scaledImage = image.copyResize(decodedImage, width: 500);
-            final jpg = image.encodeJpg(scaledImage, quality: 90);
-
-            final filePath = (await getTemporaryDirectory()).uri.resolve(
-                  './image_${DateTime.now().microsecondsSinceEpoch}.jpg',
-                );
-            final file = await File.fromUri(filePath).create(recursive: true);
-            await file.writeAsBytes(jpg, flush: true);
-
-            return [file.uri.toString()];
-          }
-
-          return [];
+          final selectedPickerSource = await selectPickerSource();
+          return selectedPickerSource != null
+              ? await showImagePicker(
+                  params: params, source: selectedPickerSource)
+              : [];
         });
-      // params = androidWebViewController.params;
       webViewController =
           WebViewController.fromPlatform(androidWebViewController);
     }
     webViewController
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setBackgroundColor(const Color(0x00000000))
       ..setNavigationDelegate(
         NavigationDelegate(
           onPageStarted: (url) {},
@@ -148,5 +122,58 @@ class ProfileSettingPage extends StatelessWidget {
     };
     webViewController.loadRequest(Uri.parse('${configuration?.BASE_URL}$route'),
         headers: headers);
+  }
+
+  Future<ImageSource?> selectPickerSource() async {
+    return showDialog<ImageSource>(
+      context: Get.context!,
+      builder: (context) {
+        return AlertDialog(
+          contentPadding: const EdgeInsets.only(top: 50),
+          actionsOverflowAlignment: OverflowBarAlignment.center,
+          actions: [
+            TextButton(
+              style: TextButton.styleFrom(foregroundColor: KivachColors.green),
+              onPressed: () => Get.back(result: ImageSource.camera),
+              child: const Text('Сделать снимок'),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: KivachColors.green,
+                minimumSize: const Size(30, 40),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  side: BorderSide.none,
+                ),
+              ),
+              onPressed: () => Get.back(result: ImageSource.gallery),
+              child: const Text('Выбрать из галереи'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<List<String>> showImagePicker({
+    required FileSelectorParams params,
+    required ImageSource source,
+  }) async {
+    if (params.acceptTypes.any((type) => type == 'image/*')) {
+      final picker = ImagePicker();
+      final image = await picker.pickImage(source: source);
+      if (image == null) {
+        return [];
+      }
+      final imageData = await image.readAsBytes();
+      final filePath = (await getTemporaryDirectory())
+          .uri
+          .resolve('./image_${DateTime.now().microsecondsSinceEpoch}.jpg');
+      final file = await File.fromUri(filePath).create(recursive: true);
+      await file.writeAsBytes(imageData, flush: true);
+      return [file.uri.toString()];
+    }
+    return [];
   }
 }

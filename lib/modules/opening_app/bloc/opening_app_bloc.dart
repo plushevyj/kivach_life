@@ -41,7 +41,8 @@ class OpeningAppBloc extends Bloc<OpeningAppEvent, OpeningAppState> {
       await Future.delayed(const Duration(milliseconds: 500));
       if (_showToast) {
         Fluttertoast.showToast(
-          msg: 'Отсутствует подключение к интернету.',
+          msg:
+              'Ошибка соединения с сервером или отсутствует подключение к интернету.',
           backgroundColor: Colors.grey,
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.BOTTOM,
