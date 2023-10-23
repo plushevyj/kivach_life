@@ -11,7 +11,7 @@ import '../../modules/opening_app/controllers/configuration_of_app_controller.da
 class HomePageController extends GetxController {
   final canGoBack = false.obs;
   final canGoForward = false.obs;
-  final isInternalSite = true.obs;
+  final isNarrowAppBar = true.obs;
 
   final configController = Get.find<ConfigurationOfAppController>();
   late final ConfigurationOfApp? appConfiguration;
@@ -23,6 +23,7 @@ class HomePageController extends GetxController {
     appConfiguration = configController.configuration.value;
     profile = Get.find<AccountController>().profile.value;
     load(route: configController.payloadRoute.value ?? '/');
+    configController.payloadRoute.value = null;
     configController.payloadRoute.listen((route) {
       if (route != null) {
         load(route: route);

@@ -23,7 +23,7 @@ class BodyForLargeScreen extends StatelessWidget {
           Obx(
             () => Container(
               padding: EdgeInsets.only(
-                  top: homePageController.isInternalSite.value
+                  top: homePageController.isNarrowAppBar.value
                       ? 0
                       : kToolbarHeight),
               child: WebViewWidget(
@@ -35,7 +35,7 @@ class BodyForLargeScreen extends StatelessWidget {
             () => AppBarForLargeScreen(
               homePageController: homePageController,
               webViewController: webViewController,
-              width: homePageController.isInternalSite.value
+              width: homePageController.isNarrowAppBar.value
                   ? Get.width - 60
                   : Get.width - 5,
             ),

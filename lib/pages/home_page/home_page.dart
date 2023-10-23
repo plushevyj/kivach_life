@@ -28,8 +28,10 @@ class HomePage extends StatelessWidget {
       ..setNavigationDelegate(
         NavigationDelegate(
           onPageStarted: (url) {
-            homePageController.isInternalSite(
-                url.startsWith(homePageController.appConfiguration!.BASE_URL));
+            homePageController.isNarrowAppBar(url.startsWith(
+                    homePageController.appConfiguration!.BASE_URL) &&
+                !url.startsWith(
+                    '${homePageController.appConfiguration!.BASE_URL}/chat'));
           },
           onPageFinished: (url) async {
             homePageController.canGoBack(
