@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
-import 'package:doctor/modules/authentication/bloc/authentication_bloc.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -16,21 +15,13 @@ part 'local_authentication_state.dart';
 
 class LocalAuthenticationBloc
     extends Bloc<LocalAuthenticationEvent, LocalAuthenticationState> {
-  LocalAuthenticationBloc({required this.authenticationBloc})
-      : super(const LocalAuthenticationInitialState()) {
+  LocalAuthenticationBloc() : super(const LocalAuthenticationInitialState()) {
     on<LocallyAuthStarted>(_onLocallyAuthStarted);
     on<LogInLocallyUsingBiometrics>(_onLogInLocallyUsingBiometrics);
     on<LogInLocallyUsingDigitalPassword>(_onLogInLocallyUsingPassword);
     on<LocallyLogOut>(_onLocallyLogOut);
-    authenticationSubscription = authenticationBloc.stream.listen((state) {
-      if (state is Unauthenticated) {
-        add(const LocallyLogOut());
-      }
-    });
   }
 
-  late final StreamSubscription authenticationSubscription;
-  final AuthenticationBloc authenticationBloc;
   final _localAuthenticationRepository = const LocalAuthenticationRepository();
 
   void _onLocallyLogOut(

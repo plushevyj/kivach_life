@@ -52,6 +52,7 @@ class ProfileSettingPage extends StatelessWidget {
     }
     webViewController
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..enableZoom(false)
       ..setNavigationDelegate(
         NavigationDelegate(
           onPageStarted: (url) {},

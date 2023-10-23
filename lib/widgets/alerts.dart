@@ -1,4 +1,3 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -26,18 +25,31 @@ void showErrorAlert(String message,
   );
 }
 
-void showNotificationAlert(RemoteMessage message,
-    {Duration duration = const Duration(seconds: 20)}) {
+void showNotificationAlert({
+  String? title,
+  String? message,
+  VoidCallback? onMainButtonPressed,
+  Duration duration = const Duration(seconds: 20),
+}) {
   Get.snackbar(
-    message.notification?.title ?? 'Уведомление',
-    message.notification?.body ?? '404',
-    // mainButton: TextButton(
-    //   child: const Text(
-    //     'Перейти',
-    //     style: TextStyle(color: Colors.blue),
-    //   ),
-    //   onPressed: () {},
-    // ),
+    title ?? 'Неизвестное сообщение',
+    message ?? 'Неизвестное сообщение',
+    onTap: (_) {
+      onMainButtonPressed?.call();
+      Get.closeCurrentSnackbar();
+    },
+    mainButton: onMainButtonPressed != null
+        ? TextButton(
+            onPressed: () {
+              onMainButtonPressed.call();
+              Get.closeCurrentSnackbar();
+            },
+            child: const Text(
+              'Перейти',
+              style: TextStyle(color: Colors.blue),
+            ),
+          )
+        : null,
     duration: duration,
     boxShadows: [
       BoxShadow(

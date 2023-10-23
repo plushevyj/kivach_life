@@ -1,68 +1,43 @@
-import 'package:doctor/modules/account/controllers/account_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
-import '../../modules/opening_app/controllers/configuration_of_app_controller.dart';
 import '/core/themes/light_theme.dart';
-import '/modules/authentication/repository/token_repository.dart';
 import 'home_page_controller.dart';
 import 'layout/body/body_for_large_screen.dart';
 
 class HomePage extends StatelessWidget {
-  HomePage({Key? key}) : super(key: key);
-
-  static PlatformWebViewControllerCreationParams params = (() {
-    if (GetPlatform.isIOS) {
-      return const PlatformWebViewControllerCreationParams();
-    } else {
-      return WebViewPlatform.instance is WebKitWebViewPlatform
-          ? WebKitWebViewControllerCreationParams(
-              allowsInlineMediaPlayback: true,
-              mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{})
-          : const PlatformWebViewControllerCreationParams();
-    }
-  })();
-
-  final webViewController = WebViewController.fromPlatformCreationParams(
-    params,
-    onPermissionRequest: (request) {
-      request.grant();
-    },
-  );
-
-  final appConfiguration =
-      Get.find<ConfigurationOfAppController>().configuration.value;
-  final profile = Get.find<AccountController>().profile.value;
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final arguments = (ModalRoute.of(context)?.settings.arguments);
-    print('arguments = $arguments');
-    final navbar = appConfiguration?.NAVBAR
-        .firstWhere((navbarModel) => profile!.roles.contains(navbarModel.role))
+    final homePageController = Get.put(HomePageController());
+    final navbar = homePageController.appConfiguration?.NAVBAR
+        .firstWhere((navbarModel) =>
+            homePageController.profile!.roles.contains(navbarModel.role))
         .menu;
     WidgetsBinding.instance
         .addPostFrameCallback((_) => FlutterNativeSplash.remove());
     final navBarIndexNotifier = ValueNotifier(0);
-    final homePageController = Get.put(HomePageController());
-    webViewController
+    homePageController.webViewController
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x00000000))
+      ..enableZoom(false)
       ..setNavigationDelegate(
         NavigationDelegate(
           onPageStarted: (url) {
-            homePageController
-                .isInternalSite(url.startsWith(appConfiguration!.BASE_URL));
+            homePageController.isInternalSite(
+                url.startsWith(homePageController.appConfiguration!.BASE_URL));
           },
           onPageFinished: (url) async {
-            homePageController.canGoBack(await webViewController.canGoBack());
-            homePageController
-                .canGoForward(await webViewController.canGoForward());
-            final currentRoute = url.split(appConfiguration!.BASE_URL)[1];
+            homePageController.canGoBack(
+                await homePageController.webViewController.canGoBack());
+            homePageController.canGoForward(
+                await homePageController.webViewController.canGoForward());
+            final currentRoute =
+                url.split(homePageController.appConfiguration!.BASE_URL)[1];
             navBarIndexNotifier.value = navbar!.lastIndexWhere(
                 (navbarElement) =>
                     currentRoute.startsWith(navbarElement.route));
@@ -76,11 +51,11 @@ class HomePage extends StatelessWidget {
             }
             for (var url in [
               ...[
-                for (var browsableUrl
-                    in appConfiguration!.INTENT_BROWSABLE_URIS)
+                for (var browsableUrl in homePageController
+                    .appConfiguration!.INTENT_BROWSABLE_URIS)
                   '${browsableUrl.scheme}${browsableUrl.host}',
               ],
-              ...?appConfiguration?.ALLOWED_EXTERNAL_URLS
+              ...?homePageController.appConfiguration?.ALLOWED_EXTERNAL_URLS
             ]) {
               if (request.url.startsWith(url)) {
                 return NavigationDecision.navigate;
@@ -90,10 +65,9 @@ class HomePage extends StatelessWidget {
           },
         ),
       );
-    load(route: '/');
     return WillPopScope(
       onWillPop: () async {
-        webViewController.goBack();
+        homePageController.webViewController.goBack();
         return false;
       },
       child: Scaffold(
@@ -101,7 +75,7 @@ class HomePage extends StatelessWidget {
         backgroundColor: const Color(0xFFF3F5F6),
         body: BodyForLargeScreen(
           homePageController: homePageController,
-          webViewController: webViewController,
+          webViewController: homePageController.webViewController,
         ),
         bottomNavigationBar: ValueListenableBuilder(
           valueListenable: navBarIndexNotifier,
@@ -111,7 +85,7 @@ class HomePage extends StatelessWidget {
               currentIndex: currentIndex,
               onTap: (index) {
                 navBarIndexNotifier.value = index;
-                load(route: navbar[index].route);
+                homePageController.load(route: navbar[index].route);
               },
               enableFeedback: false,
               selectedIconTheme: const IconThemeData(size: 24),
@@ -140,18 +114,5 @@ class HomePage extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  void load({required String route}) async {
-    String? accessToken = await const TokenRepository().getAccessToken();
-    final headers = {
-      'X-Auth': 'Bearer $accessToken',
-    };
-    webViewController.loadRequest(
-      Uri.parse('${appConfiguration?.BASE_URL}$route'),
-      headers: headers,
-    );
-
-    webViewController;
   }
 }

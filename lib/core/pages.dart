@@ -20,7 +20,7 @@ final pages = [
   GetPage(name: '/auth', page: () => const AuthorizationPage()),
   GetPage(name: '/registration/qr', page: () => const QRScannerPage()),
   GetPage(name: '/local_auth', page: () => const LocalAuthPage()),
-  GetPage(name: '/home', page: () => HomePage()),
+  GetPage(name: '/home', page: () => const HomePage()),
   GetPage(name: '/settings', page: () => const SettingsPage()),
   GetPage(name: '/profile_setting', page: () => ProfileSettingPage()),
   GetPage(

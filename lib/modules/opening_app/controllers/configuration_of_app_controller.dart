@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 class ConfigurationOfAppController extends GetxController {
   final configuration = Rxn<ConfigurationOfApp>(null);
-  final url = RxnString(null);
+  final payloadRoute = RxnString(null);
 
   // @override
   // void onInit() {

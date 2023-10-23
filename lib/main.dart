@@ -21,9 +21,8 @@ import 'modules/opening_app/bloc/opening_app_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'modules/reset_password/bloc/reset_password_bloc.dart';
 
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  Navigator.of(Get.context!).pushNamed('/home', arguments: message.data['url']);
-}
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
 
 void main() async {
   await initializeDependencies();
@@ -40,17 +39,16 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final localPasswordSettingBloc = LocalPasswordSettingBloc();
-    final authenticationBloc = AuthenticationBloc();
     return MultiBlocProvider(
       providers: [
         BlocProvider(
             create: (_) =>
                 OpeningAppBloc()..add(const GetConfigurationOfApp())),
         BlocProvider(create: (_) => InAppUpdateBloc()),
-        BlocProvider(create: (_) => authenticationBloc),
         BlocProvider(
-            create: (_) => LocalAuthenticationBloc(
-                authenticationBloc: authenticationBloc)),
+            create: (_) =>
+                AuthenticationBloc()..add(const AuthenticateByToken())),
+        BlocProvider(create: (_) => LocalAuthenticationBloc()),
         BlocProvider(create: (_) => ResetPasswordBloc()),
         BlocProvider(create: (_) => localPasswordSettingBloc),
         BlocProvider(
@@ -79,7 +77,10 @@ class App extends StatelessWidget {
                 if (!GetIt.I.isRegistered<Dio>()) {
                   GetIt.I.registerSingleton<Dio>(DioClient().dio);
                 }
-                authenticationBloc.add(const AuthenticateByToken());
+                if (FirebaseApi.initialMessage != null) {
+                  FirebaseApi.routeFromPayload(FirebaseApi.initialMessage!);
+                }
+                // authenticationBloc.add(const AuthenticateByToken());
                 return BlocListener<AuthenticationBloc, AuthenticationState>(
                   listener: (context, state) async {
                     if (state is Authenticated) {
@@ -92,13 +93,16 @@ class App extends StatelessWidget {
                   child: child,
                 );
               } else {
-                return const SizedBox.shrink();
+                return const Scaffold(
+                  body: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
               }
             },
           );
         },
         initialRoute: '/loading',
-        // initialRoute: '/onboarding_greeting',
       ),
     );
   }
