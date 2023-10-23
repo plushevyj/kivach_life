@@ -90,6 +90,9 @@ class AuthenticationBloc
 
   Future<void> _onLogOut(
       LogOut event, Emitter<AuthenticationState> emit) async {
+    try {
+      await loginRepository.logOut();
+    } finally {}
     await tokenRepository.clearTokens();
     emit(const Unauthenticated());
     _localAuthenticationRepository

@@ -7,11 +7,13 @@ import '../../opening_app/controllers/configuration_of_app_controller.dart';
 import '/models/token_model/token_model.dart';
 import '/core/http/request_handler.dart';
 import '/core/utils/convert_to.dart';
+import 'token_repository.dart';
 
 class LoginRepository {
   const LoginRepository();
 
   static final _dio = GetIt.I.get<Dio>();
+  final _tokenRepository = const TokenRepository();
 
   Future<TokenModel> logIn({
     required String username,
@@ -29,7 +31,8 @@ class LoginRepository {
   }
 
   Future<TokenModel> refreshToken(String refreshToken) async {
-    final path = '${Get.find<ConfigurationOfAppController>().configuration.value?.BASE_URL}/api/token/refresh';
+    final path =
+        '${Get.find<ConfigurationOfAppController>().configuration.value?.BASE_URL}/api/token/refresh';
     final query = {
       'refresh_token': refreshToken,
     };
@@ -40,5 +43,18 @@ class LoginRepository {
       ),
     );
     return ConvertTo<TokenModel>().item(response.data, TokenModel.fromJson);
+  }
+
+  Future<void> logOut() async {
+    final refreshToken = await _tokenRepository.getRefreshToken();
+    await handleRequest(
+      () {
+        print('logOut');
+        return _dio.get(
+        '/api/token/invalidate',
+        queryParameters: {'refresh_token': refreshToken},
+      );
+      },
+    );
   }
 }
