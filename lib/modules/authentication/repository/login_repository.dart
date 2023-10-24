@@ -48,13 +48,10 @@ class LoginRepository {
   Future<void> logOut() async {
     final refreshToken = await _tokenRepository.getRefreshToken();
     await handleRequest(
-      () {
-        print('logOut');
-        return _dio.get(
+      () => _dio.get(
         '/api/token/invalidate',
         queryParameters: {'refresh_token': refreshToken},
-      );
-      },
+      ),
     );
   }
 }
