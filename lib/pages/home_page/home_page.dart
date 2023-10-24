@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -45,6 +46,7 @@ class HomePage extends StatelessWidget {
                     currentRoute.startsWith(navbarElement.route));
           },
           onNavigationRequest: (request) async {
+            print('request.url = ${request.url}');
             if (request.url.startsWith('tel:') ||
                 (request.url.startsWith('https://apps.apple.com')) ||
                 (request.url.startsWith('https://play.google.com'))) {

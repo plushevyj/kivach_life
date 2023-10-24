@@ -43,6 +43,15 @@
 <!--        <meta-data-->
 <!--            android:name="com.google.firebase.messaging.default_notification_channel_id"-->
 <!--            android:value="@string/default_notification_channel_id" />-->
+<!--        <provider-->
+<!--            android:name="vn.hunghd.flutterdownloader.DownloadedFileProvider"-->
+<!--            android:authorities="${applicationId}.flutter_downloader.provider"-->
+<!--            android:exported="false"-->
+<!--            android:grantUriPermissions="true">-->
+<!--            <meta-data-->
+<!--                android:name="android.support.FILE_PROVIDER_PATHS"-->
+<!--                android:resource="@xml/provider_paths"/>-->
+<!--        </provider>-->
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.USE_BIOMETRIC"/>

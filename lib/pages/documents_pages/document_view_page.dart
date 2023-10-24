@@ -36,7 +36,7 @@ class _DocumentViewPageState extends State<DocumentViewPage> {
   }
 
   Future<String> getPersonalDataPolitics() async {
-    final directory = await getApplicationCacheDirectory();
+    final directory = await getTemporaryDirectory();
     await Dio().download(
       '${Get.find<ConfigurationOfAppController>().configuration.value?.BASE_URL}${widget.route}',
       '${directory.path}${widget.route}',
