@@ -65,11 +65,13 @@ class LocalAuthPage extends StatelessWidget {
                         radius: isSmallScreen ? 36 : 40,
                         backgroundColor: const Color(0xFFD7D7D7),
                         foregroundImage: avatarController.image?.image,
-                        child: const Icon(
-                          Icons.person,
-                          size: 40,
-                          color: Colors.grey,
-                        ),
+                        child: avatarController.image == null
+                            ? const Icon(
+                                Icons.person,
+                                size: 20,
+                                color: Colors.grey,
+                              )
+                            : null,
                       ),
                     ),
                   ),

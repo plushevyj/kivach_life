@@ -10,9 +10,9 @@ class AvatarController extends GetxController {
 
   @override
   void onInit() {
+    avatarLoading(true);
     final avatar = Get.find<AccountController>().profile.value?.avatar?.file;
     if (avatar != null) {
-      avatarLoading(true);
       image = Image.network(
           '${Get.find<ConfigurationOfAppController>().configuration.value?.BASE_URL}$avatar');
       image?.image
@@ -20,7 +20,10 @@ class AvatarController extends GetxController {
           .addListener(ImageStreamListener((_, __) {
         avatarLoading(false);
       }));
+    } else {
+      image = null;
     }
+    avatarLoading(false);
     super.onInit();
   }
 }
