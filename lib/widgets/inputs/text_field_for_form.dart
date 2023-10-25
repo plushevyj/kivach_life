@@ -9,6 +9,7 @@ class TextFieldForForm extends StatelessWidget {
     this.errorText,
     this.errorStyle,
     this.keyboardType,
+    this.autofillHints,
   });
 
   final TextEditingController controller;
@@ -16,10 +17,11 @@ class TextFieldForForm extends StatelessWidget {
   final String? errorText;
   final TextStyle? errorStyle;
   final TextInputType? keyboardType;
+  final Iterable<String>? autofillHints;
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
+    return TextField(
       controller: controller,
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
@@ -29,6 +31,7 @@ class TextFieldForForm extends StatelessWidget {
       ),
       autocorrect: false,
       keyboardType: keyboardType,
+      autofillHints: autofillHints,
     );
   }
 }
@@ -44,12 +47,14 @@ class PasswordFieldForForm extends StatelessWidget {
     required this.hint,
     this.errorText,
     this.errorStyle,
+    this.autofillHints,
   });
 
   final TextEditingController controller;
   final String hint;
   final String? errorText;
   final TextStyle? errorStyle;
+  final Iterable<String>? autofillHints;
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +62,7 @@ class PasswordFieldForForm extends StatelessWidget {
       init: VisibilityPasswordController(),
       global: false,
       builder: (logic) {
-        return TextFormField(
+        return TextField(
           obscureText: logic.visibilityText.value,
           controller: controller,
           textInputAction: TextInputAction.next,
@@ -76,6 +81,7 @@ class PasswordFieldForForm extends StatelessWidget {
           ),
           autocorrect: false,
           keyboardType: TextInputType.visiblePassword,
+          autofillHints: autofillHints,
         );
       },
     );

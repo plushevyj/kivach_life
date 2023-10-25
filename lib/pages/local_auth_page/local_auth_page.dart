@@ -63,13 +63,13 @@ class LocalAuthPage extends StatelessWidget {
                       enabled: avatarController.avatarLoading.value,
                       effect: ShimmerEffect(baseColor: Colors.grey.shade300),
                       child: CircleAvatar(
-                        radius: 20,
+                        radius: 36,
                         backgroundColor: const Color(0xFFD7D7D7),
                         foregroundImage: avatarController.image?.image,
                         child: avatarController.image == null
                             ? const Icon(
                                 Icons.person,
-                                size: 20,
+                                size: 24,
                                 color: Colors.grey,
                               )
                             : null,

@@ -74,8 +74,8 @@ class LocalPasswordSettingBloc
         emit(const InvalidConfirmedNewLocalPassword());
       }
     } catch (error) {
-      emit(const ErrorNewLocalPasswordState(
-          'Ошибка добавления локального пароля'));
+      emit(
+          const ErrorNewLocalPasswordState('Ошибка создания цифрового пароля'));
     }
   }
 

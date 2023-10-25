@@ -46,6 +46,10 @@ class ProfileSettingPage extends StatelessWidget {
               ? await showImagePicker(
                   params: params, source: selectedPickerSource)
               : [];
+        })
+        ..setOnPlatformPermissionRequest(
+            (PlatformWebViewPermissionRequest request) {
+          print(request.types);
         });
       webViewController =
           WebViewController.fromPlatform(androidWebViewController);

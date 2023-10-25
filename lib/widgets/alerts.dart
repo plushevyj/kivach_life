@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 void showSuccessAlert(String message,
-    {Duration duration = const Duration(seconds: 2)}) {
+    {Duration duration = const Duration(seconds: 5)}) {
   Get.snackbar(
     'Успешно',
     message,
@@ -14,7 +14,7 @@ void showSuccessAlert(String message,
 }
 
 void showErrorAlert(String message,
-    {Duration duration = const Duration(seconds: 2)}) {
+    {Duration duration = const Duration(seconds: 5)}) {
   Get.snackbar(
     'Ошибка',
     message,

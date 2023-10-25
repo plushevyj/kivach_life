@@ -18,7 +18,7 @@ class NewLocalPasswordPage extends StatelessWidget {
       listener: (context, state) {
         if (state is SuccessfulPasswordChange) {
           Get.back();
-          showSuccessAlert('Локальный пароль изменен');
+          showSuccessAlert('Цифровой пароль изменен');
         }
       },
       child: Scaffold(

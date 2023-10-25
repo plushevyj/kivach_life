@@ -39,14 +39,8 @@ class InAppUpdateBloc extends Bloc<InAppUpdateEvent, InAppUpdateState> {
         final result = await PlayxVersionUpdate.showInAppUpdateDialog(
           context: Get.context!,
           type: PlayxAppUpdateType.flexible,
-          //customize app store id in ios
-          appStoreId: 'ru.kivach.life',
-          //show release notes or not in ios
           showReleaseNotes: true,
-          //customize dialog layout like release notes title  in ios.
           releaseNotesTitle: (info) => 'Recent Updates of ${info.newVersion}',
-          // When the user clicks on update action the app open the app store,
-          // If you want to override this behavior you can call [onIosUpdate].
         );
         result.when(
           success: (isShowed) {},
