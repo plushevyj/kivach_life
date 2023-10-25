@@ -64,6 +64,7 @@ class AppBarForLargeScreen extends StatelessWidget {
                 Obx(
                   () => Skeletonizer(
                     enabled: avatarController.avatarLoading.value,
+                    effect: ShimmerEffect(baseColor: Colors.grey.shade300),
                     child: CircleAvatar(
                       radius: 20,
                       backgroundColor: const Color(0xFFD7D7D7),

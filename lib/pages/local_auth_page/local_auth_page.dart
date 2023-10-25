@@ -61,8 +61,9 @@ class LocalAuthPage extends StatelessWidget {
                   Obx(
                     () => Skeletonizer(
                       enabled: avatarController.avatarLoading.value,
+                      effect: ShimmerEffect(baseColor: Colors.grey.shade300),
                       child: CircleAvatar(
-                        radius: isSmallScreen ? 36 : 40,
+                        radius: 20,
                         backgroundColor: const Color(0xFFD7D7D7),
                         foregroundImage: avatarController.image?.image,
                         child: avatarController.image == null
