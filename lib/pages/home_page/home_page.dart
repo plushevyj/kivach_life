@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -32,7 +31,9 @@ class HomePage extends StatelessWidget {
             homePageController.isNarrowAppBar(url.startsWith(
                     homePageController.appConfiguration!.BASE_URL) &&
                 !url.startsWith(
-                    '${homePageController.appConfiguration!.BASE_URL}/chat'));
+                    '${homePageController.appConfiguration!.BASE_URL}/chat') &&
+                !url.startsWith(
+                    '${homePageController.appConfiguration!.BASE_URL}/kivach-analysis'));
           },
           onPageFinished: (url) async {
             homePageController.canGoBack(
