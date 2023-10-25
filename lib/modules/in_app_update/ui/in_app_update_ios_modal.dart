@@ -27,7 +27,8 @@ class InAppUpdateUI {
                 onPressed: () {
                   try {
                     launchUrl(
-                      Uri.parse('https://apps.apple.com/ru/app/kivach-life/id1594326685'),
+                      Uri.parse(
+                          'https://apps.apple.com/ru/app/kivach-life/id1594326685'),
                       mode: LaunchMode.externalApplication,
                     );
                   } catch (_) {}

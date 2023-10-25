@@ -33,7 +33,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Приложение использует камеру для сканирования QR-кода и создания аватара профиля</string>
 	<key>NSFaceIDUsageDescription</key>
-	<string>Аутентификация в приложении Кивач</string>
+	<string>Сканер биометрии используется для локальной авторизации в приложении Kivach Life</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Приложение использует галерею для сканирования QR-кода и создания аватара профиля</string>
 	<key>NSPhotoLibraryUsageDescription</key>
