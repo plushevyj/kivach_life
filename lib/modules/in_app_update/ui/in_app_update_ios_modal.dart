@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:store_redirect/store_redirect.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class InAppUpdateUI {
   void showInAppUpdateIOSModal(BuildContext context) {
@@ -26,7 +26,10 @@ class InAppUpdateUI {
               CupertinoDialogAction(
                 onPressed: () {
                   try {
-                    StoreRedirect.redirect(iOSAppId: '1594326685');
+                    launchUrl(
+                      Uri.parse('https://apps.apple.com/ru/app/kivach-life/id1594326685'),
+                      mode: LaunchMode.externalApplication,
+                    );
                   } catch (_) {}
                   Get.back();
                 },
