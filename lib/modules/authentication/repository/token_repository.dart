@@ -17,7 +17,7 @@ class TokenRepository {
     return await box.get('refreshToken') as String?;
   }
 
-  Future<void> saveToken({
+  Future<void> saveTokens({
     required TokenModel token,
   }) async {
     final box = await _openStorage();

@@ -49,7 +49,7 @@ class AuthenticationBloc
           ..deleteBiometricSetting();
         return;
       }
-      addAccessToken(accessToken: accessToken);
+      addAccessToken();
       final profile = await loginRepository.logInByToken();
       Get.put(AccountController(), permanent: true).profile(profile);
       emit(const Authenticated());
@@ -73,8 +73,8 @@ class AuthenticationBloc
         username: event.username,
         password: event.password,
       );
-      tokenRepository.saveToken(token: token);
-      addAccessToken(accessToken: token.token);
+      tokenRepository.saveTokens(token: token);
+      addAccessToken();
       final profile = await loginRepository.logInByToken();
       Get.put(AccountController(), permanent: true).profile(profile);
       emit(const Authenticated());

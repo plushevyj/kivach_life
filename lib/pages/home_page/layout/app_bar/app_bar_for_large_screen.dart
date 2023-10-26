@@ -85,7 +85,7 @@ class AppBarForLargeScreen extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.only(right: 10),
                       child: Text(
-                        Get.find<AccountController>().profile.value!.fullName,
+                        Get.find<AccountController>().profile.value!.username,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(fontSize: 18),
                       ),

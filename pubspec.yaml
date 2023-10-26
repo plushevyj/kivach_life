@@ -49,6 +49,7 @@ dependencies:
   document_viewer: ^0.0.1
   path_provider: ^2.1.1
   webview_flutter_android: ^3.12.0
+  flutter_inappwebview: ^5.8.0
 #  flutter_downloader: ^1.11.4
 
 flutter_localization:

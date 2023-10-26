@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import '../../modules/authentication/repository/login_repository.dart';
 import '/core/themes/light_theme.dart';
 import 'home_page_controller.dart';
 import 'layout/body/body_for_large_screen.dart';
@@ -13,6 +16,9 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // const TokenRepository().saveTokens(
+    //     token: TokenModel(token: 'efdfdfdf', refresh_token: 'dfdfdfdfdf'));
+    // addAccessToken();
     final homePageController = Get.put(HomePageController());
     final navbar = homePageController.appConfiguration?.NAVBAR
         .firstWhere((navbarModel) =>
@@ -36,6 +42,19 @@ class HomePage extends StatelessWidget {
                     '${homePageController.appConfiguration!.BASE_URL}/kivach-analysis'));
           },
           onPageFinished: (url) async {
+            try {
+              final result = await homePageController.webViewController
+                  .runJavaScriptReturningResult(
+                      'document.documentElement.innerText');
+              final code = jsonDecode(jsonDecode(result.toString()))['code'];
+              if (code == 401 || code == 403) {
+                print(jsonDecode(jsonDecode(result.toString())));
+                final res = await const LoginRepository().logInByToken();
+                homePageController.webViewController
+                    .loadRequest(Uri.parse(url));
+              }
+            } catch (_) {}
+
             homePageController.canGoBack(
                 await homePageController.webViewController.canGoBack());
             homePageController.canGoForward(
@@ -43,8 +62,11 @@ class HomePage extends StatelessWidget {
             final currentRoute =
                 url.split(homePageController.appConfiguration!.BASE_URL)[1];
             navBarIndexNotifier.value = navbar!.lastIndexWhere(
-                (navbarElement) =>
-                    currentRoute.startsWith(navbarElement.route));
+              (navbarElement) => currentRoute.startsWith(navbarElement.route),
+            );
+          },
+          onWebResourceError: (error) {
+            print('error = $error');
           },
           onNavigationRequest: (request) async {
             print('request.url = ${request.url}');

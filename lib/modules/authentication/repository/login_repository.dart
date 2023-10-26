@@ -48,8 +48,8 @@ class LoginRepository {
   Future<void> logOut() async {
     final refreshToken = await _tokenRepository.getRefreshToken();
     await handleRequest(
-      () => _dio.get(
-        '/api/token/invalidate',
+      () => Dio().get(
+        '${Get.find<ConfigurationOfAppController>().configuration.value?.BASE_URL}/api/token/invalidate',
         queryParameters: {'refresh_token': refreshToken},
       ),
     );

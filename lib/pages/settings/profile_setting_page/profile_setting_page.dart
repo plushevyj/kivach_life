@@ -1,13 +1,16 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_android/src/android_webview.dart';
 import 'package:webview_flutter_android/webview_flutter_android.dart';
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
 import '../../../core/themes/light_theme.dart';
+import '../../../models/token_model/token_model.dart';
 import '../../../modules/authentication/repository/token_repository.dart';
 import '../../../modules/opening_app/controllers/configuration_of_app_controller.dart';
 import 'profile_settings_page_controller.dart';
@@ -27,6 +30,9 @@ class ProfileSettingPage extends StatelessWidget {
     Get.put(ProfileSettingsPageController());
     PlatformWebViewControllerCreationParams params =
         const PlatformWebViewControllerCreationParams();
+    var androidNavigationDelegate = AndroidNavigationDelegate(
+        const PlatformNavigationDelegateCreationParams());
+    androidNavigationDelegate.androidDownloadListener.onDownloadStart;
     if (WebViewPlatform.instance is WebKitWebViewPlatform) {
       params = WebKitWebViewControllerCreationParams
           .fromPlatformWebViewControllerCreationParams(
@@ -39,6 +45,7 @@ class ProfileSettingPage extends StatelessWidget {
           (WebViewPlatform.instance as AndroidWebViewPlatform)
               .createPlatformWebViewController(params);
       androidWebViewController
+        ..setPlatformNavigationDelegate(androidNavigationDelegate)
         ..setMediaPlaybackRequiresUserGesture(true)
         ..setOnShowFileSelector((params) async {
           final selectedPickerSource = await selectPickerSource();
@@ -60,7 +67,11 @@ class ProfileSettingPage extends StatelessWidget {
       ..setNavigationDelegate(
         NavigationDelegate(
           onPageStarted: (url) {},
-          onPageFinished: (url) {},
+          onPageFinished: (url) async {
+            final response =
+                await webViewController.runJavaScriptReturningResult(
+                    'document.documentElement.innerText');
+          },
           onWebResourceError: (error) {},
           onNavigationRequest: (NavigationRequest request) {
             if (request.url.startsWith('${configuration!.BASE_URL}/profile')) {

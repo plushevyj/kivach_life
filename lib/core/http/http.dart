@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:doctor/modules/authentication/bloc/authentication_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 
@@ -24,19 +26,6 @@ class DioClient {
       }
       ..interceptors.add(
         InterceptorsWrapper(
-          // onRequest: (options, handler) {
-          //   print('\n\n\n');
-          //   print('=========REQUEST=========');
-          //   print(options.path);
-          //   print('data = ${options.data}');
-          //   print('headers = ${options.headers}');
-          //   print('\n\n\n');
-          //   if (options.path == '/api/push-token/set')
-          //     showSuccessAlert(
-          //         '${options.path}\n data = ${options.data} \n headers = ${options.headers}',
-          //         duration: Duration(seconds: 60));
-          //   handler.next(options);
-          // },
           onError: _throwError,
         ),
       );
@@ -50,8 +39,8 @@ class DioClient {
         try {
           final refreshResult =
               await _loginRepository.refreshToken(refreshTokenFromCache);
-          await _tokenRepository.saveToken(token: refreshResult);
-          addAccessToken(accessToken: refreshResult.token);
+          await _tokenRepository.saveTokens(token: refreshResult);
+          addAccessToken();
           final cloneReq = _dio.request(
             error.requestOptions.path,
             options: Options(
@@ -62,13 +51,16 @@ class DioClient {
             queryParameters: error.requestOptions.queryParameters,
           );
           return handler.resolve(await cloneReq);
-        } catch (_) {}
+        } catch (_) {
+          BlocProvider.of<AuthenticationBloc>(Get.context!).add(const LogOut());
+        }
       }
     }
     handler.reject(error);
   }
 }
 
-void addAccessToken({required String accessToken}) {
+void addAccessToken() async {
+  final accessToken = await const TokenRepository().getAccessToken();
   GetIt.I.get<Dio>().options.headers['X-Auth'] = 'Bearer $accessToken';
 }

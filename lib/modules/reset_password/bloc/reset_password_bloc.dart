@@ -65,7 +65,7 @@ class ResetPasswordBloc extends Bloc<ResetPasswordEvent, ResetPasswordState> {
         phone: _phone ?? '',
         code: event.code,
       );
-      await _tokenRepository.saveToken(token: token);
+      await _tokenRepository.saveTokens(token: token);
       emit(const SuccessCode());
     } catch (error) {
       emit(ErrorResetPasswordState(error.toString()));

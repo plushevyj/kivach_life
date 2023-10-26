@@ -131,7 +131,7 @@ class RegistrationController extends GetxController {
         secondPassword: secondPasswordFieldController.text,
         agreeTerms: isAgree.value,
       );
-      _tokenRepository.saveToken(token: token);
+      _tokenRepository.saveTokens(token: token);
       BlocProvider.of<AuthenticationBloc>(Get.context!)
           .add(const AuthenticateByToken());
     } on DioException catch (error) {

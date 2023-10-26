@@ -1,7 +1,9 @@
+import 'package:doctor/models/token_model/token_model.dart';
 import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
+import '../../core/http/http.dart';
 import '../../models/configuration_models/configuration_of_app/configuration_of_app.dart';
 import '../../models/profile/profile_model.dart';
 import '../../modules/account/controllers/account_controller.dart';
@@ -14,15 +16,19 @@ class HomePageController extends GetxController {
   final isNarrowAppBar = true.obs;
 
   final configController = Get.find<ConfigurationOfAppController>();
-  late final ConfigurationOfApp? appConfiguration;
-  // late final payloadRoute = configController.payloadRoute.value;
-  late final Profile? profile;
+  final ConfigurationOfApp? appConfiguration =
+      Get.find<ConfigurationOfAppController>().configuration.value;
+  final Profile? profile = Get.find<AccountController>().profile.value;
 
   @override
-  void onInit() {
-    appConfiguration = configController.configuration.value;
-    profile = Get.find<AccountController>().profile.value;
-    load(route: configController.payloadRoute.value ?? '/');
+  void onInit() async {
+    // final kek = await TokenRepository().getRefreshToken();
+    // TokenRepository()
+    //     .saveTokens(token: TokenModel(token: 'edfdfdfdf', refresh_token: kek!));
+    // addAccessToken();
+    webViewController.loadRequest(
+        Uri.parse('https://docs.flutter.dev/get-started/install/linux'));
+    // load(route: configController.payloadRoute.value ?? '/');
     configController.payloadRoute.value = null;
     configController.payloadRoute.listen((route) {
       if (route != null) {
@@ -62,4 +68,6 @@ class HomePageController extends GetxController {
       headers: headers,
     );
   }
+
+  void refreshTokensByContentInWebView(String content) {}
 }

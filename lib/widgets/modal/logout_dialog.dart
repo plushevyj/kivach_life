@@ -37,13 +37,7 @@ Future<void> showLogOutAlert() {
                 ),
               ),
               CupertinoDialogAction(
-                onPressed: () {
-                  Get.context!
-                      .read<LocalAuthenticationBloc>()
-                      .add(const LocallyLogOut());
-                  Get.context!.read<AuthenticationBloc>().add(const LogOut());
-                  Get.offAllNamed('/auth');
-                },
+                onPressed: () => logOut(),
                 child: const Text(
                   successButtonText,
                   style: TextStyle(fontWeight: FontWeight.bold),
@@ -77,13 +71,7 @@ Future<void> showLogOutAlert() {
                   side: BorderSide.none,
                 ),
               ),
-              onPressed: () {
-                Get.context!
-                    .read<LocalAuthenticationBloc>()
-                    .add(const LocallyLogOut());
-                Get.context!.read<AuthenticationBloc>().add(const LogOut());
-                Get.offAllNamed('/auth');
-              },
+              onPressed: () => logOut(),
               child: const Text(successButtonText),
             ),
           ],
@@ -91,4 +79,10 @@ Future<void> showLogOutAlert() {
       },
     );
   }
+}
+
+void logOut() {
+  Get.context!.read<LocalAuthenticationBloc>().add(const LocallyLogOut());
+  Get.context!.read<AuthenticationBloc>().add(const LogOut());
+  Get.offAllNamed('/auth');
 }
