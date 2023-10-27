@@ -1,3 +1,4 @@
+import 'package:doctor/pages/home_page/home_page_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -106,7 +107,11 @@ class SettingsPage extends StatelessWidget {
                       title: 'Настройки профиля',
                       icon: Icons.person,
                       iconBackgroundColor: Colors.green,
-                      onPressed: () => Get.toNamed('/profile_setting'),
+                      onPressed: () {
+                        Get.find<HomePageController>()
+                            .loadBaseSiteRoute(route: '/profile');
+                        Get.back();
+                      },
                     ),
                     _SettingButton(
                       title: 'Выйти из аккаунта',

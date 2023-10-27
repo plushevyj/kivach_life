@@ -3,6 +3,7 @@ import 'package:fk_user_agent/fk_user_agent.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -29,4 +30,5 @@ Future<void> initializeDependencies() async {
     ..registerAdapter(LocalPasswordAdapter());
   await [Permission.camera, Permission.photos, Permission.storage].request();
   await FkUserAgent.init();
+  await FlutterDownloader.initialize();
 }

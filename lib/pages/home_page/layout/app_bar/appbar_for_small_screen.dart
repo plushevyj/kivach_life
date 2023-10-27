@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../../modules/account/controllers/account_controller.dart';
 import '../../../../modules/account/controllers/avatar_controller.dart';
@@ -16,7 +16,7 @@ class AppBarForSmallScreen extends StatelessWidget
   });
 
   final HomePageController homePageController;
-  final WebViewController webViewController;
+  final InAppWebViewController webViewController;
 
   @override
   Widget build(BuildContext context) {

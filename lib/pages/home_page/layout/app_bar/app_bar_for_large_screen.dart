@@ -1,22 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
-import '../../../../modules/account/controllers/account_controller.dart';
-import '../../../../modules/account/controllers/avatar_controller.dart';
+import '/modules/account/controllers/account_controller.dart';
+import '/modules/account/controllers/avatar_controller.dart';
 import '../../home_page_controller.dart';
 
 class AppBarForLargeScreen extends StatelessWidget {
   const AppBarForLargeScreen({
     super.key,
     required this.homePageController,
-    required this.webViewController,
     this.width,
   });
 
   final HomePageController homePageController;
-  final WebViewController webViewController;
   final double? width;
 
   @override
@@ -34,7 +31,8 @@ class AppBarForLargeScreen extends StatelessWidget {
                 Obx(
                   () => IconButton(
                     onPressed: homePageController.canGoBack.value
-                        ? () => webViewController.goBack()
+                        ? () =>
+                            homePageController.webViewController?.goBack()
                         : null,
                     icon: Icon(
                       GetPlatform.isIOS
@@ -49,7 +47,8 @@ class AppBarForLargeScreen extends StatelessWidget {
                 Obx(
                   () => IconButton(
                     onPressed: homePageController.canGoForward.value
-                        ? () => webViewController.goForward()
+                        ? () => homePageController.webViewController
+                            ?.goForward()
                         : null,
                     icon: Icon(
                       GetPlatform.isIOS
@@ -85,7 +84,10 @@ class AppBarForLargeScreen extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.only(right: 10),
                       child: Text(
-                        Get.find<AccountController>().profile.value!.username,
+                        Get.find<AccountController>()
+                            .profile
+                            .value!
+                            .username,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(fontSize: 18),
                       ),

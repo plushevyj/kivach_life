@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../home_page_controller.dart';
 import '../app_bar/app_bar_for_large_screen.dart';
@@ -13,7 +13,7 @@ class BodyForLargeScreen extends StatelessWidget {
   });
 
   final HomePageController homePageController;
-  final WebViewController webViewController;
+  final InAppWebViewController webViewController;
 
   @override
   Widget build(BuildContext context) {
@@ -26,15 +26,14 @@ class BodyForLargeScreen extends StatelessWidget {
                   top: homePageController.isNarrowAppBar.value
                       ? 0
                       : kToolbarHeight),
-              child: WebViewWidget(
-                controller: webViewController,
-              ),
+              child: InAppWebView(
+                  // controller: webViewController,
+                  ),
             ),
           ),
           Obx(
             () => AppBarForLargeScreen(
               homePageController: homePageController,
-              webViewController: webViewController,
               width: homePageController.isNarrowAppBar.value
                   ? Get.width - 60
                   : Get.width - 5,
