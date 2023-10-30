@@ -28,7 +28,12 @@ Future<void> initializeDependencies() async {
   Hive
     ..registerAdapter(BiometricSettingsAdapter())
     ..registerAdapter(LocalPasswordAdapter());
-  await [Permission.camera, Permission.photos, Permission.storage].request();
+  await [
+    Permission.camera,
+    Permission.photos,
+    Permission.storage,
+    Permission.manageExternalStorage
+  ].request();
   await FkUserAgent.init();
   await FlutterDownloader.initialize();
 }

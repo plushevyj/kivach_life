@@ -7,7 +7,7 @@ import '../../../modules/authentication/repository/login_repository.dart';
 class ProfileSettingsPageController extends GetxController {
   @override
   void onClose() async {
-    final profile = await const LoginRepository().logInByToken();
+    final profile = await const LoginRepository().getProfile();
     Get.find<AccountController>().profile(profile);
     Get.find<AvatarController>().onInit();
     super.onClose();

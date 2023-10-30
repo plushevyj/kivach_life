@@ -144,15 +144,21 @@
 //   }
 // }
 
+import 'dart:io';
 
+import 'package:dio/dio.dart';
+import 'package:doctor/modules/account/controllers/account_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
+// import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../core/themes/light_theme.dart';
+import '../../modules/account/controllers/avatar_controller.dart';
+import '../../modules/authentication/repository/login_repository.dart';
 import 'home_page_controller.dart';
 import 'layout/app_bar/app_bar_for_large_screen.dart';
 
@@ -180,43 +186,75 @@ class HomePage extends StatelessWidget {
             children: [
               InAppWebView(
                 initialOptions: InAppWebViewGroupOptions(
-                  crossPlatform: InAppWebViewOptions(useOnDownloadStart: true),
+                  crossPlatform: InAppWebViewOptions(
+                    useOnDownloadStart: true,
+                    supportZoom: true,
+                    preferredContentMode: UserPreferredContentMode.MOBILE,
+                  ),
+                  android: AndroidInAppWebViewOptions(
+                    builtInZoomControls: false,
+                  ),
                 ),
                 onWebViewCreated: (controller) {
-                  homePageController.webViewController = controller;
-                  homePageController.loadFirstBaseSiteRoute();
+                  homePageController
+                    ..webViewController = controller
+                    ..loadFirstBaseSiteRoute();
                 },
                 onLoadStart: (controller, uri) {},
                 onLoadStop: (controller, uri) async {
-                  homePageController.canGoBack(
-                      await homePageController.webViewController?.canGoBack());
-                  homePageController.canGoForward(await homePageController
-                      .webViewController
-                      ?.canGoForward());
-                  navBarIndexNotifier.value = navbar!.lastIndexWhere(
-                    (navbarElement) =>
-                        uri!.path.startsWith(navbarElement.route),
-                  );
+                  if (uri != null) {
+                    if (uri.path.startsWith('/profile')) {
+                      final profile =
+                          await const LoginRepository().getProfile();
+                      Get.find<AccountController>().profile(profile);
+                      Get.find<AvatarController>().onInit();
+                    }
+                    homePageController.canGoBack(await homePageController
+                        .webViewController
+                        ?.canGoBack());
+                    homePageController.canGoForward(await homePageController
+                        .webViewController
+                        ?.canGoForward());
+                    navBarIndexNotifier.value = navbar!.lastIndexWhere(
+                      (navbarElement) =>
+                          uri.path.startsWith(navbarElement.route),
+                    );
+                  }
                 },
                 onProgressChanged: (controller, progress) async {
                   homePageController.progress.value = progress.toDouble();
                 },
-                onDownloadStartRequest:
-                    (controller, uri) async {
-                  print('uri.mimeType = ${uri.mimeType}');
-                  print('uri.url = ${uri.url.origin}${uri.url.path}');
-                  print(
-                      '(await getDownloadsDirectory())!.path = ${(await getApplicationDocumentsDirectory()).path}');
-                  await FlutterDownloader.enqueue(
-                    headers: await homePageController.getHeaders(),
-                    url: '${uri.url.origin}${uri.url.path}',
-                    savedDir: GetPlatform.isAndroid
-                        ? '/storage/emulated/0/Download'
-                        : (await getApplicationDocumentsDirectory()).path,
-                    showNotification: true,
-                    openFileFromNotification: true,
-                    saveInPublicStorage: true,
-                  );
+                onDownloadStartRequest: (controller, uri) async {
+                  // final task = await FlutterDownloader.enqueue(
+                  //   headers: await homePageController.getHeaders(),
+                  //   url: '${uri.url.origin}${uri.url.path}',
+                  //   savedDir: await (() async {
+                  //     if (GetPlatform.isAndroid) {
+                  //       return '/storage/emulated/0/Download';
+                  //     } else if (GetPlatform.isIOS) {
+                  //       print('ios');
+                  //       return (await getLibraryDirectory()).path;
+                  //     }
+                  //     return (await getDownloadsDirectory())!.path;
+                  //   })(),
+                  //   showNotification: true,
+                  //   openFileFromNotification: true,
+                  //   saveInPublicStorage: true,
+                  // );
+                  // if (task != null) {
+                  //   FlutterDownloader.open(taskId: task);
+                  // }
+                  var dir = await getApplicationDocumentsDirectory();
+                  // print('${uri.url.origin}${uri.url.path}');
+                  // print('/storage/emulated/0/Download/Kivach');
+                  final result = await Dio().download(
+                      '${uri.url.origin}${uri.url.path}',
+                      GetPlatform.isAndroid
+                          ? '/storage/emulated/0/Download/Kivach/${uri.url.path.split('/').last}'
+                          : '${(await getDownloadsDirectory())!.path}/${uri.url.path.split('/').last}',
+                      onReceiveProgress: (count, total) {
+                    print('Rec: $count , Total: $total');
+                  });
                 },
               ),
               AppBarForLargeScreen(

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -65,6 +66,7 @@ class QRScannerPageController extends GetxController {
       }
       final file = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (file != null) {
+        Clipboard.setData(ClipboardData(text: file.path));
         var qrResult = await Scan.parse(file.path);
         if (qrResult != null) {
           qrCodeHandler(qrResult);

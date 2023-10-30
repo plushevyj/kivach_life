@@ -50,7 +50,7 @@ class AuthenticationBloc
         return;
       }
       addAccessToken();
-      final profile = await loginRepository.logInByToken();
+      final profile = await loginRepository.getProfile();
       Get.put(AccountController(), permanent: true).profile(profile);
       emit(const Authenticated());
     } catch (error) {
@@ -75,7 +75,7 @@ class AuthenticationBloc
       );
       tokenRepository.saveTokens(token: token);
       addAccessToken();
-      final profile = await loginRepository.logInByToken();
+      final profile = await loginRepository.getProfile();
       Get.put(AccountController(), permanent: true).profile(profile);
       emit(const Authenticated());
     } catch (error) {

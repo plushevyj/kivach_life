@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:doctor/modules/local_authentication/bloc/local_authentication_bloc.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
@@ -29,8 +28,6 @@ class FirebaseApi {
     );
     //когда приложение открыто
     FirebaseMessaging.onMessage.listen((message) async {
-      await Clipboard.setData(ClipboardData(
-          text: 'onMessage: ${message.data} ${message.data.runtimeType}'));
       if (GetPlatform.isAndroid) {
         showNotificationAlert(
           title: message.notification?.title,
@@ -43,9 +40,6 @@ class FirebaseApi {
     });
     //когда приложение свернуто
     FirebaseMessaging.onMessageOpenedApp.listen((message) async {
-      await Clipboard.setData(ClipboardData(
-          text:
-              'onMessageOpenedApp: ${message.data} ${message.data.runtimeType}'));
       routeFromPayload(message);
     });
   }

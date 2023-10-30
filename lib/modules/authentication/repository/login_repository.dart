@@ -25,7 +25,8 @@ class LoginRepository {
     return ConvertTo<TokenModel>().item(response.data, TokenModel.fromJson);
   }
 
-  Future<Profile> logInByToken() async {
+  // Используется совместно с авторизаией
+  Future<Profile> getProfile() async {
     final res = await handleRequest(() => _dio.get('/api/profile'));
     return ConvertTo<Profile>().item(res.data, Profile.fromJson);
   }
