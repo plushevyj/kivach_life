@@ -1,6 +1,4 @@
 PODS:
-  - downloads_path_provider_28 (0.0.1):
-    - Flutter
   - Firebase/CoreOnly (10.15.0):
     - FirebaseCore (= 10.15.0)
   - Firebase/Messaging (10.15.0):
@@ -102,7 +100,6 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
-  - downloads_path_provider_28 (from `.symlinks/plugins/downloads_path_provider_28/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
   - fk_user_agent (from `.symlinks/plugins/fk_user_agent/ios`)
@@ -137,8 +134,6 @@ SPEC REPOS:
     - Toast
 
 EXTERNAL SOURCES:
-  downloads_path_provider_28:
-    :path: ".symlinks/plugins/downloads_path_provider_28/ios"
   firebase_core:
     :path: ".symlinks/plugins/firebase_core/ios"
   firebase_messaging:
@@ -175,7 +170,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
 
 SPEC CHECKSUMS:
-  downloads_path_provider_28: 7425048683ec0b86238361bd93795e91c2bc61a2
   Firebase: 66043bd4579e5b73811f96829c694c7af8d67435
   firebase_core: 77172d0a9d8d19d07606e24406e4c2fc14d3265b
   firebase_messaging: 6aff54d420b7ce7080c26dd131b08bc632666852

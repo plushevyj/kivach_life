@@ -144,7 +144,7 @@
 //   }
 // }
 
-import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -203,11 +203,10 @@ class HomePage extends StatelessWidget {
                 },
                 onDownloadStartRequest:
                     (controller, uri) async {
-                     print('jerhjhejwhe = ${(await DownloadsPathProvider.downloadsDirectory)?.path}');
                   print('uri.mimeType = ${uri.mimeType}');
                   print('uri.url = ${uri.url.origin}${uri.url.path}');
                   print(
-                      '(await getDownloadsDirectory())!.path = ${(await getApplicationDocumentsDirectory())!.path}');
+                      '(await getDownloadsDirectory())!.path = ${(await getApplicationDocumentsDirectory()).path}');
                   await FlutterDownloader.enqueue(
                     headers: await homePageController.getHeaders(),
                     url: '${uri.url.origin}${uri.url.path}',
@@ -216,6 +215,7 @@ class HomePage extends StatelessWidget {
                         : (await getApplicationDocumentsDirectory()).path,
                     showNotification: true,
                     openFileFromNotification: true,
+                    saveInPublicStorage: true,
                   );
                 },
               ),

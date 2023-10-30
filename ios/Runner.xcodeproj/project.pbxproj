@@ -17,7 +17,8 @@
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
 		BB22BFD05FEF574336309666 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B6C42D982345173F47D9CE3 /* Pods_Runner.framework */; };
 		CAD08F7D78C1B7D175EC352B /* Pods_RunnerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C0C450D1C72E44DFBBE2E19 /* Pods_RunnerTests.framework */; };
-		ED06D08A2AEBF02200E3D2C2 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = ED06D0892AEBEFF000E3D2C2 /* libsqlite3.tbd */; };
+		ED7C3CA82AEF914500CF8137 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = ED06D0892AEBEFF000E3D2C2 /* libsqlite3.tbd */; };
+		ED7C3CAA2AEF919000CF8137 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = ED06D0892AEBEFF000E3D2C2 /* libsqlite3.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,7 +86,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ED06D08A2AEBF02200E3D2C2 /* libsqlite3.tbd in Frameworks */,
+				ED7C3CAA2AEF919000CF8137 /* libsqlite3.tbd in Frameworks */,
+				ED7C3CA82AEF914500CF8137 /* libsqlite3.tbd in Frameworks */,
 				BB22BFD05FEF574336309666 /* Pods_Runner.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -480,6 +482,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 96CK6LY657;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
@@ -664,6 +667,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 96CK6LY657;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
@@ -692,6 +696,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 96CK6LY657;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
