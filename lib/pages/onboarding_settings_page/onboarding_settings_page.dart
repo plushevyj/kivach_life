@@ -1,3 +1,4 @@
+import 'package:doctor/widgets/alerts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -46,8 +47,14 @@ class OnboardingSettingsPage extends StatelessWidget {
         ),
         BlocListener<BiometricSettingsBloc, BiometricSettingsState>(
           listener: (context, state) {
-            if (state is ChangedUserBiometricSetting ||
-                state is ErrorBiometricSettings) {
+            if (state is ChangedUserBiometricSetting) {
+              Navigator.pop(Get.context!);
+            } else if (state is ChangedUserBiometricSetting) {
+              showSuccessAlert(state.isEnable
+                  ? 'Вход в приложение по биометрии включен'
+                  : 'Вход в приложение по биометрии выключен');
+            } else if (state is ErrorBiometricSettings) {
+              showErrorAlert(state.error);
               Navigator.pop(Get.context!);
             }
           },

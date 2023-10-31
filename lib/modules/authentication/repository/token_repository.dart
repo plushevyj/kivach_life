@@ -1,31 +1,40 @@
-import 'package:hive/hive.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '/models/token_model/token_model.dart';
+
+class _TokensKeyStore {
+  _TokensKeyStore._();
+
+  static const String accessToken = 'accessToken';
+  static const String refreshToken = 'refreshToken';
+}
 
 class TokenRepository {
   const TokenRepository();
 
-  Future<Box> _openStorage() async => await Hive.openBox('token');
-
   Future<String?> getAccessToken() async {
-    final box = await _openStorage();
-    return await box.get('accessToken') as String?;
+    return (await SharedPreferences.getInstance())
+        .getString(_TokensKeyStore.accessToken);
   }
 
   Future<String?> getRefreshToken() async {
-    final box = await _openStorage();
-    return await box.get('refreshToken') as String?;
+    return (await SharedPreferences.getInstance())
+        .getString(_TokensKeyStore.refreshToken);
   }
 
   Future<void> saveTokens({
     required TokenModel token,
   }) async {
-    final box = await _openStorage();
-    box.put('accessToken', token.token);
-    box.put('refreshToken', token.refresh_token);
+    final prefs = await SharedPreferences.getInstance();
+    prefs
+      ..setString(_TokensKeyStore.accessToken, token.token)
+      ..setString(_TokensKeyStore.refreshToken, token.refresh_token);
   }
 
   Future<void> clearTokens() async {
-    await (await _openStorage()).clear();
+    final prefs = await SharedPreferences.getInstance();
+    prefs
+      ..remove(_TokensKeyStore.accessToken)
+      ..remove(_TokensKeyStore.refreshToken);
   }
 }

@@ -5,8 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 
 import '/modules/local_password_settings/bloc/local_password_settings_bloc.dart';
-import '/models/biometric_settings_model/biometric_setting_model.dart';
-import '/widgets/alerts.dart';
 import '../../identity_proof/ui/identity_proof_ui.dart';
 import '../../local_authentication/repository/local_authentication_repository.dart';
 
@@ -39,24 +37,21 @@ class BiometricSettingsBloc
           .checkLocalAuthenticationSettings();
       if (event.state) {
         if (!localAuthenticationSetting.$1) {
-          showErrorAlert('Необходимо создать пароль для входа в приложение');
-          return;
+          throw 'Необходимо создать пароль для входа в приложение';
         }
         if (await identityProof(password: event.proof)) {
           final isLocalAuthorized =
               await _localAuthenticationRepository.authenticateByBiometric();
           if (isLocalAuthorized) {
             await _localAuthenticationRepository.saveBiometricSetting(
-                BiometricSettings(isBiometricSecurity: true));
-            showSuccessAlert('Вход в приложение по биометрии включен');
+                isBiometricSecurity: true);
             emit(const ChangedUserBiometricSetting(true));
           }
         }
       } else {
         if (await identityProof() && localAuthenticationSetting.$2) {
           await _localAuthenticationRepository.saveBiometricSetting(
-              BiometricSettings(isBiometricSecurity: false));
-          showSuccessAlert('Вход в приложение по биометрии выключен');
+              isBiometricSecurity: false);
           emit(const ChangedUserBiometricSetting(false));
         }
       }
@@ -64,8 +59,7 @@ class BiometricSettingsBloc
       if (kDebugMode) {
         print('error: ${error.toString()}');
       }
-      emit(const ErrorBiometricSettings(
-          'Произошла ошибка биометрической авторизации на устройстве'));
+      emit(ErrorBiometricSettings(error.toString()));
     }
   }
 

@@ -42,7 +42,7 @@ class IdentityProofController extends GetxController {
     final enteredPasswordHash =
         sha256.convert(utf8.encode(enteredPassword)).toString();
     final currentPasswordHash =
-        (await localAuthenticationRepository.getLocalPasswordSetting())?.hash;
+        (await localAuthenticationRepository.getLocalPasswordHash());
     return enteredPasswordHash == currentPasswordHash;
   }
 

@@ -1,24 +1,22 @@
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+class _FirstOpeningKeyStore {
+  _FirstOpeningKeyStore._();
+
+  static const String isFirstOpened = 'isFirstOpened';
+}
 
 class FirstOpeningOfAppRepository {
   const FirstOpeningOfAppRepository();
 
-  Future<Box<dynamic>> _openStorage() async {
-    return await Hive.openBox('firstOpeningApp');
-  }
-
   Future<bool> checkFirstOpening() async {
-    final box = await _openStorage();
-    final isFirstOpening = (() {
-      if (box.isEmpty) return true;
-      final check = box.get('value') as bool;
-      return check;
-    }());
-    return isFirstOpening;
+    final prefs = await SharedPreferences.getInstance();
+    final isFirstOpening = prefs.getBool(_FirstOpeningKeyStore.isFirstOpened);
+    return isFirstOpening ?? false;
   }
 
-  Future<void> saveFirstOpeningSetting(bool value) async {
-    final box = await _openStorage();
-    await box.put('value', value);
+  Future<void> saveFirstOpeningSetting(bool isFirstOpened) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setBool(_FirstOpeningKeyStore.isFirstOpened, isFirstOpened);
   }
 }

@@ -144,17 +144,15 @@
 //   }
 // }
 
-import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:doctor/modules/account/controllers/account_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
-// import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/themes/light_theme.dart';
 import '../../modules/account/controllers/avatar_controller.dart';
@@ -225,6 +223,9 @@ class HomePage extends StatelessWidget {
                   homePageController.progress.value = progress.toDouble();
                 },
                 onDownloadStartRequest: (controller, uri) async {
+                  final SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  await prefs.setInt('counter', 10);
                   // final task = await FlutterDownloader.enqueue(
                   //   headers: await homePageController.getHeaders(),
                   //   url: '${uri.url.origin}${uri.url.path}',
@@ -244,17 +245,17 @@ class HomePage extends StatelessWidget {
                   // if (task != null) {
                   //   FlutterDownloader.open(taskId: task);
                   // }
-                  var dir = await getApplicationDocumentsDirectory();
                   // print('${uri.url.origin}${uri.url.path}');
                   // print('/storage/emulated/0/Download/Kivach');
                   final result = await Dio().download(
                       '${uri.url.origin}${uri.url.path}',
                       GetPlatform.isAndroid
                           ? '/storage/emulated/0/Download/Kivach/${uri.url.path.split('/').last}'
-                          : '${(await getDownloadsDirectory())!.path}/${uri.url.path.split('/').last}',
+                          : '${(await getApplicationDocumentsDirectory()).path}/${uri.url.path.split('/').last}',
                       onReceiveProgress: (count, total) {
                     print('Rec: $count , Total: $total');
                   });
+                  print(prefs.get('counter'));
                 },
               ),
               AppBarForLargeScreen(

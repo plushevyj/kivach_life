@@ -62,9 +62,7 @@ class LocalAuthenticationBloc
   ) async {
     var isLocalAuthorized = false;
     try {
-      final biometricSetting =
-          await _localAuthenticationRepository.getBiometricSetting();
-      if (biometricSetting?.isBiometricSecurity ?? false) {
+      if (await _localAuthenticationRepository.getBiometricSetting()) {
         isLocalAuthorized =
             await _localAuthenticationRepository.authenticateByBiometric();
       }
@@ -90,9 +88,9 @@ class LocalAuthenticationBloc
     try {
       final enteredPasswordHash =
           sha256.convert(utf8.encode(event.password)).toString();
-      final passwordSetting =
-          await _localAuthenticationRepository.getLocalPasswordSetting();
-      if (enteredPasswordHash == passwordSetting?.hash) {
+      final passwordHash =
+          await _localAuthenticationRepository.getLocalPasswordHash();
+      if (enteredPasswordHash == passwordHash) {
         isLocalAuthorized = true;
       } else {
         showErrorAlert('Неверный пароль');

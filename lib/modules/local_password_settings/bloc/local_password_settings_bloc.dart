@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 
 import '/modules/identity_proof/ui/identity_proof_ui.dart';
-import '/models/local_password_model/local_password_model.dart';
 import '/modules/local_authentication/repository/local_authentication_repository.dart';
 import '/widgets/alerts.dart';
 
@@ -66,8 +65,7 @@ class LocalPasswordSettingBloc
       await Future.delayed(const Duration(milliseconds: 500));
       if (event.password == _firstPassword) {
         var hash = sha256.convert(utf8.encode(_firstPassword!)).toString();
-        final localPasswordLocalPassword = LocalPassword(hash: hash);
-        _localAuthenticationRepository.savePassword(localPasswordLocalPassword);
+        await _localAuthenticationRepository.savePassword(hash: hash);
         emit(const SuccessfulPasswordChange());
       } else {
         _firstPassword = null;
