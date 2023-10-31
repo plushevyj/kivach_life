@@ -52,6 +52,7 @@ dependencies:
   flutter_inappwebview: ^5.8.0
   flutter_downloader: ^1.11.4
   shared_preferences: ^2.2.2
+  intl: ^0.18.1
 
 flutter_localization:
   flutter:

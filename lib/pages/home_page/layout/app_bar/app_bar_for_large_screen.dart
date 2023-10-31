@@ -44,22 +44,22 @@ class AppBarForLargeScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                Obx(
-                  () => IconButton(
-                    onPressed: homePageController.canGoForward.value
-                        ? () => homePageController.webViewController
-                            ?.goForward()
-                        : null,
-                    icon: Icon(
-                      GetPlatform.isIOS
-                          ? Icons.arrow_forward_ios
-                          : Icons.arrow_forward_outlined,
-                      color: homePageController.canGoForward.value
-                          ? Colors.black
-                          : Colors.grey,
-                    ),
-                  ),
-                ),
+                // Obx(
+                //   () => IconButton(
+                //     onPressed: homePageController.canGoForward.value
+                //         ? () => homePageController.webViewController
+                //             ?.goForward()
+                //         : null,
+                //     icon: Icon(
+                //       GetPlatform.isIOS
+                //           ? Icons.arrow_forward_ios
+                //           : Icons.arrow_forward_outlined,
+                //       color: homePageController.canGoForward.value
+                //           ? Colors.black
+                //           : Colors.grey,
+                //     ),
+                //   ),
+                // ),
                 Obx(
                   () => Skeletonizer(
                     enabled: avatarController.avatarLoading.value,
@@ -87,7 +87,7 @@ class AppBarForLargeScreen extends StatelessWidget {
                         Get.find<AccountController>()
                             .profile
                             .value!
-                            .username,
+                            .fullName,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(fontSize: 18),
                       ),

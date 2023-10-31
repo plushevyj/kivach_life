@@ -9,12 +9,14 @@ import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../core/constants.dart';
+import '../../modules/download_document/repository/download_document_repository.dart';
 import '../../modules/opening_app/controllers/configuration_of_app_controller.dart';
 
 class DocumentViewPage extends StatefulWidget {
   const DocumentViewPage({
     super.key,
-    required this.title,
+    this.title = 'Документ',
     required this.route,
   });
 
@@ -35,14 +37,17 @@ class _DocumentViewPageState extends State<DocumentViewPage> {
     }
   }
 
-  Future<String> getPersonalDataPolitics() async {
-    final directory = await getTemporaryDirectory();
-    await Dio().download(
-      '${Get.find<ConfigurationOfAppController>().configuration.value?.BASE_URL}${widget.route}',
-      '${directory.path}${widget.route}',
-    );
-    final file = File('${directory.path}${widget.route}');
-    final localFilePath = '${directory.path}${widget.route}';
+  Future<String> fetchDocument() async {
+    final directory = (await documentsDirectory).path;
+    await DownloadDocumentRepository().downloadFile(
+        url:
+            '${Get.find<ConfigurationOfAppController>().configuration.value?.BASE_URL}${widget.route}');
+    // await Dio().download(
+    //   '${Get.find<ConfigurationOfAppController>().configuration.value?.BASE_URL}${widget.route}',
+    //   '$directory${widget.route}',
+    // );
+    final file = File('$directory${widget.route}');
+    final localFilePath = '$directory${widget.route}';
     File localFile = File(localFilePath);
     Uint8List bytes = localFile.readAsBytesSync();
     file.writeAsBytesSync(bytes);
@@ -50,7 +55,7 @@ class _DocumentViewPageState extends State<DocumentViewPage> {
   }
 
   void loadFile() async {
-    pdfFlePath = await getPersonalDataPolitics();
+    pdfFlePath = await fetchDocument();
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
     setState(() {});
   }

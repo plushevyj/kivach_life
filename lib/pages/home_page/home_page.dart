@@ -144,19 +144,20 @@
 //   }
 // }
 
-
-import 'package:dio/dio.dart';
 import 'package:doctor/modules/account/controllers/account_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+import '../../core/constants.dart';
 import '../../core/themes/light_theme.dart';
 import '../../modules/account/controllers/avatar_controller.dart';
 import '../../modules/authentication/repository/login_repository.dart';
+import '../../modules/download_document/repository/download_document_repository.dart';
 import 'home_page_controller.dart';
 import 'layout/app_bar/app_bar_for_large_screen.dart';
 
@@ -182,87 +183,125 @@ class HomePage extends StatelessWidget {
         body: SafeArea(
           child: Stack(
             children: [
-              InAppWebView(
-                initialOptions: InAppWebViewGroupOptions(
-                  crossPlatform: InAppWebViewOptions(
-                    useOnDownloadStart: true,
-                    supportZoom: true,
-                    preferredContentMode: UserPreferredContentMode.MOBILE,
-                  ),
-                  android: AndroidInAppWebViewOptions(
-                    builtInZoomControls: false,
+              Obx(
+                () => Padding(
+                  padding: EdgeInsets.only(
+                      top: homePageController.isNarrowAppBar.value
+                          ? 0
+                          : kToolbarHeight),
+                  child: InAppWebView(
+                    initialOptions: InAppWebViewGroupOptions(
+                      crossPlatform: InAppWebViewOptions(
+                        useOnDownloadStart: true,
+                        supportZoom: true,
+                        preferredContentMode: UserPreferredContentMode.MOBILE,
+                        useShouldOverrideUrlLoading: true,
+                      ),
+                      android: AndroidInAppWebViewOptions(
+                        builtInZoomControls: false,
+                      ),
+                    ),
+                    onWebViewCreated: (controller) {
+                      homePageController
+                        ..webViewController = controller
+                        ..loadFirstBaseSiteRoute();
+                    },
+                    onLoadStart: (controller, uri) {
+                      if (uri != null) {
+                        if (uri.origin ==
+                            homePageController.configController.configuration
+                                .value?.BASE_URL) {
+                          homePageController.isNarrowAppBar(true);
+                        } else {
+                          homePageController.isNarrowAppBar(false);
+                        }
+                      }
+                    },
+                    onLoadStop: (controller, uri) async {
+                      // homePageController.isNarrowAppBar(uri.startsWith(
+                      //         homePageController.appConfiguration!.BASE_URL) &&
+                      //     !url.startsWith(
+                      //         '${homePageController.appConfiguration!.BASE_URL}/chat') &&
+                      //     !url.startsWith(
+                      //         '${homePageController.appConfiguration!.BASE_URL}/kivach-analysis'));
+                      if (uri != null) {
+                        if (uri.origin ==
+                            homePageController.configController.configuration
+                                .value?.BASE_URL) {
+                          if (uri.path.startsWith('/profile')) {
+                            final profile =
+                                await const LoginRepository().getProfile();
+                            Get.find<AccountController>().profile(profile);
+                            Get.find<AvatarController>().onInit();
+                          }
+                          navBarIndexNotifier.value = navbar!.lastIndexWhere(
+                            (navbarElement) =>
+                                uri.path.startsWith(navbarElement.route),
+                          );
+                        }
+                        homePageController.canGoBack.value =
+                            (await homePageController.webViewController
+                                ?.canGoBack())!;
+                        // homePageController.canGoForward.value =
+                        //     (await homePageController.webViewController
+                        //         ?.canGoForward())!;
+                      }
+                    },
+                    shouldOverrideUrlLoading: (controller, action) async {
+                      if (action.request.url.toString().startsWith('tel:') ||
+                          (action.request.url!
+                              .toString()
+                              .startsWith('https://apps.apple.com')) ||
+                          (action.request.url!
+                              .toString()
+                              .startsWith('https://play.google.com'))) {
+                        launchUrl(action.request.url!);
+                        return NavigationActionPolicy.CANCEL;
+                      }
+                      final listOfAllowedURLs = [
+                        homePageController
+                            .configController.configuration.value?.BASE_URL,
+                        ...?homePageController.configController.configuration
+                            .value?.ALLOWED_EXTERNAL_URLS,
+                        ...?homePageController.configController.configuration
+                            .value?.INTENT_BROWSABLE_URIS,
+                      ];
+                      if (listOfAllowedURLs
+                          .contains(action.request.url?.origin)) {
+                        return NavigationActionPolicy.ALLOW;
+                      }
+                      return NavigationActionPolicy.CANCEL;
+                    },
+                    onProgressChanged: (controller, progress) async {
+                      homePageController.progress.value = progress.toDouble();
+                    },
+                    onDownloadStartRequest: (controller, uri) async {
+                      await DownloadDocumentRepository().downloadFile(
+                        url: uri.url.toString(),
+                        headers: await homePageController.getHeaders(),
+                      );
+
+                      // print('${uri.url.origin}${uri.url.path}');
+                      // print('/storage/emulated/0/Download/Kivach');
+                      // final result = await Dio().download(
+                      //     '${uri.url.toString()}',
+                      //     GetPlatform.isAndroid
+                      //         ? '/storage/emulated/0/Download/Kivach/${uri.url.path.split('/').last}'
+                      //         : '${(await getApplicationDocumentsDirectory()).path}/${uri.url.path.split('/').last}',
+                      //     onReceiveProgress: (count, total) {
+                      //   print('Rec: $count , Total: $total');
+                      // });
+                    },
                   ),
                 ),
-                onWebViewCreated: (controller) {
-                  homePageController
-                    ..webViewController = controller
-                    ..loadFirstBaseSiteRoute();
-                },
-                onLoadStart: (controller, uri) {},
-                onLoadStop: (controller, uri) async {
-                  if (uri != null) {
-                    if (uri.path.startsWith('/profile')) {
-                      final profile =
-                          await const LoginRepository().getProfile();
-                      Get.find<AccountController>().profile(profile);
-                      Get.find<AvatarController>().onInit();
-                    }
-                    homePageController.canGoBack(await homePageController
-                        .webViewController
-                        ?.canGoBack());
-                    homePageController.canGoForward(await homePageController
-                        .webViewController
-                        ?.canGoForward());
-                    navBarIndexNotifier.value = navbar!.lastIndexWhere(
-                      (navbarElement) =>
-                          uri.path.startsWith(navbarElement.route),
-                    );
-                  }
-                },
-                onProgressChanged: (controller, progress) async {
-                  homePageController.progress.value = progress.toDouble();
-                },
-                onDownloadStartRequest: (controller, uri) async {
-                  final SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
-                  await prefs.setInt('counter', 10);
-                  // final task = await FlutterDownloader.enqueue(
-                  //   headers: await homePageController.getHeaders(),
-                  //   url: '${uri.url.origin}${uri.url.path}',
-                  //   savedDir: await (() async {
-                  //     if (GetPlatform.isAndroid) {
-                  //       return '/storage/emulated/0/Download';
-                  //     } else if (GetPlatform.isIOS) {
-                  //       print('ios');
-                  //       return (await getLibraryDirectory()).path;
-                  //     }
-                  //     return (await getDownloadsDirectory())!.path;
-                  //   })(),
-                  //   showNotification: true,
-                  //   openFileFromNotification: true,
-                  //   saveInPublicStorage: true,
-                  // );
-                  // if (task != null) {
-                  //   FlutterDownloader.open(taskId: task);
-                  // }
-                  // print('${uri.url.origin}${uri.url.path}');
-                  // print('/storage/emulated/0/Download/Kivach');
-                  final result = await Dio().download(
-                      '${uri.url.origin}${uri.url.path}',
-                      GetPlatform.isAndroid
-                          ? '/storage/emulated/0/Download/Kivach/${uri.url.path.split('/').last}'
-                          : '${(await getApplicationDocumentsDirectory()).path}/${uri.url.path.split('/').last}',
-                      onReceiveProgress: (count, total) {
-                    print('Rec: $count , Total: $total');
-                  });
-                  print(prefs.get('counter'));
-                },
               ),
-              AppBarForLargeScreen(
-                homePageController: homePageController,
-                width: homePageController.isNarrowAppBar.value
-                    ? Get.width - 60
-                    : Get.width - 5,
+              Obx(
+                () => AppBarForLargeScreen(
+                  homePageController: homePageController,
+                  width: homePageController.isNarrowAppBar.value
+                      ? Get.width - 60
+                      : Get.width - 5,
+                ),
               ),
 
               // Positioned(

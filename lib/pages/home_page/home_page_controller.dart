@@ -13,7 +13,7 @@ class HomePageController extends GetxController {
   InAppWebViewController? webViewController;
 
   final canGoBack = false.obs;
-  final canGoForward = false.obs;
+  // final canGoForward = false.obs;
   final isNarrowAppBar = true.obs;
   final progress = 0.0.obs;
 
