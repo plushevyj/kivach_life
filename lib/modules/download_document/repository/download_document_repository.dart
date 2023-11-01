@@ -28,7 +28,7 @@ class DownloadDocumentRepository {
       showMessageAlert(
         title: 'Идёт загрузка',
         message:
-            'Файл загружается в папку ${GetPlatform.isIOS ? '/iPhone/Kivach Life' : '/Внутреннее хранилище/Загрузки/Kivach Life'}',
+            'Файл загружается в папку\n${GetPlatform.isIOS ? '/iPhone/Kivach Life' : '/Внутреннее хранилище/Загрузки/Kivach Life'}',
         icon: const Icon(Icons.download_rounded, color: KivachColors.green),
       );
     }
@@ -51,7 +51,7 @@ class DownloadDocumentRepository {
         showMessageAlert(
           title: 'Сохранено',
           message:
-              'Файл сохранен $fileName в папку ${GetPlatform.isIOS ? '/iPhone/Kivach Life' : '/Внутреннее хранилище/Загрузки/Kivach Life'}',
+              'Файл сохранен $fileName в папку\n${GetPlatform.isIOS ? '/iPhone/Kivach Life' : '/Внутреннее хранилище/Загрузки/Kivach Life'}',
           icon: const Icon(Icons.download_done_rounded,
               color: KivachColors.green),
           mainButton: TextButton(
