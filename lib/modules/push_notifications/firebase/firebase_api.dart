@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:doctor/modules/local_authentication/bloc/local_authentication_bloc.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

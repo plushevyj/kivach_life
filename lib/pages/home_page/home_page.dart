@@ -190,7 +190,7 @@ class HomePage extends StatelessWidget {
                     initialOptions: InAppWebViewGroupOptions(
                       crossPlatform: InAppWebViewOptions(
                         useOnDownloadStart: true,
-                        supportZoom: true,
+                        supportZoom: false,
                         preferredContentMode: UserPreferredContentMode.MOBILE,
                         useShouldOverrideUrlLoading: true,
                       ),
