@@ -92,7 +92,7 @@ class AuthenticationBloc
       LogOut event, Emitter<AuthenticationState> emit) async {
     try {
       await loginRepository.logOut();
-    } finally {}
+    } catch (_) {}
     await tokenRepository.clearTokens();
     emit(const Unauthenticated());
     _localAuthenticationRepository

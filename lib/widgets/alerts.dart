@@ -68,12 +68,13 @@ void showNotificationAlert({
 SnackbarController showMessageAlert(
     {required String title,
     required String message,
+    Duration duration = const Duration(seconds: 5),
     Widget? icon,
     TextButton? mainButton}) {
   return Get.snackbar(
     title,
     message,
-    duration: const Duration(seconds: 5),
+    duration: duration,
     boxShadows: [
       BoxShadow(
         color: Colors.black.withOpacity(0.2),

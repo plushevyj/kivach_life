@@ -28,8 +28,9 @@ class DownloadDocumentRepository {
       showMessageAlert(
         title: 'Идёт загрузка',
         message:
-            'Файл загружается в папку\n${GetPlatform.isIOS ? '/iPhone/Kivach Life' : '/Внутреннее хранилище/Загрузки/Kivach Life'}',
+            'Файл загружается в папку ${GetPlatform.isIOS ? '/iPhone/Kivach Life' : '/Внутреннее хранилище/Загрузки/Kivach Life'}',
         icon: const Icon(Icons.download_rounded, color: KivachColors.green),
+        duration: const Duration(seconds: 2),
       );
     }
     final response = await handleRequest(() => Dio().download(
@@ -51,21 +52,23 @@ class DownloadDocumentRepository {
         showMessageAlert(
           title: 'Сохранено',
           message:
-              'Файл сохранен $fileName в папку\n${GetPlatform.isIOS ? '/iPhone/Kivach Life' : '/Внутреннее хранилище/Загрузки/Kivach Life'}',
+              'Файл сохранен $fileName в папку ${GetPlatform.isIOS ? '/iPhone/Kivach Life' : '/Внутреннее хранилище/Загрузки/Kivach Life'}',
           icon: const Icon(Icons.download_done_rounded,
               color: KivachColors.green),
-          mainButton: TextButton(
-            onPressed: () {
-              Get.to(
-                  DocumentViewPage(path: '${saveDirectory?.path}/$fileName'));
-              Get.closeCurrentSnackbar();
-            },
-            child: const Text(
-              'Открыть в\nприложении',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: KivachColors.green),
-            ),
-          ),
+          mainButton: ['pdf', 'doc', 'docx'].contains(fileName.split('.').last)
+              ? TextButton(
+                  onPressed: () {
+                    Get.to(DocumentViewPage(
+                        path: '${saveDirectory?.path}/$fileName'));
+                    Get.closeCurrentSnackbar();
+                  },
+                  child: const Text(
+                    'Открыть в\nприложении',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: KivachColors.green),
+                  ),
+                )
+              : null,
         );
       }
     }
