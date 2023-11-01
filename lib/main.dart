@@ -12,13 +12,13 @@ import 'core/http/http.dart';
 import 'core/pages.dart';
 import 'core/themes/light_theme.dart';
 import 'modules/biometric_settings/bloc/biometric_settings_bloc.dart';
-import 'modules/firebase/firebase_api.dart';
 import 'modules/local_authentication/bloc/local_authentication_bloc.dart';
 import 'modules/local_password_settings/bloc/local_password_settings_bloc.dart';
 import 'modules/authentication/bloc/authentication_bloc.dart';
 import 'modules/in_app_update/bloc/in_app_update_bloc.dart';
 import 'modules/opening_app/bloc/opening_app_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'modules/push_notifications/firebase/firebase_api.dart';
 import 'modules/reset_password/bloc/reset_password_bloc.dart';
 
 @pragma('vm:entry-point')

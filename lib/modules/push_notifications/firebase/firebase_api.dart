@@ -5,7 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
-import '../../modules/opening_app/controllers/configuration_of_app_controller.dart';
+import '../../opening_app/controllers/configuration_of_app_controller.dart';
 import '/modules/push_notifications/repository/push_notifications_repository.dart';
 import '/widgets/alerts.dart';
 
@@ -47,9 +47,7 @@ class FirebaseApi {
 
   static void routeFromPayload(RemoteMessage message) async {
     try {
-      final urlFromPayload = GetPlatform.isAndroid
-          ? jsonDecode(message.data['href'])['url']
-          : message.data['url'];
+      final urlFromPayload = message.data['url'];
       final route = urlFromPayload.split(
           Get.find<ConfigurationOfAppController>()
               .configuration

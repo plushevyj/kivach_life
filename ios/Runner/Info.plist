@@ -76,5 +76,7 @@
 	<true/>
 	<key>com.apple.security.network.client</key>
     <true/>
+    <key>NSAppleMusicUsageDescription</key>
+    <string>Share audio files</string>
 </dict>
 </plist>

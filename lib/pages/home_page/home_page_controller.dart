@@ -22,13 +22,13 @@ class HomePageController extends GetxController {
 
   @override
   void onInit() async {
+    loadFirstBaseSiteRoute();
     // final kek = await TokenRepository().getRefreshToken();
     // TokenRepository()
     //     .saveTokens(token: TokenModel(token: 'edfdfdfdf', refresh_token: kek!));
     // addAccessToken();
 
     // load(route: configController.payloadRoute.value ?? '/');
-    configController.payloadRoute.value = null;
     configController.payloadRoute.listen((route) {
       if (route != null) {
         loadBaseSiteRoute(route: route);
@@ -80,6 +80,7 @@ class HomePageController extends GetxController {
         url: Uri.parse('${appConfiguration!.BASE_URL}$route'),
       ),
     );
+    configController.payloadRoute.value = null;
   }
 
   // void load({required String route}) async {
