@@ -1,4 +1,5 @@
 import 'package:doctor/pages/home_page/home_page_controller.dart';
+import 'package:doctor/widgets/alerts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -33,6 +34,8 @@ class SettingsPage extends StatelessWidget {
           listener: (_, state) {
             if (state is ChangedUserBiometricSetting) {
               settingsPageController.enableBiometric(state.isEnable);
+            } else if (state is ErrorBiometricSettings) {
+              showErrorAlert(state.error);
             }
           },
         ),

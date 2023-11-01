@@ -29,13 +29,16 @@ final pages = [
       name: '/onboarding_settings', page: () => const OnboardingSettingsPage()),
   GetPage(name: '/reset', page: () => const ResetPage()),
   GetPage(name: '/reset/sms', page: () => const SMSCodePage()),
-  GetPage(
-      name: '/agreement',
-      page: () => const DocumentViewPage(
-          title: 'Пользовательское соглашение', route: '/user_agreement.docx')),
-  GetPage(
-      name: '/personal_data_politics',
-      page: () => const DocumentViewPage(
-          title: 'Политика обработки персональных данных',
-          route: '/personal_data_politics.docx')),
+  // GetPage(
+  //     name: '/agreement',
+  //     page: () => const DocumentViewPage(
+  //           title: 'Пользовательское соглашение',
+  //           path: '/user_agreement.docx',
+  //         )),
+  // GetPage(
+  //     name: '/personal_data_politics',
+  //     page: () => const DocumentViewPage(
+  //           title: 'Политика обработки персональных данных',
+  //           path: '/personal_data_politics.docx',
+  //         )),
 ];

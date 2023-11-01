@@ -146,7 +146,6 @@
 
 import 'package:doctor/modules/account/controllers/account_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
@@ -279,6 +278,7 @@ class HomePage extends StatelessWidget {
                       await DownloadDocumentRepository().downloadFile(
                         url: uri.url.toString(),
                         headers: await homePageController.getHeaders(),
+                        showProgressAlert: true,
                       );
 
                       // print('${uri.url.origin}${uri.url.path}');

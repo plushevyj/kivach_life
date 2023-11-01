@@ -1,3 +1,4 @@
+import 'package:doctor/core/themes/light_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -46,7 +47,7 @@ void showNotificationAlert({
             },
             child: const Text(
               'Перейти',
-              style: TextStyle(color: Colors.blue),
+              style: TextStyle(color: KivachColors.green),
             ),
           )
         : null,
@@ -58,8 +59,32 @@ void showNotificationAlert({
         offset: const Offset(1, 1),
       )
     ],
-    backgroundColor: const Color(0xFFEFEFEF),
+    backgroundColor: Colors.grey.shade100,
     colorText: Colors.black,
     snackPosition: SnackPosition.TOP,
+  );
+}
+
+SnackbarController showMessageAlert(
+    {required String title,
+    required String message,
+    Widget? icon,
+    TextButton? mainButton}) {
+  return Get.snackbar(
+    title,
+    message,
+    duration: const Duration(seconds: 5),
+    boxShadows: [
+      BoxShadow(
+        color: Colors.black.withOpacity(0.2),
+        blurRadius: 1,
+        offset: const Offset(1, 1),
+      )
+    ],
+    backgroundColor: Colors.grey.shade100,
+    colorText: Colors.black,
+    snackPosition: SnackPosition.TOP,
+    icon: icon,
+    mainButton: mainButton,
   );
 }

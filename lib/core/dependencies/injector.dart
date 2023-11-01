@@ -3,7 +3,6 @@ import 'package:fk_user_agent/fk_user_agent.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -32,5 +31,4 @@ Future<void> initializeDependencies() async {
     Permission.manageExternalStorage
   ].request();
   await FkUserAgent.init();
-  await FlutterDownloader.initialize();
 }

@@ -5,6 +5,9 @@ import 'package:get/get.dart';
 import 'package:intl_phone_field/country_picker_dialog.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
+import '../../../modules/download_document/repository/download_document_repository.dart';
+import '../../../modules/opening_app/controllers/configuration_of_app_controller.dart';
+import '../../documents_pages/document_view_page.dart';
 import '/models/profile_preview_model/profile_preview_model.dart';
 import '/core/themes/light_theme.dart';
 import 'registration_controller.dart';
@@ -166,8 +169,20 @@ class RegistrationPage extends StatelessWidget {
                                   color: KivachColors.green,
                                 ),
                                 recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    Get.toNamed('/agreement');
+                                  ..onTap = () async {
+                                    final path =
+                                        await DownloadDocumentRepository()
+                                            .downloadFile(
+                                      url:
+                                          '${Get.find<ConfigurationOfAppController>().configuration.value?.BASE_URL}/user_agreement.docx',
+                                      showProgressAlert: false,
+                                    );
+                                    if (path != null) {
+                                      Get.to(DocumentViewPage(
+                                        title: 'Пользовательское соглашение',
+                                        path: path,
+                                      ));
+                                    }
                                   },
                               ),
                               const TextSpan(text: ' и '),
@@ -177,8 +192,21 @@ class RegistrationPage extends StatelessWidget {
                                   color: KivachColors.green,
                                 ),
                                 recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    Get.toNamed('/personal_data_politics');
+                                  ..onTap = () async {
+                                    final path =
+                                        await DownloadDocumentRepository()
+                                            .downloadFile(
+                                      url:
+                                          '${Get.find<ConfigurationOfAppController>().configuration.value?.BASE_URL}/personal_data_politics.docx',
+                                      showProgressAlert: false,
+                                    );
+                                    if (path != null) {
+                                      Get.to(DocumentViewPage(
+                                        title:
+                                            'Политика обработки персональных данных',
+                                        path: path,
+                                      ));
+                                    }
                                   },
                               ),
                               const TextSpan(text: '.'),

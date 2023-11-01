@@ -17,11 +17,11 @@ class DocumentViewPage extends StatefulWidget {
   const DocumentViewPage({
     super.key,
     this.title = 'Документ',
-    required this.route,
+    required this.path,
   });
 
   final String title;
-  final String route;
+  final String path;
 
   @override
   State<DocumentViewPage> createState() => _DocumentViewPageState();
@@ -38,16 +38,8 @@ class _DocumentViewPageState extends State<DocumentViewPage> {
   }
 
   Future<String> fetchDocument() async {
-    final directory = (await documentsDirectory).path;
-    await DownloadDocumentRepository().downloadFile(
-        url:
-            '${Get.find<ConfigurationOfAppController>().configuration.value?.BASE_URL}${widget.route}');
-    // await Dio().download(
-    //   '${Get.find<ConfigurationOfAppController>().configuration.value?.BASE_URL}${widget.route}',
-    //   '$directory${widget.route}',
-    // );
-    final file = File('$directory${widget.route}');
-    final localFilePath = '$directory${widget.route}';
+    final file = File(widget.path);
+    final localFilePath = widget.path;
     File localFile = File(localFilePath);
     Uint8List bytes = localFile.readAsBytesSync();
     file.writeAsBytesSync(bytes);
