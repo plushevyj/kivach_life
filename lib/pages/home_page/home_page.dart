@@ -149,10 +149,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../core/constants.dart';
 import '../../core/themes/light_theme.dart';
 import '../../modules/account/controllers/avatar_controller.dart';
 import '../../modules/authentication/repository/login_repository.dart';

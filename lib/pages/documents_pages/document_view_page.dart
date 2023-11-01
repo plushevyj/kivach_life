@@ -1,17 +1,10 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:dio/dio.dart';
 import 'package:doctor/core/themes/light_theme.dart';
 import 'package:document_viewer/document_viewer.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-
-import '../../core/constants.dart';
-import '../../modules/download_document/repository/download_document_repository.dart';
-import '../../modules/opening_app/controllers/configuration_of_app_controller.dart';
 
 class DocumentViewPage extends StatefulWidget {
   const DocumentViewPage({

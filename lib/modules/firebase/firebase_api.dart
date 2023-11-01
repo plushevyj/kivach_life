@@ -28,6 +28,7 @@ class FirebaseApi {
     );
     //когда приложение открыто
     FirebaseMessaging.onMessage.listen((message) async {
+      print('message = ${message.data}');
       if (GetPlatform.isAndroid) {
         showNotificationAlert(
           title: message.notification?.title,

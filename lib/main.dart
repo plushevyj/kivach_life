@@ -8,11 +8,11 @@ import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 
 import 'core/dependencies/injector.dart';
-import 'core/firebase/firebase_api.dart';
 import 'core/http/http.dart';
 import 'core/pages.dart';
 import 'core/themes/light_theme.dart';
 import 'modules/biometric_settings/bloc/biometric_settings_bloc.dart';
+import 'modules/firebase/firebase_api.dart';
 import 'modules/local_authentication/bloc/local_authentication_bloc.dart';
 import 'modules/local_password_settings/bloc/local_password_settings_bloc.dart';
 import 'modules/authentication/bloc/authentication_bloc.dart';

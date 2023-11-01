@@ -26,7 +26,7 @@ class BodyForLargeScreen extends StatelessWidget {
                   top: homePageController.isNarrowAppBar.value
                       ? 0
                       : kToolbarHeight),
-              child: InAppWebView(
+              child: const InAppWebView(
                   // controller: webViewController,
                   ),
             ),

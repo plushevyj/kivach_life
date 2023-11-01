@@ -1,8 +1,6 @@
-import 'package:doctor/models/token_model/token_model.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
 
-import '../../core/http/http.dart';
 import '../../models/configuration_models/configuration_of_app/configuration_of_app.dart';
 import '../../models/profile/profile_model.dart';
 import '../../modules/account/controllers/account_controller.dart';

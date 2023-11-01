@@ -12,7 +12,7 @@ class FirstOpeningOfAppRepository {
   Future<bool> checkFirstOpening() async {
     final prefs = await SharedPreferences.getInstance();
     final isFirstOpening = prefs.getBool(_FirstOpeningKeyStore.isFirstOpened);
-    return isFirstOpening ?? false;
+    return isFirstOpening ?? true;
   }
 
   Future<void> saveFirstOpeningSetting(bool isFirstOpened) async {

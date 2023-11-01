@@ -159,12 +159,8 @@
 //   }
 // }
 
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-// import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class ProfileSettingPage extends StatelessWidget {
   late InAppWebViewController webView;
@@ -177,26 +173,25 @@ class ProfileSettingPage extends StatelessWidget {
       ),
       body: InAppWebView(
         initialUrlRequest: URLRequest(
-        url: Uri.parse(
-            'https://docs.flutter.dev/get-started/install/linux')),
+            url: Uri.parse(
+                'https://docs.flutter.dev/get-started/install/linux')),
         initialOptions: InAppWebViewGroupOptions(
-      crossPlatform: InAppWebViewOptions(useOnDownloadStart: true),
+          crossPlatform: InAppWebViewOptions(useOnDownloadStart: true),
         ),
         onWebViewCreated: (InAppWebViewController controller) {
-      webView = controller;
+          webView = controller;
         },
         onLoadStart: (controller, uri) {},
         onLoadStop: (controller, uri) {},
         onDownloadStartRequest: (controller, url) async {
-      print("onDownloadStart $url");
-      // final taskId = await FlutterDownloader.enqueue(
-      //   url: url,
-      //   savedDir: (await getExternalStorageDirectory()).path,
-      //   showNotification:
-      //       true, // show download progress in status bar (for Android)
-      //   openFileFromNotification:
-      //       true, // click on notification to open downloaded file (for Android)
-      // );
+          // final taskId = await FlutterDownloader.enqueue(
+          //   url: url,
+          //   savedDir: (await getExternalStorageDirectory()).path,
+          //   showNotification:
+          //       true, // show download progress in status bar (for Android)
+          //   openFileFromNotification:
+          //       true, // click on notification to open downloaded file (for Android)
+          // );
         },
       ),
     );
