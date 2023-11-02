@@ -6,13 +6,16 @@ import 'package:doctor/core/themes/light_theme.dart';
 import 'package:doctor/pages/documents_pages/document_view_page.dart';
 import 'package:doctor/widgets/alerts.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart' hide Response;
+import 'package:get_it/get_it.dart';
 import 'package:mime_dart/mime_dart.dart';
 import 'package:path/path.dart' as path;
 
 import '../../../core/constants.dart';
 
 class DownloadDocumentRepository {
+  static final _dio = GetIt.I.get<Dio>();
+
   Future<String?> downloadFile({
     required String url,
     Directory? saveDirectory,
@@ -33,45 +36,64 @@ class DownloadDocumentRepository {
         duration: const Duration(seconds: 2),
       );
     }
-    final response = await handleRequest(() => Dio().download(
-          url,
-          '${saveDirectory?.path}/$fileName',
-          options: Options(headers: headers),
-        ));
+    Response<dynamic>? response;
+    try {
+      response = await handleRequest(() => _dio.download(
+            url,
+            '${saveDirectory?.path}/$fileName',
+            // options: Options(headers: headers),
+          ));
+    } catch (_) {
+      showErrorAlert('Не удалось скачать файл');
+    }
+
+
     if (!fileName.contains('.')) {
+      final disposition = response?.headers.map['content-disposition'];
+      if (disposition != null) {
+        final dispositionTokens = disposition.first.split(';');
+        final fileNameIndex = dispositionTokens
+            .indexWhere((token) => token.contains('filename='));
+        if (fileNameIndex != -1) {
+          fileName = dispositionTokens[fileNameIndex]
+              .replaceAll(RegExp(r'filename=|"'), '');
+        }
+      }
+
       final type =
-          Mime.getExtensionsFromType(response.headers.value('content-type')!);
+          Mime.getExtensionsFromType(response!.headers.value('content-type')!);
       if (type != null && type.isNotEmpty) {
+        fileName = '$fileName.${type.first}';
         File('${saveDirectory.path}/$fileName')
             .rename('${saveDirectory.path}/$fileName.${type.first}');
-        fileName = '$fileName.${type.first}';
       }
+
+
     }
-    if (response.statusCode == 200) {
-      if (showProgressAlert) {
-        showMessageAlert(
-          title: 'Сохранено',
-          message:
-              'Файл сохранен $fileName в папку ${GetPlatform.isIOS ? '/iPhone/Kivach Life' : '/Внутреннее хранилище/Загрузки/Kivach Life'}',
-          icon: const Icon(Icons.download_done_rounded,
-              color: KivachColors.green),
-          mainButton: ['pdf', 'doc', 'docx'].contains(fileName.split('.').last)
-              ? TextButton(
-                  onPressed: () {
-                    Get.to(DocumentViewPage(
-                        path: '${saveDirectory?.path}/$fileName'));
-                    Get.closeCurrentSnackbar();
-                  },
-                  child: const Text(
-                    'Открыть в\nприложении',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: KivachColors.green),
-                  ),
-                )
-              : null,
-        );
-      }
+    if (showProgressAlert) {
+      showMessageAlert(
+        title: 'Сохранено',
+        message:
+            'Файл сохранен $fileName в папку ${GetPlatform.isIOS ? '/iPhone/Kivach Life' : '/Внутреннее хранилище/Загрузки/Kivach Life'}',
+        icon:
+            const Icon(Icons.download_done_rounded, color: KivachColors.green),
+        mainButton: ['pdf', 'doc', 'docx'].contains(fileName.split('.').last)
+            ? TextButton(
+                onPressed: () {
+                  Get.to(DocumentViewPage(
+                      path: '${saveDirectory?.path}/$fileName'));
+                  Get.closeCurrentSnackbar();
+                },
+                child: const Text(
+                  'Открыть в\nприложении',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: KivachColors.green),
+                ),
+              )
+            : null,
+      );
     }
+
     return '${saveDirectory.path}/$fileName';
   }
 }

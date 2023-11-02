@@ -31,8 +31,7 @@ class AppBarForLargeScreen extends StatelessWidget {
                 Obx(
                   () => IconButton(
                     onPressed: homePageController.canGoBack.value
-                        ? () =>
-                            homePageController.webViewController?.goBack()
+                        ? () => homePageController.webViewController?.goBack()
                         : null,
                     icon: Icon(
                       GetPlatform.isIOS
@@ -84,12 +83,10 @@ class AppBarForLargeScreen extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.only(right: 10),
                       child: Text(
-                        Get.find<AccountController>()
-                            .profile
-                            .value!
-                            .fullName,
+                        Get.find<AccountController>().profile.value!.fullName,
+                        maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(fontSize: 18),
+                        style: const TextStyle(fontSize: 16),
                       ),
                     ),
                   ),
