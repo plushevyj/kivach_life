@@ -7,12 +7,6 @@ class DownloadDocumentRepository {
   static final _dio = GetIt.I.get<Dio>();
 
   Future<Response> download(String url, String savedPath) async {
-    return await handleRequest(
-      () => _dio.download(
-        url, savedPath,
-        // '${saveDirectory?.path}/$fileName',
-        // options: Options(headers: headers),
-      ),
-    );
+    return await handleRequest(() => _dio.download(url, savedPath));
   }
 }

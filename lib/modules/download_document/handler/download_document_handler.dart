@@ -65,7 +65,7 @@ class DownloadDocumentHandler {
         showMessageAlert(
           title: 'Сохранено',
           message:
-              'Файл сохранен $finalFileName  в папку ${GetPlatform.isIOS ? '/iPhone/Kivach Life' : '/Внутреннее хранилище/Загрузки/Kivach Life'}',
+              'Файл $finalFileName сохранен в папку ${GetPlatform.isIOS ? '/iPhone/Kivach Life' : '/Внутреннее хранилище/Загрузки/Kivach Life'}',
           icon: const Icon(Icons.download_done_rounded,
               color: KivachColors.green),
           mainButton:
