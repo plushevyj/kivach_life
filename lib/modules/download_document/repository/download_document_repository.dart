@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -49,13 +50,15 @@ class DownloadDocumentRepository {
     }
     if (!fileName.contains('.')) {
       final disposition = response?.headers.map['content-disposition'];
+      print(disposition);
       if (disposition != null) {
         final dispositionTokens = disposition.first.split(';');
-        final fileNameIndex = dispositionTokens
-            .indexWhere((token) => token.contains('filename='));
-        if (fileNameIndex != -1) {
-          finalFileName = dispositionTokens[fileNameIndex]
-              .replaceAll(RegExp(r'filename=|"'), '');
+        final dispositionFileName = dispositionTokens
+            .firstWhereOrNull((token) => token.contains('filename='));
+        if (dispositionFileName != null) {
+          finalFileName =
+              dispositionFileName.replaceAll(RegExp(r'filename=|"'), '');
+          finalFileName = utf8.decode(finalFileName.codeUnits);
         }
       } else {
         final type = Mime.getExtensionsFromType(
