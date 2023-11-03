@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:intl_phone_field/country_picker_dialog.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
-import '../../../modules/download_document/repository/download_document_repository.dart';
+import '../../../modules/download_document/handler/download_document_handler.dart';
 import '../../../modules/opening_app/controllers/configuration_of_app_controller.dart';
 import '../../documents_pages/document_view_page.dart';
 import '/models/profile_preview_model/profile_preview_model.dart';
@@ -171,7 +171,7 @@ class RegistrationPage extends StatelessWidget {
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () async {
                                     final path =
-                                        await DownloadDocumentRepository()
+                                        await DownloadDocumentHandler()
                                             .downloadFile(
                                       url:
                                           '${Get.find<ConfigurationOfAppController>().configuration.value?.BASE_URL}/user_agreement.docx',
@@ -193,9 +193,8 @@ class RegistrationPage extends StatelessWidget {
                                 ),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () async {
-                                    final path =
-                                        await DownloadDocumentRepository()
-                                            .downloadFile(
+                                    final path = await DownloadDocumentHandler()
+                                        .downloadFile(
                                       url:
                                           '${Get.find<ConfigurationOfAppController>().configuration.value?.BASE_URL}/personal_data_politics.docx',
                                       showProgressAlert: false,

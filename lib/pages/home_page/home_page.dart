@@ -154,6 +154,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../core/themes/light_theme.dart';
 import '../../modules/account/controllers/avatar_controller.dart';
 import '../../modules/authentication/repository/login_repository.dart';
+import '../../modules/download_document/handler/download_document_handler.dart';
 import '../../modules/download_document/repository/download_document_repository.dart';
 import 'home_page_controller.dart';
 import 'layout/app_bar/app_bar_for_large_screen.dart';
@@ -273,9 +274,8 @@ class HomePage extends StatelessWidget {
                       homePageController.progress.value = progress.toDouble();
                     },
                     onDownloadStartRequest: (controller, uri) async {
-                      await DownloadDocumentRepository().downloadFile(
+                      await DownloadDocumentHandler().downloadFile(
                         url: uri.url.toString(),
-                        headers: await homePageController.getHeaders(),
                         showProgressAlert: true,
                       );
 
