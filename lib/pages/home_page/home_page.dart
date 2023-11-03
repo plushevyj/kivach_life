@@ -279,7 +279,8 @@ class HomePage extends StatelessWidget {
                       return NavigationActionPolicy.CANCEL;
                     },
                     onProgressChanged: (controller, progress) async {
-                      homePageController.progress.value = progress.toDouble();
+                      homePageController.progress.value =
+                          progress.toDouble() / 100;
                       print(
                           'homePageController.progress.value = ${homePageController.progress.value}');
                     },

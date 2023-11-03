@@ -52,7 +52,7 @@ class HomePageController extends GetxController {
       },
     );
     progress.listen((value) {
-      if (value == 100) {
+      if (value >= 1) {
         progress.value = 0;
       }
     });
