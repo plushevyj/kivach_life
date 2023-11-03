@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 
 import '../../../core/http/http.dart';
 import '../../account/controllers/account_controller.dart';
+import '../../local_authentication/bloc/local_authentication_bloc.dart';
 import '../../local_authentication/repository/local_authentication_repository.dart';
 import '../../opening_app/repository/first_opening_app_repository.dart';
 import '../repository/login_repository.dart';
@@ -99,4 +100,10 @@ class AuthenticationBloc
       ..deleteLocalPassword()
       ..deleteBiometricSetting();
   }
+}
+
+void logOut() {
+  Get.context!.read<LocalAuthenticationBloc>().add(const LocallyLogOut());
+  Get.context!.read<AuthenticationBloc>().add(const LogOut());
+  Get.offAllNamed('/auth');
 }
