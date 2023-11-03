@@ -280,6 +280,8 @@ class HomePage extends StatelessWidget {
                     },
                     onProgressChanged: (controller, progress) async {
                       homePageController.progress.value = progress.toDouble();
+                      print(
+                          'homePageController.progress.value = ${homePageController.progress.value}');
                     },
                     onDownloadStartRequest: (controller, uri) async {
                       await DownloadDocumentHandler().downloadFile(
@@ -298,6 +300,16 @@ class HomePage extends StatelessWidget {
                       //   print('Rec: $count , Total: $total');
                       // });
                     },
+                  ),
+                ),
+              ),
+              Obx(
+                () => Padding(
+                  padding: const EdgeInsets.only(top: kToolbarHeight),
+                  child: LinearProgressIndicator(
+                    backgroundColor: Colors.transparent,
+                    color: KivachColors.lightGreen,
+                    value: homePageController.progress.value,
                   ),
                 ),
               ),

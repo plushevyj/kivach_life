@@ -51,6 +51,11 @@ class HomePageController extends GetxController {
         }
       },
     );
+    progress.listen((value) {
+      if (value == 100) {
+        progress.value = 0;
+      }
+    });
     super.onInit();
   }
 
