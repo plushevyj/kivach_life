@@ -204,6 +204,8 @@ class HomePage extends StatelessWidget {
                         ..webViewController = controller
                         ..loadFirstBaseSiteRoute();
                     },
+                    pullToRefreshController:
+                        homePageController.pullToRefreshController,
                     onLoadStart: (controller, uri) {
                       if (uri != null) {
                         if (uri.origin ==
@@ -248,6 +250,8 @@ class HomePage extends StatelessWidget {
                         //     (await homePageController.webViewController
                         //         ?.canGoForward())!;
                       }
+                      homePageController.pullToRefreshController
+                          ?.endRefreshing();
                     },
                     shouldOverrideUrlLoading: (controller, action) async {
                       if (action.request.url.toString().startsWith('tel:') ||

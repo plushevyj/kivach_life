@@ -1,3 +1,4 @@
+import 'package:doctor/core/themes/light_theme.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
 
@@ -19,6 +20,7 @@ class HomePageController extends GetxController {
   final ConfigurationOfApp? appConfiguration =
       Get.find<ConfigurationOfAppController>().configuration.value;
   final Profile? profile = Get.find<AccountController>().profile.value;
+  PullToRefreshController? pullToRefreshController;
 
   @override
   void onInit() async {
@@ -35,6 +37,20 @@ class HomePageController extends GetxController {
         configController.payloadRoute.value = null;
       }
     });
+    pullToRefreshController = PullToRefreshController(
+      options: PullToRefreshOptions(
+        enabled: true,
+        color: KivachColors.green,
+      ),
+      onRefresh: () async {
+        if (GetPlatform.isAndroid) {
+          webViewController?.reload();
+        } else if (GetPlatform.isIOS) {
+          webViewController?.loadUrl(
+              urlRequest: URLRequest(url: await webViewController?.getUrl()));
+        }
+      },
+    );
     super.onInit();
   }
 
@@ -93,6 +109,4 @@ class HomePageController extends GetxController {
   //     headers: headers,
   //   );
   // }
-
-  void refreshTokensByContentInWebView(String content) {}
 }
