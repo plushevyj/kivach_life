@@ -26,7 +26,8 @@ class DownloadDocumentRepository {
     if (!await saveDirectory.exists()) {
       saveDirectory.create();
     }
-    var fileName = path.basename(url);
+    final fileName = path.basename(url);
+    var finalFileName = fileName;
     if (showProgressAlert) {
       showMessageAlert(
         title: 'Идёт загрузка',
@@ -46,8 +47,6 @@ class DownloadDocumentRepository {
     } catch (_) {
       showErrorAlert('Не удалось скачать файл');
     }
-
-
     if (!fileName.contains('.')) {
       final disposition = response?.headers.map['content-disposition'];
       if (disposition != null) {
@@ -55,45 +54,45 @@ class DownloadDocumentRepository {
         final fileNameIndex = dispositionTokens
             .indexWhere((token) => token.contains('filename='));
         if (fileNameIndex != -1) {
-          fileName = dispositionTokens[fileNameIndex]
+          finalFileName = dispositionTokens[fileNameIndex]
               .replaceAll(RegExp(r'filename=|"'), '');
         }
+      } else {
+        final type = Mime.getExtensionsFromType(
+            response!.headers.value('content-type')!);
+        if (type != null && type.isNotEmpty) {
+          finalFileName = '$fileName.${type.first}';
+        }
       }
-
-      final type =
-          Mime.getExtensionsFromType(response!.headers.value('content-type')!);
-      if (type != null && type.isNotEmpty) {
-        fileName = '$fileName.${type.first}';
+      if (finalFileName != fileName) {
         File('${saveDirectory.path}/$fileName')
-            .rename('${saveDirectory.path}/$fileName.${type.first}');
+            .rename('${saveDirectory.path}/$finalFileName');
       }
-
-
     }
     if (showProgressAlert) {
       showMessageAlert(
         title: 'Сохранено',
         message:
-            'Файл сохранен $fileName в папку ${GetPlatform.isIOS ? '/iPhone/Kivach Life' : '/Внутреннее хранилище/Загрузки/Kivach Life'}',
+            'Файл сохранен $finalFileName  в папку ${GetPlatform.isIOS ? '/iPhone/Kivach Life' : '/Внутреннее хранилище/Загрузки/Kivach Life'}',
         icon:
             const Icon(Icons.download_done_rounded, color: KivachColors.green),
-        mainButton: ['pdf', 'doc', 'docx'].contains(fileName.split('.').last)
-            ? TextButton(
-                onPressed: () {
-                  Get.to(DocumentViewPage(
-                      path: '${saveDirectory?.path}/$fileName'));
-                  Get.closeCurrentSnackbar();
-                },
-                child: const Text(
-                  'Открыть в\nприложении',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: KivachColors.green),
-                ),
-              )
-            : null,
+        mainButton:
+            ['pdf', 'doc', 'docx'].contains(finalFileName.split('.').last)
+                ? TextButton(
+                    onPressed: () {
+                      Get.to(DocumentViewPage(
+                          path: '${saveDirectory?.path}/$finalFileName'));
+                      Get.closeCurrentSnackbar();
+                    },
+                    child: const Text(
+                      'Открыть в\nприложении',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: KivachColors.green),
+                    ),
+                  )
+                : null,
       );
     }
-
-    return '${saveDirectory.path}/$fileName';
+    return '${saveDirectory.path}/$finalFileName';
   }
 }
