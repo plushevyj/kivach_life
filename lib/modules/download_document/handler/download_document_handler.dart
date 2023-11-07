@@ -7,7 +7,6 @@ import 'package:doctor/widgets/alerts.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mime_dart/mime_dart.dart';
-import 'package:path/path.dart' as path;
 
 import '../../../core/utils/constants.dart';
 import '../repository/download_document_repository.dart';
@@ -16,7 +15,7 @@ class DownloadDocumentHandler {
   final _downloadDocumentRepository = DownloadDocumentRepository();
 
   Future<String?> downloadFile({
-    required String url,
+    required Uri url,
     Directory? saveDirectory,
     bool showProgressAlert = false,
   }) async {
@@ -24,8 +23,8 @@ class DownloadDocumentHandler {
     if (!await saveDirectory.exists()) {
       saveDirectory.create();
     }
-    final fileName = path.basename(url);
-    var finalFileName = fileName;
+    final downloadingFileName = url.path.split('/').last;
+    var finalFileName = downloadingFileName;
     try {
       if (showProgressAlert) {
         showMessageAlert(
@@ -37,8 +36,8 @@ class DownloadDocumentHandler {
         );
       }
       final response = await _downloadDocumentRepository.download(
-          url, '${saveDirectory.path}/$fileName');
-      if (!fileName.contains('.')) {
+          url.toString(), '${saveDirectory.path}/$downloadingFileName');
+      if (!downloadingFileName.contains('.')) {
         final disposition = response.headers.map['content-disposition'];
         if (disposition != null) {
           final dispositionTokens = disposition.first.split(';');
@@ -53,11 +52,11 @@ class DownloadDocumentHandler {
           final type = Mime.getExtensionsFromType(
               response.headers.value('content-type')!);
           if (type != null && type.isNotEmpty) {
-            finalFileName = '$fileName.${type.first}';
+            finalFileName = '$downloadingFileName.${type.first}';
           }
         }
-        if (finalFileName != fileName) {
-          File('${saveDirectory.path}/$fileName')
+        if (finalFileName != downloadingFileName) {
+          File('${saveDirectory.path}/$downloadingFileName')
               .rename('${saveDirectory.path}/$finalFileName');
         }
       }
@@ -86,6 +85,7 @@ class DownloadDocumentHandler {
         );
       }
     } catch (_) {
+      rethrow;
       showErrorAlert('Не удалось скачать файл');
     }
     return '${saveDirectory.path}/$finalFileName';

@@ -174,7 +174,7 @@ class RegistrationPage extends StatelessWidget {
                                         await DownloadDocumentHandler()
                                             .downloadFile(
                                       url:
-                                          '${Get.find<ConfigurationOfAppController>().configuration.value?.BASE_URL}/user_agreement.docx',
+                                          Uri.parse('${Get.find<ConfigurationOfAppController>().configuration.value?.BASE_URL}/user_agreement.docx'),
                                       showProgressAlert: false,
                                     );
                                     if (path != null) {
@@ -196,7 +196,7 @@ class RegistrationPage extends StatelessWidget {
                                     final path = await DownloadDocumentHandler()
                                         .downloadFile(
                                       url:
-                                          '${Get.find<ConfigurationOfAppController>().configuration.value?.BASE_URL}/personal_data_politics.docx',
+                                          Uri.parse('${Get.find<ConfigurationOfAppController>().configuration.value?.BASE_URL}/personal_data_politics.docx'),
                                       showProgressAlert: false,
                                     );
                                     if (path != null) {

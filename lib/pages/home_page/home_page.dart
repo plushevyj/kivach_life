@@ -288,9 +288,11 @@ class HomePage extends StatelessWidget {
                       homePageController.progress.value =
                           progress.toDouble() / 100;
                     },
-                    onDownloadStartRequest: (controller, uri) async {
+                    onDownloadStartRequest:
+                        (controller, downloadStartRequest) async {
+                      print(downloadStartRequest.url.path);
                       await DownloadDocumentHandler().downloadFile(
-                        url: uri.url.toString(),
+                        url: downloadStartRequest.url,
                         showProgressAlert: true,
                       );
 
