@@ -108,7 +108,7 @@ class OnboardingSettingsPage extends StatelessWidget {
         bottomSheet: Obx(
           () {
             if (onboardingSettingsPageController.currentPage.value == 0) {
-              return GoToButton(
+              return ButtonGoTo(
                 onPressed: () {
                   Get.context!
                       .read<LocalPasswordSettingBloc>()
@@ -117,7 +117,7 @@ class OnboardingSettingsPage extends StatelessWidget {
               );
             } else if (onboardingSettingsPageController.currentPage.value ==
                 2) {
-              return GoToButton(
+              return ButtonGoTo(
                 onPressed: () {
                   Get.context!.read<BiometricSettingsBloc>().add(
                         EnableBiometricsLogin(
@@ -137,8 +137,8 @@ class OnboardingSettingsPage extends StatelessWidget {
   }
 }
 
-class GoToButton extends StatelessWidget {
-  const GoToButton({
+class ButtonGoTo extends StatelessWidget {
+  const ButtonGoTo({
     super.key,
     required this.onPressed,
   });
