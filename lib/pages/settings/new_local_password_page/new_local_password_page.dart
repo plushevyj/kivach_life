@@ -17,7 +17,7 @@ class NewLocalPasswordPage extends StatelessWidget {
     return BlocListener<LocalPasswordSettingBloc, LocalPasswordSettingState>(
       listener: (context, state) {
         if (state is SuccessfulPasswordChange) {
-          Get.back();
+          Navigator.of(context).pop();
           showSuccessAlert('Цифровой пароль изменен');
         }
       },
