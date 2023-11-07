@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 import 'package:mime_dart/mime_dart.dart';
 import 'package:path/path.dart' as path;
 
-import '../../../core/constants.dart';
+import '../../../core/utils/constants.dart';
 import '../repository/download_document_repository.dart';
 
 class DownloadDocumentHandler {
@@ -42,11 +42,11 @@ class DownloadDocumentHandler {
         final disposition = response.headers.map['content-disposition'];
         if (disposition != null) {
           final dispositionTokens = disposition.first.split(';');
-          final dispositionFileName = dispositionTokens
-              .firstWhereOrNull((token) => token.contains('filename='));
+          final dispositionFileName = dispositionTokens.firstWhereOrNull(
+              (token) => token.contains(RegExp(r'filename=| filename=')));
           if (dispositionFileName != null) {
-            finalFileName =
-                dispositionFileName.replaceAll(RegExp(r'filename=|"'), '');
+            finalFileName = dispositionFileName.replaceAll(
+                RegExp(r'filename=| filename=|"'), '');
             finalFileName = utf8.decode(finalFileName.codeUnits);
           }
         } else {

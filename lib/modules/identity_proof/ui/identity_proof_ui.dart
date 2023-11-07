@@ -8,7 +8,7 @@ import '/core/themes/light_theme.dart';
 import '/widgets/local_password/digital_field.dart';
 import '/widgets/local_password/digital_input_widget.dart';
 import '../controller/identity_proof_controller.dart';
-import '/core/constants.dart';
+import '../../../core/utils/constants.dart';
 
 Future<bool> identityProof({String? password}) async {
   final identityProofController = Get.put(IdentityProofController());

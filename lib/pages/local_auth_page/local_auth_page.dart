@@ -9,7 +9,7 @@ import '../../widgets/local_password/digital_field.dart';
 import '../../widgets/local_password/digital_input_widget.dart';
 import '../../widgets/modal/logout_dialog.dart';
 import '/core/themes/light_theme.dart';
-import '/core/constants.dart';
+import '../../core/utils/constants.dart';
 import '/modules/local_authentication/bloc/local_authentication_bloc.dart';
 import 'local_password_controller.dart';
 

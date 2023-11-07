@@ -1,4 +1,5 @@
 import 'package:doctor/pages/home_page/home_page_controller.dart';
+import 'package:doctor/pages/settings/dowloads_page/downloads_page.dart';
 import 'package:doctor/widgets/alerts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -107,6 +108,14 @@ class SettingsPage extends StatelessWidget {
                       ),
                     const _TitleWidget(title: 'ПРОФИЛЬ'),
                     _SettingButton(
+                      title: 'Загрузки',
+                      icon: Icons.file_download,
+                      iconBackgroundColor: Colors.blue,
+                      onPressed: () {
+                        Get.to(DownloadsPage());
+                      },
+                    ),
+                    _SettingButton(
                       title: 'Настройки профиля',
                       icon: Icons.person,
                       iconBackgroundColor: Colors.green,
@@ -119,7 +128,6 @@ class SettingsPage extends StatelessWidget {
                     _SettingButton(
                       title: 'Выйти из аккаунта',
                       icon: Icons.logout,
-                      iconBackgroundColor: Colors.pink,
                       onPressed: () => showLogOutAlert(),
                     ),
                   ],
@@ -214,8 +222,9 @@ class _TitleWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: 8,
+      padding: const EdgeInsets.only(
+        top: 12,
+        bottom: 4,
       ).add(pagePadding),
       child: Text(
         title,

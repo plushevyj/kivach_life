@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../core/constants.dart';
+import '../../core/utils/constants.dart';
 import '../../core/themes/light_theme.dart';
 import 'digital_field.dart';
 import 'digital_input_widget.dart';

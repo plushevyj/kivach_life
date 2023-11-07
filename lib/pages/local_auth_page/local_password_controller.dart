@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
-import '../../core/constants.dart';
+import '../../core/utils/constants.dart';
 import '/modules/local_authentication/bloc/local_authentication_bloc.dart';
 
 class LocalPasswordPageController extends GetxController {
