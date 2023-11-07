@@ -32,7 +32,7 @@ class OnboardingSettingsPage extends StatelessWidget {
                   curve: Curves.ease,
                 );
               } else {
-                Get.back();
+                Navigator.of(context).pop();
               }
             } else if (state is ProofedOfIdentity) {
               onboardingSettingsPageController.pageController.animateToPage(
@@ -48,14 +48,14 @@ class OnboardingSettingsPage extends StatelessWidget {
         BlocListener<BiometricSettingsBloc, BiometricSettingsState>(
           listener: (context, state) {
             if (state is ChangedUserBiometricSetting) {
-              Navigator.pop(Get.context!);
+              Navigator.pop(context);
             } else if (state is ChangedUserBiometricSetting) {
               showSuccessAlert(state.isEnable
                   ? 'Вход в приложение по биометрии включен'
                   : 'Вход в приложение по биометрии выключен');
             } else if (state is ErrorBiometricSettings) {
               showErrorAlert(state.error);
-              Navigator.pop(Get.context!);
+              Navigator.pop(context);
             }
           },
         ),

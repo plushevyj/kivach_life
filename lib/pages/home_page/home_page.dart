@@ -211,10 +211,6 @@ class HomePage extends StatelessWidget {
                         if (uri.origin ==
                             homePageController.configController.configuration
                                 .value?.BASE_URL) {
-                          print('uri.path = ${uri.path}');
-                          if (uri.path == '/login') {
-                            logOut();
-                          }
                           homePageController.isNarrowAppBar(true);
                         } else {
                           homePageController.isNarrowAppBar(false);
@@ -254,35 +250,43 @@ class HomePage extends StatelessWidget {
                           ?.endRefreshing();
                     },
                     shouldOverrideUrlLoading: (controller, action) async {
-                      if (action.request.url.toString().startsWith('tel:') ||
-                          (action.request.url!
-                              .toString()
-                              .startsWith('https://apps.apple.com')) ||
-                          (action.request.url!
-                              .toString()
-                              .startsWith('https://play.google.com'))) {
-                        launchUrl(action.request.url!);
-                        return NavigationActionPolicy.CANCEL;
-                      }
-                      final listOfAllowedURLs = [
-                        homePageController
-                            .configController.configuration.value?.BASE_URL,
-                        ...?homePageController.configController.configuration
-                            .value?.ALLOWED_EXTERNAL_URLS,
-                        ...?homePageController.configController.configuration
-                            .value?.INTENT_BROWSABLE_URIS,
-                      ];
-                      if (listOfAllowedURLs
-                          .contains(action.request.url?.origin)) {
-                        return NavigationActionPolicy.ALLOW;
+                      if (action.request.url != null) {
+                        if (action.request.url!.origin ==
+                            homePageController.configController.configuration
+                                .value?.BASE_URL) {
+                          if (action.request.url!.path == '/login') {
+                            logOut();
+                            return NavigationActionPolicy.CANCEL;
+                          }
+                        }
+                        if (action.request.url.toString().startsWith('tel:') ||
+                            (action.request.url!
+                                .toString()
+                                .startsWith('https://apps.apple.com')) ||
+                            (action.request.url!
+                                .toString()
+                                .startsWith('https://play.google.com'))) {
+                          launchUrl(action.request.url!);
+                          return NavigationActionPolicy.CANCEL;
+                        }
+                        final listOfAllowedURLs = [
+                          homePageController
+                              .configController.configuration.value?.BASE_URL,
+                          ...?homePageController.configController.configuration
+                              .value?.ALLOWED_EXTERNAL_URLS,
+                          ...?homePageController.configController.configuration
+                              .value?.INTENT_BROWSABLE_URIS,
+                        ];
+                        if (listOfAllowedURLs
+                            .contains(action.request.url?.origin)) {
+                          return NavigationActionPolicy.ALLOW;
+                        }
                       }
                       return NavigationActionPolicy.CANCEL;
                     },
                     onProgressChanged: (controller, progress) async {
                       homePageController.progress.value =
                           progress.toDouble() / 100;
-                      print(
-                          'homePageController.progress.value = ${homePageController.progress.value}');
                     },
                     onDownloadStartRequest: (controller, uri) async {
                       await DownloadDocumentHandler().downloadFile(
