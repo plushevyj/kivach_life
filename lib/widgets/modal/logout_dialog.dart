@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:doctor/modules/authentication/bloc/authentication_bloc.dart';
 import 'package:doctor/pages/home_page/home_page_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,7 @@ import 'package:get/get.dart';
 
 import '/core/themes/light_theme.dart';
 
-Future<void> showLogOutAlert() {
+Future<void> showLogOutAlert({bool isNative = false}) {
   const title = 'Вы действительно хотите выйти из аккаунта?';
   const message =
       'Данные авторизации, биометрии и цифровой пароль будут сброшены. Для '
@@ -35,8 +36,10 @@ Future<void> showLogOutAlert() {
                 ),
               ),
               CupertinoDialogAction(
-                onPressed: () => Get.find<HomePageController>()
-                    .loadBaseSiteRoute(route: '/logout'),
+                onPressed: () => isNative
+                    ? logOut()
+                    : Get.find<HomePageController>()
+                        .loadBaseSiteRoute(route: '/logout'),
                 child: const Text(
                   successButtonText,
                   style: TextStyle(fontWeight: FontWeight.bold),

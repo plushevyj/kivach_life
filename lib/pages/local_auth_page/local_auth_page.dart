@@ -95,7 +95,7 @@ class LocalAuthPage extends StatelessWidget {
                         'ВЫЙТИ',
                         style: TextStyle(fontSize: isSmallScreen ? 12 : null),
                       ),
-                      leftWidgetAction: () => showLogOutAlert(),
+                      leftWidgetAction: () => showLogOutAlert(isNative: true),
                       rightWidget: state.localAuthenticationSetting.$2
                           ? const Icon(Icons.fingerprint)
                           : null,

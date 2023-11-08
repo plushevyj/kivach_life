@@ -290,7 +290,6 @@ class HomePage extends StatelessWidget {
                     },
                     onDownloadStartRequest:
                         (controller, downloadStartRequest) async {
-                      print(downloadStartRequest.url.path);
                       await DownloadDocumentHandler().downloadFile(
                         url: downloadStartRequest.url,
                         showProgressAlert: true,

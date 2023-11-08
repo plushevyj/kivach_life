@@ -112,7 +112,7 @@ class SettingsPage extends StatelessWidget {
                       icon: Icons.file_download,
                       iconBackgroundColor: Colors.blue,
                       onPressed: () {
-                        Get.to(DownloadsPage());
+                        Get.to(() => const DownloadsPage());
                       },
                     ),
                     _SettingButton(

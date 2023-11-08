@@ -85,7 +85,6 @@ class DownloadDocumentHandler {
         );
       }
     } catch (_) {
-      rethrow;
       showErrorAlert('Не удалось скачать файл');
     }
     return '${saveDirectory.path}/$finalFileName';

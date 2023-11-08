@@ -78,11 +78,11 @@ SnackbarController showMessageAlert(
     boxShadows: [
       BoxShadow(
         color: Colors.black.withOpacity(0.2),
-        blurRadius: 1,
+        blurRadius: 2,
         offset: const Offset(1, 1),
       )
     ],
-    backgroundColor: Colors.grey.shade100,
+    backgroundColor: Colors.white,
     colorText: Colors.black,
     snackPosition: SnackPosition.TOP,
     icon: icon,

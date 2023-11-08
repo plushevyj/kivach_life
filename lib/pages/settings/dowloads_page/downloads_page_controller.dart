@@ -14,11 +14,11 @@ class DownloadsPageController extends GetxController {
     final directory = await documentsDirectory;
     filePaths = Directory(directory.path).listSync();
     filePaths.removeWhere((filePath) => filePath.path.contains('.Trash'));
+    filePaths
+        .sort((a, b) => b.statSync().modified.compareTo(a.statSync().modified));
     namesOfFiles = filePaths
         .map((filePath) => filePath.path.replaceAll('${directory.path}/', ''))
         .toList();
-    print(filePaths);
-    print(namesOfFiles);
     isLoading(false);
     super.onInit();
   }
