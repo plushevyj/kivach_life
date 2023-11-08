@@ -23,7 +23,7 @@ class DownloadsPage extends StatelessWidget {
               vertical: 10,
             ),
             child: Text(
-              'Скаченные файлы сохраняются в папку\n${GetPlatform.isIOS ? '/iPhone/Kivach Life' : '/Внутреннее хранилище/Загрузки/Kivach Life'}',
+              'Скачанные файлы сохраняются в папку\n${GetPlatform.isIOS ? '/iPhone/Kivach Life' : '/Внутреннее хранилище/Загрузки/Kivach Life'}',
               textAlign: TextAlign.center,
               style: const TextStyle(color: Colors.grey),
             ),
