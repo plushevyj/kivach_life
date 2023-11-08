@@ -43,6 +43,7 @@ class AuthenticationBloc
     }
     try {
       final accessToken = await tokenRepository.getAccessToken();
+      print('accessToken = $accessToken');
       if (accessToken == null) {
         emit(const Unauthenticated());
         _localAuthenticationRepository
@@ -50,7 +51,7 @@ class AuthenticationBloc
           ..deleteBiometricSetting();
         return;
       }
-      addAccessToken();
+      addAccessTokenInHTTPClient();
       final profile = await loginRepository.getProfile();
       Get.put(AccountController(), permanent: true).profile(profile);
       emit(const Authenticated());
@@ -75,7 +76,7 @@ class AuthenticationBloc
         password: event.password,
       );
       tokenRepository.saveTokens(token: token);
-      addAccessToken();
+      addAccessTokenInHTTPClient();
       final profile = await loginRepository.getProfile();
       Get.put(AccountController(), permanent: true).profile(profile);
       emit(const Authenticated());

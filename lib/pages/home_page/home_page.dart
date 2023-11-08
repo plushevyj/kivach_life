@@ -164,6 +164,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    CookieManager cookie = CookieManager.instance();
     final homePageController = Get.put(HomePageController());
     final navbar = homePageController.appConfiguration?.NAVBAR
         .firstWhere((navbarModel) =>
@@ -198,7 +199,18 @@ class HomePage extends StatelessWidget {
                       android: AndroidInAppWebViewOptions(
                         builtInZoomControls: false,
                       ),
+                      ios: IOSInAppWebViewOptions(
+                        allowsInlineMediaPlayback: true,
+                        sharedCookiesEnabled: true,
+                      ),
                     ),
+                    androidOnPermissionRequest:
+                        (controller, origin, resources) async {
+                      return PermissionRequestResponse(
+                        resources: resources,
+                        action: PermissionRequestResponseAction.GRANT,
+                      );
+                    },
                     onWebViewCreated: (controller) {
                       homePageController
                         ..webViewController = controller
@@ -218,12 +230,29 @@ class HomePage extends StatelessWidget {
                       }
                     },
                     onLoadStop: (controller, uri) async {
+                      print(
+                          'getHtml ${(await controller.getHtml())!.contains('ендуем вам изменить')}');
+                      // controller.setCookie(i7o9rgbb2mijto8bc67fv2r4ha)
                       // homePageController.isNarrowAppBar(uri.startsWith(
                       //         homePageController.appConfiguration!.BASE_URL) &&
                       //     !url.startsWith(
                       //         '${homePageController.appConfiguration!.BASE_URL}/chat') &&
                       //     !url.startsWith(
                       //         '${homePageController.appConfiguration!.BASE_URL}/kivach-analysis'));
+
+                      var LIFESESSID = await cookie.getCookie(
+                          url: Uri.parse('https://mobile-doctors.kivach.ru/'),
+                          name: 'LIFESESSID');
+                      print('LIFESESSID = ${LIFESESSID?.value}');
+                      // await cookie.setCookie(
+                      //     url: Uri.parse('https://mobile-doctors.kivach.ru/'),
+                      //     name: 'LIFESESSID',
+                      //     value: '4ii3v470qr7t61abr5q455h746');
+                      // LIFESESSID = await cookie.getCookie(
+                      //     url: Uri.parse('https://mobile-doctors.kivach.ru/'),
+                      //     name: 'LIFESESSID');
+                      // print('LIFESESSID = ${LIFESESSID?.value}');
+
                       if (uri != null) {
                         if (uri.origin ==
                             homePageController.configController.configuration
@@ -316,6 +345,7 @@ class HomePage extends StatelessWidget {
                     backgroundColor: Colors.transparent,
                     color: KivachColors.lightGreen,
                     value: homePageController.progress.value,
+                    minHeight: 3,
                   ),
                 ),
               ),

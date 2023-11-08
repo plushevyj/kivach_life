@@ -22,7 +22,7 @@ class ResetPage extends StatelessWidget {
       listener: (context, state) {
         resetPageController.isLoading(false);
         if (state is SuccessNumber) {
-          Get.to(SMSCodePage(remainingTime: state.remainingTime));
+          () => Get.to(SMSCodePage(remainingTime: state.remainingTime));
         } else if (state is ErrorResetPasswordState) {
           showErrorAlert(state.error);
           resetPageController.isLoading(false);

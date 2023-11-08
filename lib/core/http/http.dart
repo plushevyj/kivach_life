@@ -40,7 +40,7 @@ class DioClient {
           final refreshResult =
               await _loginRepository.refreshToken(refreshTokenFromCache);
           await _tokenRepository.saveTokens(token: refreshResult);
-          addAccessToken();
+          addAccessTokenInHTTPClient();
           final cloneReq = _dio.request(
             error.requestOptions.path,
             options: Options(
@@ -60,7 +60,7 @@ class DioClient {
   }
 }
 
-void addAccessToken() async {
+void addAccessTokenInHTTPClient() async {
   final accessToken = await const TokenRepository().getAccessToken();
   GetIt.I.get<Dio>().options.headers['X-Auth'] = 'Bearer $accessToken';
 }
