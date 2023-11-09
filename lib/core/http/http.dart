@@ -26,9 +26,21 @@ class DioClient {
       }
       ..interceptors.add(
         InterceptorsWrapper(
+          onRequest: _onRequestHandler,
           onError: _throwError,
         ),
       );
+  }
+
+  void _onRequestHandler(options, handler) async {
+    print('path = ${options.path}');
+    print('access = ${options.headers['X-Auth']}');
+    if (options.headers['X-Auth'] == null) {
+      addAccessTokenInHTTPClient();
+    }
+    options.headers['X-Auth'] =
+        'Bearer ${await _tokenRepository.getAccessToken()}';
+    handler.next(options);
   }
 
   void _throwError(DioException error, ErrorInterceptorHandler handler) async {
@@ -61,6 +73,11 @@ class DioClient {
 }
 
 void addAccessTokenInHTTPClient() async {
+  final dio = GetIt.I.get<Dio>();
   final accessToken = await const TokenRepository().getAccessToken();
-  GetIt.I.get<Dio>().options.headers['X-Auth'] = 'Bearer $accessToken';
+  if (accessToken != null) {
+    dio.options.headers['X-Auth'] = 'Bearer $accessToken';
+  } else if (dio.options.headers['X-Auth'] != null) {
+    dio.options.headers.remove('X-Auth');
+  }
 }

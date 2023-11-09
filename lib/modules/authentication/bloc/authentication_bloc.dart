@@ -43,13 +43,12 @@ class AuthenticationBloc
     }
     try {
       final accessToken = await tokenRepository.getAccessToken();
-      print('accessToken = $accessToken');
       if (accessToken == null) {
         emit(const Unauthenticated());
         _localAuthenticationRepository
           ..deleteLocalPassword()
           ..deleteBiometricSetting();
-        return;
+        throw 'Expired JWT Token';
       }
       addAccessTokenInHTTPClient();
       final profile = await loginRepository.getProfile();
