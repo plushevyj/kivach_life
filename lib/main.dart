@@ -80,7 +80,6 @@ class App extends StatelessWidget {
                 if (FirebaseApi.initialMessage != null) {
                   FirebaseApi.routeFromPayload(FirebaseApi.initialMessage!);
                 }
-                // authenticationBloc.add(const AuthenticateByToken());
                 return BlocListener<AuthenticationBloc, AuthenticationState>(
                   listener: (context, state) async {
                     if (state is Authenticated) {

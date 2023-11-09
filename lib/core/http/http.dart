@@ -33,13 +33,14 @@ class DioClient {
   }
 
   void _onRequestHandler(options, handler) async {
-    print('path = ${options.path}');
-    print('access = ${options.headers['X-Auth']}');
     if (options.headers['X-Auth'] == null) {
-      addAccessTokenInHTTPClient();
+      final accessTokenFromCache = await _tokenRepository.getAccessToken();
+      if (accessTokenFromCache != null) {
+        addAccessTokenInHTTPClient();
+        options.headers['X-Auth'] =
+            'Bearer ${await _tokenRepository.getAccessToken()}';
+      }
     }
-    options.headers['X-Auth'] =
-        'Bearer ${await _tokenRepository.getAccessToken()}';
     handler.next(options);
   }
 
