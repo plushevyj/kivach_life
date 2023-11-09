@@ -48,14 +48,12 @@ class OnboardingSettingsPage extends StatelessWidget {
         BlocListener<BiometricSettingsBloc, BiometricSettingsState>(
           listener: (context, state) {
             if (state is ChangedUserBiometricSetting) {
-              Navigator.pop(context);
-            } else if (state is ChangedUserBiometricSetting) {
               showSuccessAlert(state.isEnable
                   ? 'Вход в приложение по биометрии включен'
                   : 'Вход в приложение по биометрии выключен');
+              Navigator.pop(context);
             } else if (state is ErrorBiometricSettings) {
               showErrorAlert(state.error);
-              Navigator.pop(context);
             }
           },
         ),

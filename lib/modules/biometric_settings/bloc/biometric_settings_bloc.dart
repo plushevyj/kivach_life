@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -55,11 +56,14 @@ class BiometricSettingsBloc
           emit(const ChangedUserBiometricSetting(false));
         }
       }
+    } on PlatformException catch (_) {
     } catch (error) {
       if (kDebugMode) {
         print('error: ${error.toString()}');
       }
       emit(ErrorBiometricSettings(error.toString()));
+    } finally {
+      emit(const BiometricSettingsInitial());
     }
   }
 

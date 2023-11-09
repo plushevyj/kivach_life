@@ -32,3 +32,12 @@ class LocallyNotAuthenticated extends LocalAuthenticationState {
 class LocallyAuthenticated extends LocalAuthenticationState {
   const LocallyAuthenticated();
 }
+
+class LocalAuthenticationError extends LocalAuthenticationState {
+  const LocalAuthenticationError(this.error);
+
+  final String error;
+
+  @override
+  List<Object> get props => [error];
+}

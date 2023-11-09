@@ -67,7 +67,8 @@ class LocalAuthenticationBloc
             await _localAuthenticationRepository.authenticateByBiometric();
       }
     } on PlatformException catch (_) {
-    } catch (_) {
+    } catch (error) {
+      emit(LocalAuthenticationError(error.toString()));
     } finally {
       if (isLocalAuthorized) {
         emit(const LocallyAuthenticated());
