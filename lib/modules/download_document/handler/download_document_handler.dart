@@ -7,6 +7,7 @@ import 'package:doctor/widgets/alerts.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mime_dart/mime_dart.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../../core/utils/constants.dart';
 import '../repository/download_document_repository.dart';
@@ -26,6 +27,12 @@ class DownloadDocumentHandler {
     final downloadingFileName = url.path.split('/').last;
     var finalFileName = downloadingFileName;
     try {
+      if (!await Permission.storage.isGranted) {
+        final permissionStorageRequest = await Permission.storage.request();
+        if (!permissionStorageRequest.isGranted) {
+          throw 'Необходимо разрешить использование хранилища для загрузки файлов.';
+        }
+      }
       if (showProgressAlert) {
         showMessageAlert(
           title: 'Идёт загрузка',
@@ -84,8 +91,8 @@ class DownloadDocumentHandler {
                   : null,
         );
       }
-    } catch (_) {
-      showErrorAlert('Не удалось скачать файл');
+    } catch (error) {
+      showErrorAlert(error.toString());
     }
     return '${saveDirectory.path}/$finalFileName';
   }
