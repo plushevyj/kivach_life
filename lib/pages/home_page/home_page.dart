@@ -230,8 +230,6 @@ class HomePage extends StatelessWidget {
                       }
                     },
                     onLoadStop: (controller, uri) async {
-                      print(
-                          'getHtml ${(await controller.getHtml())!.contains('ендуем вам изменить')}');
                       // controller.setCookie(i7o9rgbb2mijto8bc67fv2r4ha)
                       // homePageController.isNarrowAppBar(uri.startsWith(
                       //         homePageController.appConfiguration!.BASE_URL) &&
@@ -243,15 +241,20 @@ class HomePage extends StatelessWidget {
                       var LIFESESSID = await cookie.getCookie(
                           url: Uri.parse('https://mobile-doctors.kivach.ru/'),
                           name: 'LIFESESSID');
+                      // var is_token = await cookie.getCookie(
+                      //     url: Uri.parse('https://mobile-doctors.kivach.ru/'),
+                      //     name: 'is_token');
                       print('LIFESESSID = ${LIFESESSID?.value}');
-                      // await cookie.setCookie(
+                      // cookie.setCookie(
                       //     url: Uri.parse('https://mobile-doctors.kivach.ru/'),
                       //     name: 'LIFESESSID',
-                      //     value: '4ii3v470qr7t61abr5q455h746');
-                      // LIFESESSID = await cookie.getCookie(
+                      //     value: 'ifj1agn9fco1ljr1ijssmsauru');
+                      // print('is_token = ${is_token?.value}');
+                      // await cookie.setCookie(
                       //     url: Uri.parse('https://mobile-doctors.kivach.ru/'),
-                      //     name: 'LIFESESSID');
-                      // print('LIFESESSID = ${LIFESESSID?.value}');
+                      //     name: 'is_token',
+                      //     value: 'true');
+                      // print('is_token = ${is_token?.value}');
 
                       if (uri != null) {
                         if (uri.origin ==

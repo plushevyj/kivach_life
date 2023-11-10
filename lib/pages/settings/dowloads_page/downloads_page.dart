@@ -33,7 +33,7 @@ class DownloadsPage extends StatelessWidget {
               () {
                 if (downloadsPageController.isLoading.value) {
                   return const Center(child: CircularProgressIndicator());
-                } else {
+                } else if (downloadsPageController.filePaths.isNotEmpty) {
                   return ListView.builder(
                     shrinkWrap: true,
                     itemCount: downloadsPageController.filePaths.length,
@@ -44,6 +44,16 @@ class DownloadsPage extends StatelessWidget {
                         path: downloadsPageController.filePaths[index].path,
                       );
                     },
+                  );
+                } else {
+                  return const Center(
+                    child: Text(
+                      'Список пуст',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.grey,
+                      ),
+                    ),
                   );
                 }
               },
