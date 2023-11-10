@@ -28,24 +28,26 @@ class DownloadsPage extends StatelessWidget {
               style: const TextStyle(color: Colors.grey),
             ),
           ),
-          Obx(
-            () {
-              if (downloadsPageController.isLoading.value) {
-                return const Center(child: CircularProgressIndicator());
-              } else {
-                return ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: downloadsPageController.filePaths.length,
-                  itemBuilder: (_, index) {
-                    // return Text(downloadsPageController.namesOfFiles[index]);
-                    return _FileButton(
-                      name: downloadsPageController.namesOfFiles[index],
-                      path: downloadsPageController.filePaths[index].path,
-                    );
-                  },
-                );
-              }
-            },
+          Expanded(
+            child: Obx(
+              () {
+                if (downloadsPageController.isLoading.value) {
+                  return const Center(child: CircularProgressIndicator());
+                } else {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: downloadsPageController.filePaths.length,
+                    itemBuilder: (_, index) {
+                      // return Text(downloadsPageController.namesOfFiles[index]);
+                      return _FileButton(
+                        name: downloadsPageController.namesOfFiles[index],
+                        path: downloadsPageController.filePaths[index].path,
+                      );
+                    },
+                  );
+                }
+              },
+            ),
           ),
         ],
       ),
