@@ -34,29 +34,28 @@ Future<bool> identityProof({String? password}) async {
     Container(
       height: Get.height - kToolbarHeight - 20,
       padding: EdgeInsets.symmetric(horizontal: Get.width * 0.18),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Container(
-            height: 5,
-            width: 50,
-            margin: const EdgeInsets.only(top: 20),
-            decoration: BoxDecoration(
-              color: Colors.grey.shade500,
-              borderRadius: const BorderRadius.all(Radius.circular(100)),
-            ),
-          ),
-          GetX(
-            init: identityProofController,
-            global: false,
-            initState: (state) {},
-            dispose: (state) {
-              state.controller?.dispose();
-            },
-            builder: (controller) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.center,
+      child: GetX(
+        init: identityProofController,
+        global: false,
+        initState: (state) {},
+        dispose: (state) {
+          state.controller?.dispose();
+        },
+        builder: (controller) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                height: 5,
+                width: 50,
+                margin: const EdgeInsets.only(top: 20),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade500,
+                  borderRadius: const BorderRadius.all(Radius.circular(100)),
+                ),
+              ),
+              Column(
                 children: [
                   Text(
                     'ВВЕДИТЕ КОД-ПАРОЛЬ',
@@ -73,7 +72,10 @@ Future<bool> identityProof({String? password}) async {
                       maxLength: maxLengthLocalPassword,
                     ),
                   ),
-                  SizedBox(height: Get.height * (isSmallScreen ? 0.1 : 0.15)),
+                ],
+              ),
+              Column(
+                children: [
                   DigitalInput(
                     controller: controller.inputController,
                     maxLength: maxLengthLocalPassword,
@@ -87,10 +89,10 @@ Future<bool> identityProof({String? password}) async {
                   ),
                   const SizedBox(height: 20),
                 ],
-              );
-            },
-          ),
-        ],
+              ),
+            ],
+          );
+        },
       ),
     ),
     barrierColor: Colors.black.withOpacity(0.5),

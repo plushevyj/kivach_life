@@ -20,35 +20,46 @@ class LocalPasswordSettingBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: Get.width * 0.18),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: isSmallScreen ? 16 : 18,
+    return SafeArea(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: Get.width * 0.18),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const SizedBox.shrink(),
+            Column(
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: isSmallScreen ? 16 : 18,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 25),
+                SizedBox(
+                  width: 150,
+                  child: DigitalField(
+                    controller: controller,
+                    maxLength: maxLengthLocalPassword,
+                  ),
+                ),
+              ],
             ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 25),
-          SizedBox(
-            width: 150,
-            child: DigitalField(
-              controller: controller,
-              maxLength: maxLengthLocalPassword,
+            // SizedBox(height: Get.height * (isSmallScreen ? 0.08 : 0.15)),
+            Column(
+              children: [
+                DigitalInput(
+                  controller: controller,
+                  maxLength: maxLengthLocalPassword,
+                  isEnabled: idEnabled,
+                ),
+                const SizedBox(height: 20),
+              ],
             ),
-          ),
-          SizedBox(height: Get.height * (isSmallScreen ? 0.08 : 0.15)),
-          DigitalInput(
-            controller: controller,
-            maxLength: maxLengthLocalPassword,
-            isEnabled: idEnabled,
-          ),
-          const SizedBox(height: 20),
-        ],
+          ],
+        ),
       ),
     );
   }

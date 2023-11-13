@@ -55,66 +55,79 @@ class LocalAuthPage extends StatelessWidget {
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: Get.width * 0.18),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Obx(
-                    () => Skeletonizer(
-                      enabled: avatarController.avatarLoading.value,
-                      effect: ShimmerEffect(baseColor: Colors.grey.shade300),
-                      child: CircleAvatar(
-                        radius: 36,
-                        backgroundColor: const Color(0xFFD7D7D7),
-                        foregroundImage: avatarController.image?.image,
-                        child: avatarController.image == null
-                            ? const Icon(
-                                Icons.person,
-                                size: 24,
-                                color: Colors.grey,
-                              )
-                            : null,
+                  const SizedBox(height: kToolbarHeight),
+                  Column(
+                    children: [
+                      Obx(
+                        () => Skeletonizer(
+                          enabled: avatarController.avatarLoading.value,
+                          effect:
+                              ShimmerEffect(baseColor: Colors.grey.shade300),
+                          child: CircleAvatar(
+                            radius: 36,
+                            backgroundColor: const Color(0xFFD7D7D7),
+                            foregroundImage: avatarController.image?.image,
+                            child: avatarController.image == null
+                                ? const Icon(
+                                    Icons.person,
+                                    size: 24,
+                                    color: Colors.grey,
+                                  )
+                                : null,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  const SizedBox(height: 30),
-                  SizedBox(
-                    width: 150,
-                    child: DigitalField(
-                      controller: localPasswordPageController.password,
-                      maxLength: maxLengthLocalPassword,
-                    ),
-                  ),
-                  SizedBox(height: Get.height * (isSmallScreen ? 0.1 : 0.15)),
-                  Obx(
-                    () => DigitalInput(
-                      controller: localPasswordPageController.password,
-                      maxLength: maxLengthLocalPassword,
-                      isEnabled:
-                          localPasswordPageController.enableDialButtons.value,
-                      leftWidget: Text(
-                        'ВЫЙТИ',
-                        style: TextStyle(fontSize: isSmallScreen ? 12 : null),
+                      const SizedBox(height: 30),
+                      SizedBox(
+                        width: 150,
+                        child: DigitalField(
+                          controller: localPasswordPageController.password,
+                          maxLength: maxLengthLocalPassword,
+                        ),
                       ),
-                      leftWidgetAction: () => showLogOutAlert(isNative: true),
-                      rightWidget: state.localAuthenticationSetting.$2
-                          ? const Icon(Icons.fingerprint)
-                          : null,
-                      rightWidgetAction: state.localAuthenticationSetting.$2
-                          ? () => Get.context!
-                              .read<LocalAuthenticationBloc>()
-                              .add(const LogInLocallyUsingBiometrics())
-                          : null,
-                    ),
+                    ],
                   ),
-                  const SizedBox(height: 20),
+                  Column(
+                    children: [
+                      Obx(
+                        () => DigitalInput(
+                          controller: localPasswordPageController.password,
+                          maxLength: maxLengthLocalPassword,
+                          isEnabled: localPasswordPageController
+                              .enableDialButtons.value,
+                          leftWidget: Text(
+                            'ВЫЙТИ',
+                            style: TextStyle(
+                                fontSize: isSmallScreen ? 12 : null),
+                          ),
+                          leftWidgetAction: () =>
+                              showLogOutAlert(isNative: true),
+                          rightWidget: state.localAuthenticationSetting.$2
+                              ? const Icon(Icons.fingerprint)
+                              : null,
+                          rightWidgetAction: state
+                                  .localAuthenticationSetting.$2
+                              ? () => Get.context!
+                                  .read<LocalAuthenticationBloc>()
+                                  .add(const LogInLocallyUsingBiometrics())
+                              : null,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                    ],
+                  ),
                 ],
               ),
             );
           } else {
             return const Center(
-                child: CircularProgressIndicator(
-              color: KivachColors.green,
-            ));
+              child: CircularProgressIndicator(
+                color: KivachColors.green,
+              ),
+            );
           }
         },
       ),
