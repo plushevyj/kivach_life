@@ -145,6 +145,7 @@
 // }
 
 import 'package:doctor/modules/account/controllers/account_controller.dart';
+import 'package:fk_user_agent/fk_user_agent.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -164,7 +165,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    CookieManager cookie = CookieManager.instance();
+    // CookieManager cookie = CookieManager.instance();
     final homePageController = Get.put(HomePageController());
     final navbar = homePageController.appConfiguration?.NAVBAR
         .firstWhere((navbarModel) =>
@@ -195,6 +196,7 @@ class HomePage extends StatelessWidget {
                         supportZoom: false,
                         preferredContentMode: UserPreferredContentMode.MOBILE,
                         useShouldOverrideUrlLoading: true,
+                        userAgent: FkUserAgent.userAgent ?? 'Unknown',
                       ),
                       android: AndroidInAppWebViewOptions(
                         builtInZoomControls: false,
@@ -238,13 +240,13 @@ class HomePage extends StatelessWidget {
                       //     !url.startsWith(
                       //         '${homePageController.appConfiguration!.BASE_URL}/kivach-analysis'));
 
-                      var LIFESESSID = await cookie.getCookie(
-                          url: Uri.parse('https://mobile-doctors.kivach.ru/'),
-                          name: 'LIFESESSID');
+                      // var LIFESESSID = await cookie.getCookie(
+                      //     url: Uri.parse('https://mobile-doctors.kivach.ru/'),
+                      //     name: 'LIFESESSID');
                       // var is_token = await cookie.getCookie(
                       //     url: Uri.parse('https://mobile-doctors.kivach.ru/'),
                       //     name: 'is_token');
-                      print('LIFESESSID = ${LIFESESSID?.value}');
+                      // print('LIFESESSID = ${LIFESESSID?.value}');
                       // cookie.setCookie(
                       //     url: Uri.parse('https://mobile-doctors.kivach.ru/'),
                       //     name: 'LIFESESSID',
@@ -260,16 +262,26 @@ class HomePage extends StatelessWidget {
                         if (uri.origin ==
                             homePageController.configController.configuration
                                 .value?.BASE_URL) {
-                          if (uri.path.startsWith('/profile')) {
-                            final profile =
-                                await const LoginRepository().getProfile();
-                            Get.find<AccountController>().profile(profile);
-                            Get.find<AvatarController>().onInit();
+                          if (await controller.canGoBack()) {
+                            final history =
+                                await controller.getCopyBackForwardList();
+                            final lastRoute = history!.list!.last;
+                            final previousRoute =
+                                history.list![history.list!.length - 2];
+                            final checkProfileRoute = [previousRoute, lastRoute].any(
+                                (route) =>
+                                    route.url!.path.startsWith('/profile'));
+                            if (checkProfileRoute) {
+                              final profile =
+                                  await const LoginRepository().getProfile();
+                              Get.find<AccountController>().profile(profile);
+                              Get.find<AvatarController>().onInit();
+                            }
+                            navBarIndexNotifier.value = navbar!.lastIndexWhere(
+                              (navbarElement) =>
+                                  uri.path.startsWith(navbarElement.route),
+                            );
                           }
-                          navBarIndexNotifier.value = navbar!.lastIndexWhere(
-                            (navbarElement) =>
-                                uri.path.startsWith(navbarElement.route),
-                          );
                         }
                         homePageController.canGoBack.value =
                             (await homePageController.webViewController
@@ -282,6 +294,9 @@ class HomePage extends StatelessWidget {
                           ?.endRefreshing();
                     },
                     shouldOverrideUrlLoading: (controller, action) async {
+                      action.request.headers?.addAll(
+                        {'User-Agent': FkUserAgent.userAgent ?? 'Unknown'},
+                      );
                       if (action.request.url != null) {
                         if (action.request.url!.origin ==
                             homePageController.configController.configuration
