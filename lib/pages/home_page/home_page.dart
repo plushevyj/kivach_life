@@ -262,26 +262,27 @@ class HomePage extends StatelessWidget {
                         if (uri.origin ==
                             homePageController.configController.configuration
                                 .value?.BASE_URL) {
-                          if (await controller.canGoBack()) {
-                            final history =
-                                await controller.getCopyBackForwardList();
-                            final lastRoute = history!.list!.last;
-                            final previousRoute =
-                                history.list![history.list!.length - 2];
-                            final checkProfileRoute = [previousRoute, lastRoute].any(
-                                (route) =>
-                                    route.url!.path.startsWith('/profile'));
-                            if (checkProfileRoute) {
-                              final profile =
-                                  await const LoginRepository().getProfile();
-                              Get.find<AccountController>().profile(profile);
-                              Get.find<AvatarController>().onInit();
-                            }
-                            navBarIndexNotifier.value = navbar!.lastIndexWhere(
-                              (navbarElement) =>
-                                  uri.path.startsWith(navbarElement.route),
-                            );
+                          final history =
+                              await controller.getCopyBackForwardList();
+                          final lastRoute = history?.list?.last;
+                          final previousRoute = history!.list!.length > 1
+                              ? history.list![history.list!.length - 2]
+                              : null;
+                          final checkProfileRoute = [
+                            previousRoute,
+                            lastRoute
+                          ].any((route) =>
+                              route?.url?.path.startsWith('/profile') ?? false);
+                          if (checkProfileRoute) {
+                            final profile =
+                                await const LoginRepository().getProfile();
+                            Get.find<AccountController>().profile(profile);
+                            Get.find<AvatarController>().onInit();
                           }
+                          navBarIndexNotifier.value = navbar!.lastIndexWhere(
+                            (navbarElement) =>
+                                uri.path.startsWith(navbarElement.route),
+                          );
                         }
                         homePageController.canGoBack.value =
                             (await homePageController.webViewController
