@@ -53,6 +53,7 @@ dependencies:
   shared_preferences: ^2.2.2
   path: ^1.8.3
   mime_dart: ^3.0.0
+  flutter_keyboard_visibility: ^5.4.1
 
 flutter_localization:
   flutter:

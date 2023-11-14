@@ -33,14 +33,17 @@ class AuthorizationPage extends StatelessWidget {
       child: Scaffold(
         persistentFooterAlignment: AlignmentDirectional.center,
         body: SafeArea(
-          child: Center(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: pagePadding,
-                child: Center(
+          child: Obx(
+            () => Align(
+              alignment: authPageController.isKeyBoardVisible.value
+                  ? Alignment.topCenter
+                  : Alignment.center,
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 20).add(pagePadding),
                   child: AutofillGroup(
                     child: Column(
-                      mainAxisSize: MainAxisSize.min,
                       children: [
                         SvgPicture.asset(
                           'assets/images/logo.svg',
