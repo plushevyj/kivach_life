@@ -20,10 +20,6 @@ Future<void> initializeDependencies() async {
   await FirebaseApi().initNotifications();
   await dotenv.load();
   Bloc.observer = Observer();
-  // await Hive.initFlutter();
-  // Hive
-  //   ..registerAdapter(BiometricSettingsAdapter())
-  //   ..registerAdapter(LocalPasswordAdapter());
   await [
     Permission.camera,
     Permission.photos,

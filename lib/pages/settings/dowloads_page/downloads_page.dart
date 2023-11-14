@@ -38,7 +38,6 @@ class DownloadsPage extends StatelessWidget {
                     shrinkWrap: true,
                     itemCount: downloadsPageController.filePaths.length,
                     itemBuilder: (_, index) {
-                      // return Text(downloadsPageController.namesOfFiles[index]);
                       return _FileButton(
                         name: downloadsPageController.namesOfFiles[index],
                         path: downloadsPageController.filePaths[index].path,

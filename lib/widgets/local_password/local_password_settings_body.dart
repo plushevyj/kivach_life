@@ -47,7 +47,6 @@ class LocalPasswordSettingBody extends StatelessWidget {
                 ),
               ],
             ),
-            // SizedBox(height: Get.height * (isSmallScreen ? 0.08 : 0.15)),
             Column(
               children: [
                 DigitalInput(

@@ -1,18 +1,25 @@
 import 'package:doctor/core/themes/light_theme.dart';
+import 'package:fk_user_agent/fk_user_agent.dart';
+import 'package:flutter/material.dart' show ValueNotifier;
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../models/configuration_models/configuration_of_app/configuration_of_app.dart';
+import '../../models/configuration_models/navbar_menu/navbar_menu.dart';
 import '../../models/profile/profile_model.dart';
 import '../../modules/account/controllers/account_controller.dart';
+import '../../modules/account/controllers/avatar_controller.dart';
+import '../../modules/authentication/bloc/authentication_bloc.dart';
+import '../../modules/authentication/repository/login_repository.dart';
 import '../../modules/authentication/repository/token_repository.dart';
+import '../../modules/download_document/handler/download_document_handler.dart';
 import '../../modules/opening_app/controllers/configuration_of_app_controller.dart';
 
 class HomePageController extends GetxController {
   InAppWebViewController? webViewController;
 
   final canGoBack = false.obs;
-  // final canGoForward = false.obs;
   final isNarrowAppBar = true.obs;
   final progress = 0.0.obs;
 
@@ -22,15 +29,15 @@ class HomePageController extends GetxController {
   final Profile? profile = Get.find<AccountController>().profile.value;
   PullToRefreshController? pullToRefreshController;
 
+  late final List<NavbarMenu>? navbar;
+  final navBarIndexNotifier = ValueNotifier(0);
+
   @override
   void onInit() async {
+    navbar = appConfiguration?.NAVBAR
+        .firstWhere((navbarModel) => profile!.roles.contains(navbarModel.role))
+        .menu;
     loadFirstBaseSiteRoute();
-    // final kek = await TokenRepository().getRefreshToken();
-    // TokenRepository()
-    //     .saveTokens(token: TokenModel(token: 'edfdfdfdf', refresh_token: kek!));
-    // addAccessToken();
-
-    // load(route: configController.payloadRoute.value ?? '/');
     configController.payloadRoute.listen((route) {
       if (route != null) {
         loadBaseSiteRoute(route: route);
@@ -59,25 +66,6 @@ class HomePageController extends GetxController {
     super.onInit();
   }
 
-  // static PlatformWebViewControllerCreationParams params = (() {
-  //   if (GetPlatform.isIOS) {
-  //     return const PlatformWebViewControllerCreationParams();
-  //   } else {
-  //     return WebViewPlatform.instance is WebKitWebViewPlatform
-  //         ? WebKitWebViewControllerCreationParams(
-  //             allowsInlineMediaPlayback: true,
-  //             mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{})
-  //         : const PlatformWebViewControllerCreationParams();
-  //   }
-  // })();
-
-  // final webViewController = WebViewController.fromPlatformCreationParams(
-  //   params,
-  //   onPermissionRequest: (request) {
-  //     request.grant();
-  //   },
-  // );
-
   Future<Map<String, String>> getHeaders() async {
     String? accessToken = await const TokenRepository().getAccessToken();
     return {
@@ -104,14 +92,84 @@ class HomePageController extends GetxController {
     configController.payloadRoute.value = null;
   }
 
-  // void load({required String route}) async {
-  //   String? accessToken = await const TokenRepository().getAccessToken();
-  //   final headers = {
-  //     'X-Auth': 'Bearer $accessToken',
-  //   };
-  //   webViewController.loadRequest(
-  //     Uri.parse('${appConfiguration?.BASE_URL}$route'),
-  //     headers: headers,
-  //   );
-  // }
+  void onLoadStart(InAppWebViewController controller, Uri? uri) {
+    if (uri != null) {
+      if (uri.origin == configController.configuration.value?.BASE_URL) {
+        isNarrowAppBar(true);
+      } else {
+        isNarrowAppBar(false);
+      }
+    }
+  }
+
+  void onLoadStop(InAppWebViewController controller, Uri? uri) async {
+    if (uri != null) {
+      if (uri.origin == configController.configuration.value?.BASE_URL) {
+        final history = await controller.getCopyBackForwardList();
+        final lastRoute = history?.list?.last;
+        final previousRoute = history!.list!.length > 1
+            ? history.list![history.list!.length - 2]
+            : null;
+        final checkProfileRoute = [previousRoute, lastRoute]
+            .any((route) => route?.url?.path.startsWith('/profile') ?? false);
+        if (checkProfileRoute) {
+          final profile = await const LoginRepository().getProfile();
+          Get.find<AccountController>().profile(profile);
+          Get.find<AvatarController>().onInit();
+        }
+        navBarIndexNotifier.value = navbar!.lastIndexWhere(
+          (navbarElement) => uri.path.startsWith(navbarElement.route),
+        );
+      }
+      canGoBack.value = (await webViewController?.canGoBack())!;
+    }
+    pullToRefreshController?.endRefreshing();
+  }
+
+  Future<NavigationActionPolicy?> shouldOverrideUrlLoading(
+      InAppWebViewController controller, NavigationAction action) async {
+    action.request.headers?.addAll(
+      {'User-Agent': FkUserAgent.userAgent ?? 'Unknown'},
+    );
+    if (action.request.url != null) {
+      if (action.request.url!.origin ==
+          configController.configuration.value?.BASE_URL) {
+        if (action.request.url!.path == '/login') {
+          logOut();
+          return NavigationActionPolicy.CANCEL;
+        }
+      }
+      if (action.request.url.toString().startsWith('tel:') ||
+          (action.request.url!
+              .toString()
+              .startsWith('https://apps.apple.com')) ||
+          (action.request.url!
+              .toString()
+              .startsWith('https://play.google.com'))) {
+        launchUrl(action.request.url!);
+        return NavigationActionPolicy.CANCEL;
+      }
+      final listOfAllowedURLs = [
+        configController.configuration.value?.BASE_URL,
+        ...?configController.configuration.value?.ALLOWED_EXTERNAL_URLS,
+        ...?configController.configuration.value?.INTENT_BROWSABLE_URIS,
+      ];
+      if (listOfAllowedURLs.contains(action.request.url?.origin)) {
+        return NavigationActionPolicy.ALLOW;
+      }
+    }
+    return NavigationActionPolicy.CANCEL;
+  }
+
+  void onProgressChanged(InAppWebViewController controller, int progressValue) {
+    progress.value = progressValue.toDouble() / 100;
+  }
+
+  void onDownloadStartRequest(InAppWebViewController controller,
+      DownloadStartRequest downloadStartRequest) async {
+    await DownloadDocumentHandler().downloadFile(
+      url: downloadStartRequest.url,
+      showProgressAlert: true,
+    );
+  }
 }

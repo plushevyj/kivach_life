@@ -55,7 +55,6 @@ class IdentityProofController extends GetxController {
   @override
   void dispose() {
     result.close();
-    // enableDialButtons.close();
     inputController.dispose();
     super.dispose();
   }

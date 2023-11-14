@@ -54,12 +54,6 @@ class RegistrationRepository {
       queryParameters: query,
       data: data,
     );
-    // _dio.options.headers['Content-Type'] = 'application/x-www-form-urlencoded';
-    // final response = await _dio.post(
-    //   path,
-    //   queryParameters: query,
-    //   data: data,
-    // );
     return ConvertTo<TokenModel>().item(response.data, TokenModel.fromJson);
   }
 }

@@ -42,21 +42,6 @@ class AppBarForSmallScreen extends StatelessWidget
               ),
             ),
           ),
-          // Obx(
-          //   () => IconButton(
-          //     onPressed: homePageController.canGoForward.value
-          //         ? () => webViewController.goForward()
-          //         : null,
-          //     icon: Icon(
-          //       GetPlatform.isIOS
-          //           ? Icons.arrow_forward_ios
-          //           : Icons.arrow_forward_outlined,
-          //       color: homePageController.canGoForward.value
-          //           ? Colors.black
-          //           : Colors.grey,
-          //     ),
-          //   ),
-          // ),
         ],
       ),
       title: Row(

@@ -48,9 +48,6 @@ final lightTheme = ThemeData(
     disabledBorder: outlineInputBorder,
     enabledBorder: outlineInputBorder,
     errorBorder: outlineInputBorder,
-    // contentPadding: isSmallScreen
-    //     ? const EdgeInsets.symmetric(horizontal: 15, vertical: 20)
-    //     : null,
     labelStyle: TextStyle(
       color: KivachColors.green,
       fontSize: isSmallScreen ? 16 : null,
