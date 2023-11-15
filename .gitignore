@@ -32,6 +32,7 @@ doc/
 .pub-cache/
 .pub/
 /build/
+key.jks
 
 # Symbolication related
 app.*.symbols

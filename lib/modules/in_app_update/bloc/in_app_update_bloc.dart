@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get/get.dart';
+import 'package:in_app_update/in_app_update.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:playx_version_update/playx_version_update.dart';
 
 import '../../opening_app/controllers/configuration_of_app_controller.dart';
 import '../ui/in_app_update_ios_modal.dart';
@@ -36,16 +36,31 @@ class InAppUpdateBloc extends Bloc<InAppUpdateEvent, InAppUpdateState> {
           InAppUpdateUI().showInAppUpdateIOSModal(Get.context!);
         }
       } else if (GetPlatform.isAndroid) {
-        final result = await PlayxVersionUpdate.showInAppUpdateDialog(
-          context: Get.context!,
-          type: PlayxAppUpdateType.flexible,
-          showReleaseNotes: true,
-          releaseNotesTitle: (info) => 'Recent Updates of ${info.newVersion}',
-        );
-        result.when(
-          success: (isShowed) {},
-          error: (error) {},
-        );
+        // final result = await PlayxVersionUpdate.showInAppUpdateDialog(
+        //   context: Get.context!,
+        //   type: PlayxAppUpdateType.flexible,
+        //   showReleaseNotes: true,
+        //   releaseNotesTitle: (info) => 'Recent Updates of ${info.newVersion}',
+        // );
+        // result.when(
+        //   success: (isShowed) {},
+        //   error: (error) {},
+        // );
+        print('isAndroid');
+        await InAppUpdate.checkForUpdate().then((info) async {
+          if (info.updateAvailability == UpdateAvailability.updateAvailable) {
+            print('update available');
+            print('Updating');
+            await InAppUpdate.startFlexibleUpdate();
+            await InAppUpdate.completeFlexibleUpdate()
+                .then((_) {})
+                .catchError((e) {
+              print(e.toString());
+            });
+          }
+        }).catchError((e) {
+          print(e.toString());
+        });
       }
     } catch (_) {
       rethrow;

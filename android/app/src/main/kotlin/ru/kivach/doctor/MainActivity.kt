@@ -1,4 +1,4 @@
-package ru.kivach.doctor
+package ru.kivach.life
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
