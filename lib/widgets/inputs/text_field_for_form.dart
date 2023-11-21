@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class TextFieldForForm extends StatelessWidget {
@@ -41,7 +42,8 @@ class VisibilityPasswordController extends GetxController {
 }
 
 class PasswordFieldForForm extends StatelessWidget {
-  const PasswordFieldForForm({
+  const
+  PasswordFieldForForm({
     super.key,
     required this.controller,
     required this.hint,
@@ -82,6 +84,7 @@ class PasswordFieldForForm extends StatelessWidget {
           autocorrect: false,
           keyboardType: TextInputType.visiblePassword,
           autofillHints: autofillHints,
+          onEditingComplete: () => TextInput.finishAutofillContext(),
         );
       },
     );

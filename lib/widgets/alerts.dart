@@ -15,7 +15,8 @@ void showSuccessAlert(String message,
 }
 
 void showErrorAlert(String message,
-    {Duration duration = const Duration(seconds: 5)}) {
+    {Duration duration = const Duration(seconds: 5),
+    VoidCallback? onMainButtonPressed}) {
   Get.snackbar(
     'Ошибка',
     message,
@@ -23,6 +24,18 @@ void showErrorAlert(String message,
     backgroundColor: Colors.red,
     colorText: Colors.white,
     snackPosition: SnackPosition.TOP,
+    mainButton: onMainButtonPressed != null
+        ? TextButton(
+            onPressed: () {
+              onMainButtonPressed.call();
+              Get.closeCurrentSnackbar();
+            },
+            child: const Text(
+              'Перейти',
+              style: TextStyle(color: Colors.white),
+            ),
+          )
+        : null,
   );
 }
 
