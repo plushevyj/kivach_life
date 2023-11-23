@@ -36,30 +36,10 @@ class InAppUpdateBloc extends Bloc<InAppUpdateEvent, InAppUpdateState> {
           InAppUpdateUI().showInAppUpdateIOSModal(Get.context!);
         }
       } else if (GetPlatform.isAndroid) {
-        // final result = await PlayxVersionUpdate.showInAppUpdateDialog(
-        //   context: Get.context!,
-        //   type: PlayxAppUpdateType.flexible,
-        //   showReleaseNotes: true,
-        //   releaseNotesTitle: (info) => 'Recent Updates of ${info.newVersion}',
-        // );
-        // result.when(
-        //   success: (isShowed) {},
-        //   error: (error) {},
-        // );
-        print('isAndroid');
         await InAppUpdate.checkForUpdate().then((info) async {
           if (info.updateAvailability == UpdateAvailability.updateAvailable) {
-            print('update available');
-            print('Updating');
-            await InAppUpdate.startFlexibleUpdate();
-            await InAppUpdate.completeFlexibleUpdate()
-                .then((_) {})
-                .catchError((e) {
-              print(e.toString());
-            });
+            await InAppUpdate.performImmediateUpdate();
           }
-        }).catchError((e) {
-          print(e.toString());
         });
       }
     } catch (_) {

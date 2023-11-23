@@ -4,7 +4,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '/core/themes/light_theme.dart';
 import '/widgets/inputs/button_for_form.dart';
-import '../../widgets/onboarding/onboarding_info_widget.dart';
+import '/widgets/onboarding/onboarding_info_widget.dart';
 import 'onboarding_greeting_page_controller.dart';
 
 class GreetingOnboardingPage extends StatelessWidget {

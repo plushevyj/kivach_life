@@ -17,17 +17,18 @@ class DownloadsPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 24,
-              vertical: 10,
+          if (GetPlatform.isIOS)
+            const Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 24,
+                vertical: 10,
+              ),
+              child: Text(
+                'Скачанные файлы сохраняются в папку\n"/Device/Kivach Life".',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.grey),
+              ),
             ),
-            child: Text(
-              'Скачанные файлы сохраняются в папку\n${GetPlatform.isIOS ? '/Device/Kivach Life' : '/Внутреннее хранилище/Загрузки/Kivach Life'}',
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.grey),
-            ),
-          ),
           Expanded(
             child: Obx(
               () {

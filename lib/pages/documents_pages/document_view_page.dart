@@ -1,10 +1,13 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:doctor/core/themes/light_theme.dart';
+import 'package:doctor/modules/identity_proof/ui/identity_proof_ui.dart';
 import 'package:document_viewer/document_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:share_plus/share_plus.dart';
+
+import '/core/themes/light_theme.dart';
 
 class DocumentViewPage extends StatefulWidget {
   const DocumentViewPage({
@@ -21,7 +24,7 @@ class DocumentViewPage extends StatefulWidget {
 }
 
 class _DocumentViewPageState extends State<DocumentViewPage> {
-  String? pdfFlePath;
+  String? filePath;
 
   listenForPermission() async {
     var status = await Permission.storage.status;
@@ -40,7 +43,7 @@ class _DocumentViewPageState extends State<DocumentViewPage> {
   }
 
   void loadFile() async {
-    pdfFlePath = await fetchDocument();
+    filePath = await fetchDocument();
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
     setState(() {});
   }
@@ -57,11 +60,23 @@ class _DocumentViewPageState extends State<DocumentViewPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(widget.title),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              if (await identityProof()) {
+                await Share.shareXFiles([XFile(widget.path)]);
+              }
+            },
+            icon: const Icon(
+              Icons.share_outlined,
+            ),
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-        child: pdfFlePath != null
-            ? DocumentViewer(filePath: pdfFlePath!)
+        child: filePath != null
+            ? DocumentViewer(filePath: filePath!)
             : const Center(
                 child: CircularProgressIndicator(
                   color: KivachColors.green,

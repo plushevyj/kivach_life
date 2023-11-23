@@ -8,39 +8,40 @@ class InAppUpdateUI {
     showCupertinoDialog(
       context: context,
       builder: (ctx) {
-        return Theme(
-          data: ThemeData(
-            primarySwatch: Colors.blue,
-          ),
-          child: CupertinoAlertDialog(
-            title: const Text('Доступна новая версия приложения'),
-            content: const Text('Перейдите в AppStore для обновления'),
-            actions: [
-              CupertinoDialogAction(
-                onPressed: () => Get.back(),
-                child: const Text(
-                  'Позже',
-                  style: TextStyle(fontWeight: FontWeight.normal),
+        return CupertinoAlertDialog(
+          title: const Text('Доступна новая версия приложения'),
+          content: const Text('Перейдите в AppStore для обновления'),
+          actions: [
+            CupertinoDialogAction(
+              onPressed: () => Get.back(),
+              child: const Text(
+                'Позже',
+                style: TextStyle(
+                  fontWeight: FontWeight.normal,
+                  color: Colors.blue,
                 ),
               ),
-              CupertinoDialogAction(
-                onPressed: () {
-                  try {
-                    launchUrl(
-                      Uri.parse(
-                          'https://apps.apple.com/ru/app/kivach-life/id1594326685'),
-                      mode: LaunchMode.externalApplication,
-                    );
-                  } catch (_) {}
-                  Get.back();
-                },
-                child: const Text(
-                  'Перейти',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            CupertinoDialogAction(
+              onPressed: () {
+                try {
+                  launchUrl(
+                    Uri.parse(
+                        'https://apps.apple.com/ru/app/kivach-life/id1594326685'),
+                    mode: LaunchMode.externalApplication,
+                  );
+                } catch (_) {}
+                Get.back();
+              },
+              child: const Text(
+                'Перейти',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue,
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         );
       },
     );

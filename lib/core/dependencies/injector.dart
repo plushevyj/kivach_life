@@ -23,7 +23,6 @@ Future<void> initializeDependencies() async {
   await [
     Permission.camera,
     Permission.photos,
-    Permission.storage,
   ].request();
   await FkUserAgent.init();
 }

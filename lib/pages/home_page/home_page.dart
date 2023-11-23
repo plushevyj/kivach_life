@@ -16,10 +16,9 @@ class HomePage extends StatelessWidget {
     final homePageController = Get.put(HomePageController());
     WidgetsBinding.instance
         .addPostFrameCallback((_) => FlutterNativeSplash.remove());
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      onPopInvoked: (didPop) async {
         homePageController.webViewController?.goBack();
-        return false;
       },
       child: Scaffold(
         body: SafeArea(

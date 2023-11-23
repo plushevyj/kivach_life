@@ -1,6 +1,7 @@
-import 'package:doctor/core/themes/light_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '/core/themes/light_theme.dart';
 
 void showSuccessAlert(String message,
     {Duration duration = const Duration(seconds: 5)}) {
