@@ -22,6 +22,7 @@ class HomePageController extends GetxController {
   final canGoBack = false.obs;
   final isNarrowAppBar = true.obs;
   final progress = 0.0.obs;
+  final internetConnected = true.obs;
 
   final configController = Get.find<ConfigurationOfAppController>();
   final ConfigurationOfApp? appConfiguration =
@@ -70,6 +71,7 @@ class HomePageController extends GetxController {
     String? accessToken = await const TokenRepository().getAccessToken();
     return {
       'X-Auth': 'Bearer $accessToken',
+      // 'X-Auth': 'Bearer hu834hrnheurg8u3hrgewurtgu8wh3uwgt8uhsufg8e4y5h4uhgfuyhf9uhweeifg',
     };
   }
 

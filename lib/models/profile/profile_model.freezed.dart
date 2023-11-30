@@ -26,6 +26,7 @@ mixin _$Profile {
   bool get notificationEnabled => throw _privateConstructorUsedError;
   String get phone => throw _privateConstructorUsedError;
   Avatar? get avatar => throw _privateConstructorUsedError;
+  String? get currentDoctor => throw _privateConstructorUsedError;
   String get fullName => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -45,6 +46,7 @@ abstract class $ProfileCopyWith<$Res> {
       bool notificationEnabled,
       String phone,
       Avatar? avatar,
+      String? currentDoctor,
       String fullName});
 
   $AvatarCopyWith<$Res>? get avatar;
@@ -69,6 +71,7 @@ class _$ProfileCopyWithImpl<$Res, $Val extends Profile>
     Object? notificationEnabled = null,
     Object? phone = null,
     Object? avatar = freezed,
+    Object? currentDoctor = freezed,
     Object? fullName = null,
   }) {
     return _then(_value.copyWith(
@@ -96,6 +99,10 @@ class _$ProfileCopyWithImpl<$Res, $Val extends Profile>
           ? _value.avatar
           : avatar // ignore: cast_nullable_to_non_nullable
               as Avatar?,
+      currentDoctor: freezed == currentDoctor
+          ? _value.currentDoctor
+          : currentDoctor // ignore: cast_nullable_to_non_nullable
+              as String?,
       fullName: null == fullName
           ? _value.fullName
           : fullName // ignore: cast_nullable_to_non_nullable
@@ -130,6 +137,7 @@ abstract class _$$ProfileImplCopyWith<$Res> implements $ProfileCopyWith<$Res> {
       bool notificationEnabled,
       String phone,
       Avatar? avatar,
+      String? currentDoctor,
       String fullName});
 
   @override
@@ -153,6 +161,7 @@ class __$$ProfileImplCopyWithImpl<$Res>
     Object? notificationEnabled = null,
     Object? phone = null,
     Object? avatar = freezed,
+    Object? currentDoctor = freezed,
     Object? fullName = null,
   }) {
     return _then(_$ProfileImpl(
@@ -180,6 +189,10 @@ class __$$ProfileImplCopyWithImpl<$Res>
           ? _value.avatar
           : avatar // ignore: cast_nullable_to_non_nullable
               as Avatar?,
+      currentDoctor: freezed == currentDoctor
+          ? _value.currentDoctor
+          : currentDoctor // ignore: cast_nullable_to_non_nullable
+              as String?,
       fullName: null == fullName
           ? _value.fullName
           : fullName // ignore: cast_nullable_to_non_nullable
@@ -198,6 +211,7 @@ class _$ProfileImpl with DiagnosticableTreeMixin implements _Profile {
       required this.notificationEnabled,
       required this.phone,
       required this.avatar,
+      required this.currentDoctor,
       required this.fullName})
       : _roles = roles;
 
@@ -223,11 +237,13 @@ class _$ProfileImpl with DiagnosticableTreeMixin implements _Profile {
   @override
   final Avatar? avatar;
   @override
+  final String? currentDoctor;
+  @override
   final String fullName;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Profile(email: $email, roles: $roles, username: $username, notificationEnabled: $notificationEnabled, phone: $phone, avatar: $avatar, fullName: $fullName)';
+    return 'Profile(email: $email, roles: $roles, username: $username, notificationEnabled: $notificationEnabled, phone: $phone, avatar: $avatar, currentDoctor: $currentDoctor, fullName: $fullName)';
   }
 
   @override
@@ -241,6 +257,7 @@ class _$ProfileImpl with DiagnosticableTreeMixin implements _Profile {
       ..add(DiagnosticsProperty('notificationEnabled', notificationEnabled))
       ..add(DiagnosticsProperty('phone', phone))
       ..add(DiagnosticsProperty('avatar', avatar))
+      ..add(DiagnosticsProperty('currentDoctor', currentDoctor))
       ..add(DiagnosticsProperty('fullName', fullName));
   }
 
@@ -257,6 +274,8 @@ class _$ProfileImpl with DiagnosticableTreeMixin implements _Profile {
                 other.notificationEnabled == notificationEnabled) &&
             (identical(other.phone, phone) || other.phone == phone) &&
             (identical(other.avatar, avatar) || other.avatar == avatar) &&
+            (identical(other.currentDoctor, currentDoctor) ||
+                other.currentDoctor == currentDoctor) &&
             (identical(other.fullName, fullName) ||
                 other.fullName == fullName));
   }
@@ -271,6 +290,7 @@ class _$ProfileImpl with DiagnosticableTreeMixin implements _Profile {
       notificationEnabled,
       phone,
       avatar,
+      currentDoctor,
       fullName);
 
   @JsonKey(ignore: true)
@@ -295,6 +315,7 @@ abstract class _Profile implements Profile {
       required final bool notificationEnabled,
       required final String phone,
       required final Avatar? avatar,
+      required final String? currentDoctor,
       required final String fullName}) = _$ProfileImpl;
 
   factory _Profile.fromJson(Map<String, dynamic> json) = _$ProfileImpl.fromJson;
@@ -311,6 +332,8 @@ abstract class _Profile implements Profile {
   String get phone;
   @override
   Avatar? get avatar;
+  @override
+  String? get currentDoctor;
   @override
   String get fullName;
   @override

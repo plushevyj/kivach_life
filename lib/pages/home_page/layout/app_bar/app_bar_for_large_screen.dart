@@ -19,6 +19,7 @@ class AppBarForLargeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final avatarController = Get.put(AvatarController());
+    final profile = Get.find<AccountController>().profile.value;
     return Container(
       height: kToolbarHeight,
       width: width,
@@ -43,36 +44,95 @@ class AppBarForLargeScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                Obx(
-                  () => Skeletonizer(
-                    enabled: avatarController.avatarLoading.value,
-                    effect: ShimmerEffect(baseColor: Colors.grey.shade300),
-                    child: CircleAvatar(
-                      radius: 20,
-                      backgroundColor: const Color(0xFFD7D7D7),
-                      foregroundImage: avatarController.image?.image,
-                      child: avatarController.image == null
-                          ? const Icon(
-                              Icons.person,
-                              size: 20,
-                              color: Colors.grey,
-                            )
-                          : null,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                if (Get.find<AccountController>().profile.value != null)
-                  Flexible(
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 10),
-                      child: Text(
-                        Get.find<AccountController>().profile.value!.fullName,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(fontSize: 16),
+                if (profile != null)
+                  MenuAnchor(
+                    style: MenuStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(Colors.transparent),
+                      surfaceTintColor:
+                          MaterialStateProperty.all(Colors.transparent),
+                      padding:
+                          MaterialStateProperty.all(const EdgeInsets.all(1)),
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
                       ),
                     ),
+                    menuChildren: [
+                      if (profile.currentDoctor != null)
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 10,
+                          ),
+                          color: Colors.white,
+                          child: Row(
+                            children: [
+                              RichText(
+                                text: TextSpan(
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                  ),
+                                  children: [
+                                    const TextSpan(
+                                      text: 'Лечащий врач:\n',
+                                      style: TextStyle(color: Colors.grey),
+                                    ),
+                                    TextSpan(
+                                      text: profile.currentDoctor,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                    ],
+                    builder: (context, controller, widget) {
+                      return GestureDetector(
+                        onTap: () {
+                          controller.isOpen
+                              ? controller.close()
+                              : controller.open();
+                        },
+                        child: Row(
+                          children: [
+                            Obx(
+                              () => Skeletonizer(
+                                enabled: avatarController.avatarLoading.value,
+                                effect: ShimmerEffect(
+                                    baseColor: Colors.grey.shade300),
+                                child: CircleAvatar(
+                                  radius: 20,
+                                  backgroundColor: const Color(0xFFD7D7D7),
+                                  foregroundImage:
+                                      avatarController.image?.image,
+                                  child: avatarController.image == null
+                                      ? const Icon(
+                                          Icons.person,
+                                          size: 20,
+                                          color: Colors.grey,
+                                        )
+                                      : null,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: Text(
+                                profile.fullName,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
                   ),
               ],
             ),

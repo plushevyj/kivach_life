@@ -43,7 +43,7 @@ class InAppUpdateBloc extends Bloc<InAppUpdateEvent, InAppUpdateState> {
         });
       }
     } catch (_) {
-      rethrow;
+      // rethrow;
     }
   }
 }

@@ -15,6 +15,7 @@ class Profile with _$Profile {
     required bool notificationEnabled,
     required String phone,
     required Avatar? avatar,
+    required String? currentDoctor,
     required String fullName,
   }) = _Profile;
 

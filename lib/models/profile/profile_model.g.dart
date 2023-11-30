@@ -16,6 +16,7 @@ _$ProfileImpl _$$ProfileImplFromJson(Map<String, dynamic> json) =>
       avatar: json['avatar'] == null
           ? null
           : Avatar.fromJson(json['avatar'] as Map<String, dynamic>),
+      currentDoctor: json['currentDoctor'] as String?,
       fullName: json['fullName'] as String,
     );
 
@@ -27,5 +28,6 @@ Map<String, dynamic> _$$ProfileImplToJson(_$ProfileImpl instance) =>
       'notificationEnabled': instance.notificationEnabled,
       'phone': instance.phone,
       'avatar': instance.avatar,
+      'currentDoctor': instance.currentDoctor,
       'fullName': instance.fullName,
     };
