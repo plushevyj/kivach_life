@@ -75,8 +75,12 @@ class HomePage extends StatelessWidget {
                               homePageController.internetConnected(false);
                             }
                           },
-                          onLoadHttpError: (controller, uri, code, message) {
-
+                          onLoadHttpError:
+                              (controller, uri, code, message) async {
+                            if (code == 401 || code == 403) {
+                              homePageController.updateProfile();
+                              homePageController.loadFirstBaseSiteRoute();
+                            }
                           },
                           pullToRefreshController:
                               homePageController.pullToRefreshController,

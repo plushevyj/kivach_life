@@ -71,7 +71,6 @@ class HomePageController extends GetxController {
     String? accessToken = await const TokenRepository().getAccessToken();
     return {
       'X-Auth': 'Bearer $accessToken',
-      // 'X-Auth': 'Bearer hu834hrnheurg8u3hrgewurtgu8wh3uwgt8uhsufg8e4y5h4uhgfuyhf9uhweeifg',
     };
   }
 
@@ -115,9 +114,7 @@ class HomePageController extends GetxController {
         final checkProfileRoute = [previousRoute, lastRoute]
             .any((route) => route?.url?.path.startsWith('/profile') ?? false);
         if (checkProfileRoute) {
-          final profile = await const LoginRepository().getProfile();
-          Get.find<AccountController>().profile(profile);
-          Get.find<AvatarController>().onInit();
+          updateProfile();
         }
         navBarIndexNotifier.value = navbar!.lastIndexWhere(
           (navbarElement) => uri.path.startsWith(navbarElement.route),
@@ -173,5 +170,11 @@ class HomePageController extends GetxController {
       url: downloadStartRequest.url,
       showProgressAlert: true,
     );
+  }
+
+  void updateProfile() async {
+    final profile = await const LoginRepository().getProfile();
+    Get.find<AccountController>().profile(profile);
+    Get.find<AvatarController>().onInit();
   }
 }
