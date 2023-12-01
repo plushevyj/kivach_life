@@ -51,42 +51,30 @@ class AppBarForLargeScreen extends StatelessWidget {
                           MaterialStateProperty.all(Colors.transparent),
                       surfaceTintColor:
                           MaterialStateProperty.all(Colors.transparent),
-                      padding:
-                          MaterialStateProperty.all(const EdgeInsets.all(1)),
-                      shape: MaterialStateProperty.all(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
+                      shadowColor:
+                          MaterialStateProperty.all(Colors.transparent),
                     ),
                     menuChildren: [
+                      MenuAnchorElement(child: Text(profile.fullName)),
+                      const SizedBox(height: 5),
                       if (profile.currentDoctor != null)
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 10,
-                          ),
-                          color: Colors.white,
-                          child: Row(
-                            children: [
-                              RichText(
-                                text: TextSpan(
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 14,
-                                  ),
-                                  children: [
-                                    const TextSpan(
-                                      text: 'Лечащий врач:\n',
-                                      style: TextStyle(color: Colors.grey),
-                                    ),
-                                    TextSpan(
-                                      text: profile.currentDoctor,
-                                    ),
-                                  ],
-                                ),
+                        MenuAnchorElement(
+                          child: RichText(
+                            text: TextSpan(
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 14,
                               ),
-                            ],
+                              children: [
+                                const TextSpan(
+                                  text: 'Лечащий врач:\n',
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                                TextSpan(
+                                  text: profile.currentDoctor,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                     ],
@@ -123,7 +111,7 @@ class AppBarForLargeScreen extends StatelessWidget {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 10),
                               child: Text(
-                                profile.fullName,
+                                profile.username,
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(fontSize: 16),
@@ -143,6 +131,36 @@ class AppBarForLargeScreen extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class MenuAnchorElement extends StatelessWidget {
+  const MenuAnchorElement({super.key, required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 200,
+      padding: const EdgeInsets.symmetric(
+        horizontal: 10,
+        vertical: 10,
+      ),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.3),
+            spreadRadius: 0.5,
+            blurRadius: 0.5,
+            offset: Offset.zero, // changes position of shadow
+          ),
+        ],
+      ),
+      child: child,
     );
   }
 }

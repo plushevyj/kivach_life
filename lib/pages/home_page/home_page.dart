@@ -5,7 +5,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-import '../../core/themes/light_theme.dart';
+import '/core/themes/light_theme.dart';
 import 'home_page_controller.dart';
 import 'layout/app_bar/app_bar_for_large_screen.dart';
 
