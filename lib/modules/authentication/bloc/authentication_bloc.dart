@@ -75,7 +75,7 @@ class AuthenticationBloc
         password: event.password,
       );
       tokenRepository.saveTokens(token: token);
-      addAccessTokenInHTTPClient();
+      await addAccessTokenInHTTPClient();
       final profile = await loginRepository.getProfile();
       Get.put(AccountController(), permanent: true).profile(profile);
       emit(const Authenticated());
@@ -103,6 +103,7 @@ class AuthenticationBloc
 }
 
 void logOut() {
+  Get.delete<AccountController>(force: true);
   Get.context!.read<LocalAuthenticationBloc>().add(const LocallyLogOut());
   Get.context!.read<AuthenticationBloc>().add(const LogOut());
   Get.offAllNamed('/auth');

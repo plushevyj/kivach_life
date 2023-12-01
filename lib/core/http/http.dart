@@ -73,7 +73,7 @@ class DioClient {
   }
 }
 
-void addAccessTokenInHTTPClient() async {
+Future<void> addAccessTokenInHTTPClient() async {
   final dio = GetIt.I.get<Dio>();
   final accessToken = await const TokenRepository().getAccessToken();
   if (accessToken != null) {

@@ -21,9 +21,7 @@ Future<void> showLogOutAlert({bool isNative = false}) {
       context: Get.context!,
       builder: (ctx) {
         return Theme(
-          data: ThemeData(
-            primarySwatch: Colors.blue,
-          ),
+          data: ThemeData(),
           child: CupertinoAlertDialog(
             title: const Text(title),
             content: const Text(message),
@@ -32,7 +30,10 @@ Future<void> showLogOutAlert({bool isNative = false}) {
                 onPressed: () => Get.back(),
                 child: const Text(
                   cancelButtonText,
-                  style: TextStyle(fontWeight: FontWeight.normal),
+                  style: TextStyle(
+                    fontWeight: FontWeight.normal,
+                    color: Colors.blue,
+                  ),
                 ),
               ),
               CupertinoDialogAction(
@@ -42,7 +43,10 @@ Future<void> showLogOutAlert({bool isNative = false}) {
                         .loadBaseSiteRoute(route: '/logout'),
                 child: const Text(
                   successButtonText,
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue,
+                  ),
                 ),
               )
             ],
