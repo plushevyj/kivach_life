@@ -62,11 +62,16 @@ final lightTheme = ThemeData(
       textStyle: MaterialStateProperty.all(
         const TextStyle(fontSize: 16),
       ),
+      foregroundColor: MaterialStateProperty.all(KivachColors.green),
     ),
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ButtonStyle(
+      textStyle: MaterialStateProperty.all(
+        const TextStyle(fontSize: 16),
+      ),
       backgroundColor: MaterialStateProperty.all(KivachColors.green),
+      foregroundColor: MaterialStateProperty.all(Colors.white),
       minimumSize: MaterialStateProperty.all(
         Size(double.infinity, isSmallScreen ? 55 : 60),
       ),

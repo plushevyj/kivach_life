@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
+import '../../../modules/permissions/permissions_ui.dart';
 import 'qr_scanner_page_controller.dart';
 
 class QRScannerPage extends StatelessWidget {
@@ -27,9 +29,7 @@ class QRScannerPage extends StatelessWidget {
           Obx(
             () => IconButton(
               icon: Icon(
-                controller.flashlight.value
-                    ? Icons.flash_off
-                    : Icons.flash_on,
+                controller.flashlight.value ? Icons.flash_off : Icons.flash_on,
                 color: Colors.white,
               ),
               onPressed: () => controller.toggleFlashlight(),
@@ -49,8 +49,11 @@ class QRScannerPage extends StatelessWidget {
             left: 4,
             bottom: 4,
             child: IconButton(
-              onPressed: () {
-                controller.pickQRCodeFromGallery();
+              onPressed: () async {
+                if (await PermissionsHandlerUI.checkPermission(
+                    Permission.photos)) {
+                  controller.pickQRCodeFromGallery();
+                }
               },
               icon: const Icon(
                 Icons.photo_library_outlined,

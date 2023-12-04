@@ -96,7 +96,6 @@ Future<bool> identityProof({String? password}) async {
       ),
     ),
     barrierColor: Colors.black.withOpacity(0.5),
-    isDismissible: true,
     backgroundColor: Colors.white,
     elevation: 20,
     isScrollControlled: true,

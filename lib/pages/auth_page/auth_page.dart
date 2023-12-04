@@ -2,7 +2,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 
+import '../../modules/permissions/permissions_ui.dart';
 import '../../widgets/inputs/button_for_form.dart';
 import '../../widgets/inputs/text_field_for_form.dart';
 import '/core/themes/light_theme.dart';
@@ -87,17 +89,16 @@ class AuthorizationPage extends StatelessWidget {
                         const SizedBox(height: 20),
                         TextButton(
                           onPressed: () => Get.toNamed('/reset'),
-                          child: const Text(
-                            'Забыли пароль?',
-                            style: TextStyle(color: KivachColors.green),
-                          ),
+                          child: const Text('Забыли пароль?'),
                         ),
                         TextButton(
-                          onPressed: () => Get.toNamed('/registration/qr'),
-                          child: const Text(
-                            'Зарегистрироваться',
-                            style: TextStyle(color: KivachColors.green),
-                          ),
+                          onPressed: () async {
+                            if (await PermissionsHandlerUI.checkPermission(
+                                Permission.camera)) {
+                              Get.toNamed('/registration/qr');
+                            }
+                          },
+                          child: const Text('Зарегистрироваться'),
                         ),
                       ],
                     ),

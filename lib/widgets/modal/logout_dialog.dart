@@ -69,8 +69,6 @@ Future<void> showLogOutAlert({bool isNative = false}) {
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: KivachColors.green,
                 minimumSize: const Size(30, 40),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
