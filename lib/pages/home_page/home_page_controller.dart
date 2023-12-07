@@ -5,16 +5,16 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../models/configuration_models/configuration_of_app/configuration_of_app.dart';
-import '../../models/configuration_models/navbar_menu/navbar_menu.dart';
-import '../../models/profile/profile_model.dart';
-import '../../modules/account/controllers/account_controller.dart';
-import '../../modules/account/controllers/avatar_controller.dart';
-import '../../modules/authentication/bloc/authentication_bloc.dart';
-import '../../modules/authentication/repository/login_repository.dart';
-import '../../modules/authentication/repository/token_repository.dart';
-import '../../modules/download_document/handler/download_document_handler.dart';
-import '../../modules/opening_app/controllers/configuration_of_app_controller.dart';
+import '/models/configuration_models/configuration_of_app/configuration_of_app.dart';
+import '/models/configuration_models/navbar_menu/navbar_menu.dart';
+import '/models/profile/profile_model.dart';
+import '/modules/account/controllers/account_controller.dart';
+import '/modules/account/controllers/avatar_controller.dart';
+import '/modules/authentication/bloc/authentication_bloc.dart';
+import '/modules/authentication/repository/login_repository.dart';
+import '/modules/authentication/repository/token_repository.dart';
+import '/modules/download_document/handler/download_document_handler.dart';
+import '/modules/opening_app/controllers/configuration_of_app_controller.dart';
 
 class HomePageController extends GetxController {
   InAppWebViewController? webViewController;
