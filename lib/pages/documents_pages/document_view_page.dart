@@ -1,12 +1,12 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:doctor/modules/identity_proof/ui/identity_proof_ui.dart';
 import 'package:document_viewer/document_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../modules/identity_proof/ui/identity_proof_ui.dart';
 import '/core/themes/light_theme.dart';
 
 class DocumentViewPage extends StatefulWidget {

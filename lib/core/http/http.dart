@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
-import 'package:doctor/modules/authentication/bloc/authentication_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../modules/authentication/bloc/authentication_bloc.dart';
 import '../../modules/opening_app/controllers/configuration_of_app_controller.dart';
 import '/modules/authentication/repository/login_repository.dart';
 import '/modules/authentication/repository/token_repository.dart';

@@ -1,4 +1,3 @@
-import 'package:doctor/core/themes/light_theme.dart';
 import 'package:fk_user_agent/fk_user_agent.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' show ValueNotifier;
@@ -6,6 +5,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../core/themes/light_theme.dart';
 import '/models/configuration_models/configuration_of_app/configuration_of_app.dart';
 import '/models/configuration_models/navbar_menu/navbar_menu.dart';
 import '/models/profile/profile_model.dart';

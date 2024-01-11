@@ -1,10 +1,10 @@
-import 'package:doctor/widgets/alerts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 import '../../modules/biometric_settings/bloc/biometric_settings_bloc.dart';
 import '../../modules/local_password_settings/bloc/local_password_settings_bloc.dart';
+import '../../widgets/alerts.dart';
 import '../settings/new_local_password_page/new_local_password_page.dart';
 import '/models/onboarding_info/onboarding_info.dart';
 import '/widgets/inputs/button_for_form.dart';

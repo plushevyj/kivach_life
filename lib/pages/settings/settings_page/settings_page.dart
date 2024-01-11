@@ -1,11 +1,11 @@
-import 'package:doctor/pages/home_page/home_page_controller.dart';
-import 'package:doctor/pages/settings/dowloads_page/downloads_page.dart';
-import 'package:doctor/widgets/alerts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
+import '../../../widgets/alerts.dart';
 import '../../../widgets/modal/logout_dialog.dart';
+import '../../home_page/home_page_controller.dart';
+import '../dowloads_page/downloads_page.dart';
 import '/pages/settings/new_local_password_page/new_local_password_page.dart';
 import '/modules/local_password_settings/bloc/local_password_settings_bloc.dart';
 import '/core/themes/light_theme.dart';

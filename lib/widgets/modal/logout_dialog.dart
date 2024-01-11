@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:doctor/modules/authentication/bloc/authentication_bloc.dart';
-import 'package:doctor/pages/home_page/home_page_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../modules/authentication/bloc/authentication_bloc.dart';
+import '../../pages/home_page/home_page_controller.dart';
 import '/core/themes/light_theme.dart';
 
 Future<void> showLogOutAlert({bool isNative = false}) {

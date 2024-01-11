@@ -1,8 +1,8 @@
-import 'package:doctor/pages/documents_pages/document_view_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../core/themes/light_theme.dart';
+import '../../documents_pages/document_view_page.dart';
 import 'downloads_page_controller.dart';
 
 class DownloadsPage extends StatelessWidget {

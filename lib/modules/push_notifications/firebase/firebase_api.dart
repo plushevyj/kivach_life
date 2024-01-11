@@ -1,8 +1,8 @@
-import 'package:doctor/modules/local_authentication/bloc/local_authentication_bloc.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
+import '../../local_authentication/bloc/local_authentication_bloc.dart';
 import '../../opening_app/controllers/configuration_of_app_controller.dart';
 import '/modules/push_notifications/repository/push_notifications_repository.dart';
 import '/widgets/alerts.dart';
