@@ -1,5 +1,6 @@
 import 'package:doctor/core/themes/light_theme.dart';
 import 'package:fk_user_agent/fk_user_agent.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' show ValueNotifier;
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
@@ -31,13 +32,14 @@ class HomePageController extends GetxController {
   PullToRefreshController? pullToRefreshController;
 
   late final List<NavbarMenu>? navbar;
-  final navBarIndexNotifier = ValueNotifier(0);
+  final ValueNotifier<int?> navBarIndexNotifier = ValueNotifier(0);
 
   @override
   void onInit() async {
     navbar = appConfiguration?.NAVBAR
-        .firstWhere((navbarModel) => profile!.roles.contains(navbarModel.role))
-        .menu;
+        .firstWhereOrNull(
+            (navbarModel) => profile!.roles.contains(navbarModel.role))
+        ?.menu;
     loadFirstBaseSiteRoute();
     configController.payloadRoute.listen((route) {
       if (route != null) {
@@ -116,7 +118,7 @@ class HomePageController extends GetxController {
         if (checkProfileRoute) {
           updateProfile();
         }
-        navBarIndexNotifier.value = navbar!.lastIndexWhere(
+        navBarIndexNotifier.value = navbar?.lastIndexWhere(
           (navbarElement) => uri.path.startsWith(navbarElement.route),
         );
       }

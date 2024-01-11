@@ -118,41 +118,44 @@ class HomePage extends StatelessWidget {
                   ],
                 ),
               ),
-              bottomNavigationBar: ValueListenableBuilder(
-                valueListenable: homePageController.navBarIndexNotifier,
-                builder: (_, currentIndex, __) {
-                  return BottomNavigationBar(
-                    backgroundColor: null,
-                    currentIndex: currentIndex,
-                    onTap: (index) {
-                      homePageController.navBarIndexNotifier.value = index;
-                      homePageController.loadBaseSiteRoute(
-                          route: homePageController.navbar![index].route);
-                    },
-                    enableFeedback: false,
-                    selectedIconTheme: const IconThemeData(size: 24),
-                    unselectedIconTheme: const IconThemeData(size: 24),
-                    selectedLabelStyle: const TextStyle(fontSize: 10),
-                    unselectedLabelStyle: const TextStyle(fontSize: 10),
-                    selectedItemColor: KivachColors.green,
-                    unselectedItemColor: const Color(0xFFAEB2BA),
-                    type: BottomNavigationBarType.fixed,
-                    items: homePageController.navbar!
-                        .map(
-                          (element) => BottomNavigationBarItem(
-                            icon: Icon(
-                              IconData(
-                                int.parse(element.icon),
-                                fontFamily: 'MaterialIcons',
-                              ),
-                            ),
-                            label: element.label,
-                          ),
-                        )
-                        .toList(),
-                  );
-                },
-              ),
+              bottomNavigationBar: homePageController.navbar != null
+                  ? ValueListenableBuilder(
+                      valueListenable: homePageController.navBarIndexNotifier,
+                      builder: (_, currentIndex, __) {
+                        return BottomNavigationBar(
+                          backgroundColor: null,
+                          currentIndex: currentIndex!,
+                          onTap: (index) {
+                            homePageController.navBarIndexNotifier.value =
+                                index;
+                            homePageController.loadBaseSiteRoute(
+                                route: homePageController.navbar![index].route);
+                          },
+                          enableFeedback: false,
+                          selectedIconTheme: const IconThemeData(size: 24),
+                          unselectedIconTheme: const IconThemeData(size: 24),
+                          selectedLabelStyle: const TextStyle(fontSize: 10),
+                          unselectedLabelStyle: const TextStyle(fontSize: 10),
+                          selectedItemColor: KivachColors.green,
+                          unselectedItemColor: const Color(0xFFAEB2BA),
+                          type: BottomNavigationBarType.fixed,
+                          items: homePageController.navbar!
+                              .map(
+                                (element) => BottomNavigationBarItem(
+                                  icon: Icon(
+                                    IconData(
+                                      int.parse(element.icon),
+                                      fontFamily: 'MaterialIcons',
+                                    ),
+                                  ),
+                                  label: element.label,
+                                ),
+                              )
+                              .toList(),
+                        );
+                      },
+                    )
+                  : null,
             ),
             if (!homePageController.internetConnected.value)
               Scaffold(
