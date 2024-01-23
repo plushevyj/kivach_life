@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import '../../modules/biometric_settings/bloc/biometric_settings_bloc.dart';
 import '../../modules/local_password_settings/bloc/local_password_settings_bloc.dart';
 import '../../widgets/alerts.dart';
-import '../settings/new_local_password_page/new_local_password_page.dart';
+import '../settings_pages/new_local_password_page/new_local_password_page.dart';
 import '/models/onboarding_info/onboarding_info.dart';
 import '/widgets/inputs/button_for_form.dart';
 import '/widgets/onboarding/onboarding_info_widget.dart';

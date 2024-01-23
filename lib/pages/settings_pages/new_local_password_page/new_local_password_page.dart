@@ -6,7 +6,7 @@ import 'package:animations/animations.dart';
 import '/modules/local_password_settings/bloc/local_password_settings_bloc.dart';
 import '/widgets/local_password/local_password_settings_body.dart';
 import '/widgets/alerts.dart';
-import '/pages/settings/new_local_password_page/new_password_controller.dart';
+import 'new_password_controller.dart';
 
 class NewLocalPasswordPage extends StatelessWidget {
   const NewLocalPasswordPage({Key? key}) : super(key: key);

@@ -5,12 +5,12 @@ import 'package:get/get.dart';
 import 'package:intl_phone_field/country_picker_dialog.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
+import '../../../modules/reset_password_by_sms/bloc/reset_password_bloc.dart';
 import '../code_reset_page/code_reset_page.dart';
-import '/modules/reset_password/bloc/reset_password_bloc.dart';
 import '/widgets/inputs/button_for_form.dart';
 import '../../../core/themes/light_theme.dart';
 import '../../../widgets/alerts.dart';
-import 'reset_controller.dart';
+import 'reset_password_by_sms_password_controller.dart';
 
 class ResetPage extends StatelessWidget {
   const ResetPage({super.key});
@@ -98,7 +98,12 @@ class ResetPage extends StatelessWidget {
                       ? const CircularProgressIndicator(color: Colors.white)
                       : null,
                 ),
-              )
+              ),
+              const SizedBox(height: 20),
+              TextButton(
+                onPressed: () => Get.offNamed('/reset/email'),
+                child: const Text('Восстановить пароль по e-mail'),
+              ),
             ],
           ),
         ),

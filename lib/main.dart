@@ -19,7 +19,8 @@ import 'modules/in_app_update/bloc/in_app_update_bloc.dart';
 import 'modules/opening_app/bloc/opening_app_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'modules/push_notifications/firebase/firebase_api.dart';
-import 'modules/reset_password/bloc/reset_password_bloc.dart';
+import 'modules/reset_password_by_email/bloc/reset_password_by_email_bloc.dart';
+import 'modules/reset_password_by_sms/bloc/reset_password_bloc.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
@@ -49,6 +50,7 @@ class App extends StatelessWidget {
             create: (_) =>
                 AuthenticationBloc()..add(const AuthenticateByToken())),
         BlocProvider(create: (_) => LocalAuthenticationBloc()),
+        BlocProvider(create: (_) => ResetPasswordByEmailBloc()),
         BlocProvider(create: (_) => ResetPasswordBloc()),
         BlocProvider(create: (_) => localPasswordSettingBloc),
         BlocProvider(

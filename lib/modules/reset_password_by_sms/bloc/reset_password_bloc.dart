@@ -2,7 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 
 import '/modules/authentication/repository/token_repository.dart';
-import '../repository/reset_password_repository.dart';
+import '../repository/reset_password_by_sms_repository.dart';
 
 part 'reset_password_event.dart';
 part 'reset_password_state.dart';
@@ -15,7 +15,7 @@ class ResetPasswordBloc extends Bloc<ResetPasswordEvent, ResetPasswordState> {
     on<GetReadyToSendData>(_onGetReadyToSendData);
   }
 
-  final _resetPasswordRepository = ResetPasswordRepository();
+  final _resetPasswordRepository = ResetPasswordBySmsRepository();
   final _tokenRepository = const TokenRepository();
   String? _phone;
 

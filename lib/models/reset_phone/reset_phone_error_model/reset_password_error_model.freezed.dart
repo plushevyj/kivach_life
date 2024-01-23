@@ -22,6 +22,7 @@ ResetPasswordErrorModel _$ResetPasswordErrorModelFromJson(
 /// @nodoc
 mixin _$ResetPasswordErrorModel {
   List<String>? get phone => throw _privateConstructorUsedError;
+  List<String>? get email => throw _privateConstructorUsedError;
   int? get remainingTime => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -36,7 +37,7 @@ abstract class $ResetPasswordErrorModelCopyWith<$Res> {
           $Res Function(ResetPasswordErrorModel) then) =
       _$ResetPasswordErrorModelCopyWithImpl<$Res, ResetPasswordErrorModel>;
   @useResult
-  $Res call({List<String>? phone, int? remainingTime});
+  $Res call({List<String>? phone, List<String>? email, int? remainingTime});
 }
 
 /// @nodoc
@@ -54,12 +55,17 @@ class _$ResetPasswordErrorModelCopyWithImpl<$Res,
   @override
   $Res call({
     Object? phone = freezed,
+    Object? email = freezed,
     Object? remainingTime = freezed,
   }) {
     return _then(_value.copyWith(
       phone: freezed == phone
           ? _value.phone
           : phone // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+      email: freezed == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
               as List<String>?,
       remainingTime: freezed == remainingTime
           ? _value.remainingTime
@@ -78,7 +84,7 @@ abstract class _$$ResetPasswordErrorModelImplCopyWith<$Res>
       __$$ResetPasswordErrorModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<String>? phone, int? remainingTime});
+  $Res call({List<String>? phone, List<String>? email, int? remainingTime});
 }
 
 /// @nodoc
@@ -95,12 +101,17 @@ class __$$ResetPasswordErrorModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? phone = freezed,
+    Object? email = freezed,
     Object? remainingTime = freezed,
   }) {
     return _then(_$ResetPasswordErrorModelImpl(
       phone: freezed == phone
           ? _value._phone
           : phone // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+      email: freezed == email
+          ? _value._email
+          : email // ignore: cast_nullable_to_non_nullable
               as List<String>?,
       remainingTime: freezed == remainingTime
           ? _value.remainingTime
@@ -116,8 +127,11 @@ class _$ResetPasswordErrorModelImpl
     with DiagnosticableTreeMixin
     implements _ResetPasswordErrorModel {
   const _$ResetPasswordErrorModelImpl(
-      {final List<String>? phone, this.remainingTime})
-      : _phone = phone;
+      {final List<String>? phone,
+      final List<String>? email,
+      this.remainingTime})
+      : _phone = phone,
+        _email = email;
 
   factory _$ResetPasswordErrorModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ResetPasswordErrorModelImplFromJson(json);
@@ -132,12 +146,22 @@ class _$ResetPasswordErrorModelImpl
     return EqualUnmodifiableListView(value);
   }
 
+  final List<String>? _email;
+  @override
+  List<String>? get email {
+    final value = _email;
+    if (value == null) return null;
+    if (_email is EqualUnmodifiableListView) return _email;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   final int? remainingTime;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ResetPasswordErrorModel(phone: $phone, remainingTime: $remainingTime)';
+    return 'ResetPasswordErrorModel(phone: $phone, email: $email, remainingTime: $remainingTime)';
   }
 
   @override
@@ -146,6 +170,7 @@ class _$ResetPasswordErrorModelImpl
     properties
       ..add(DiagnosticsProperty('type', 'ResetPasswordErrorModel'))
       ..add(DiagnosticsProperty('phone', phone))
+      ..add(DiagnosticsProperty('email', email))
       ..add(DiagnosticsProperty('remainingTime', remainingTime));
   }
 
@@ -155,6 +180,7 @@ class _$ResetPasswordErrorModelImpl
         (other.runtimeType == runtimeType &&
             other is _$ResetPasswordErrorModelImpl &&
             const DeepCollectionEquality().equals(other._phone, _phone) &&
+            const DeepCollectionEquality().equals(other._email, _email) &&
             (identical(other.remainingTime, remainingTime) ||
                 other.remainingTime == remainingTime));
   }
@@ -162,7 +188,10 @@ class _$ResetPasswordErrorModelImpl
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_phone), remainingTime);
+      runtimeType,
+      const DeepCollectionEquality().hash(_phone),
+      const DeepCollectionEquality().hash(_email),
+      remainingTime);
 
   @JsonKey(ignore: true)
   @override
@@ -182,6 +211,7 @@ class _$ResetPasswordErrorModelImpl
 abstract class _ResetPasswordErrorModel implements ResetPasswordErrorModel {
   const factory _ResetPasswordErrorModel(
       {final List<String>? phone,
+      final List<String>? email,
       final int? remainingTime}) = _$ResetPasswordErrorModelImpl;
 
   factory _ResetPasswordErrorModel.fromJson(Map<String, dynamic> json) =
@@ -189,6 +219,8 @@ abstract class _ResetPasswordErrorModel implements ResetPasswordErrorModel {
 
   @override
   List<String>? get phone;
+  @override
+  List<String>? get email;
   @override
   int? get remainingTime;
   @override

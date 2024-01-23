@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 import '../../../core/themes/light_theme.dart';
+import '../../../modules/reset_password_by_sms/bloc/reset_password_bloc.dart';
 import 'code_reset_controller.dart';
 import '/modules/authentication/bloc/authentication_bloc.dart';
-import '/modules/reset_password/bloc/reset_password_bloc.dart';
 import '/widgets/inputs/button_for_form.dart';
 import '/widgets/inputs/text_field_for_form.dart';
 

@@ -6,7 +6,7 @@ import '/models/token_model/token_model.dart';
 import '../../../core/http/request_handler.dart';
 import '../../../core/utils/convert_to.dart';
 
-class ResetPasswordRepository {
+class ResetPasswordBySmsRepository {
   static final _dio = GetIt.I.get<Dio>();
 
   Future<int?> checkNumber({

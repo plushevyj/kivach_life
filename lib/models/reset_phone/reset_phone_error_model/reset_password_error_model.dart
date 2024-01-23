@@ -8,6 +8,7 @@ part 'reset_password_error_model.g.dart';
 class ResetPasswordErrorModel with _$ResetPasswordErrorModel {
   const factory ResetPasswordErrorModel({
     List<String>? phone,
+    List<String>? email,
     int? remainingTime,
   }) = _ResetPasswordErrorModel;
 

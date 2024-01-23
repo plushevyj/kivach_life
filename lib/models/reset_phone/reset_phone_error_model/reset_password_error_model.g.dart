@@ -11,6 +11,8 @@ _$ResetPasswordErrorModelImpl _$$ResetPasswordErrorModelImplFromJson(
     _$ResetPasswordErrorModelImpl(
       phone:
           (json['phone'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      email:
+          (json['email'] as List<dynamic>?)?.map((e) => e as String).toList(),
       remainingTime: json['remainingTime'] as int?,
     );
 
@@ -18,5 +20,6 @@ Map<String, dynamic> _$$ResetPasswordErrorModelImplToJson(
         _$ResetPasswordErrorModelImpl instance) =>
     <String, dynamic>{
       'phone': instance.phone,
+      'email': instance.email,
       'remainingTime': instance.remainingTime,
     };

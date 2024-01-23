@@ -1,7 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
-import '../../../modules/reset_password/bloc/reset_password_bloc.dart';
+import '../../../modules/reset_password_by_sms/bloc/reset_password_bloc.dart';
+
 
 class ResetPageController extends GetxController {
   String? phoneErrorMessage;

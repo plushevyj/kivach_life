@@ -3,7 +3,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 
 import '../../modules/local_authentication/repository/local_authentication_repository.dart';
-import '../settings/new_local_password_page/new_password_controller.dart';
+import '../settings_pages/new_local_password_page/new_password_controller.dart';
 
 class OnboardingSettingsPageController extends GetxController {
   static const animationDurationInMilliseconds = 300;

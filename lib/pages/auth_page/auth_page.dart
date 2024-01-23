@@ -88,7 +88,7 @@ class AuthorizationPage extends StatelessWidget {
                         ),
                         const SizedBox(height: 20),
                         TextButton(
-                          onPressed: () => Get.toNamed('/reset'),
+                          onPressed: () => Get.toNamed('/reset/sms'),
                           child: const Text('Забыли пароль?'),
                         ),
                         TextButton(
