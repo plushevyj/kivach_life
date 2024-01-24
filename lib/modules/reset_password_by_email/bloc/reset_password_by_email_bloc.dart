@@ -21,6 +21,7 @@ class ResetPasswordByEmailBloc
     emit(const LoadingResetPasswordByEmailState());
     try {
       await _resetPasswordByEmailRepository.sendEmail(email: event.email);
+      emit(const SentEmailState());
     } catch (error) {
       emit(ErrorResetPasswordByEmailState(message: error.toString()));
     }

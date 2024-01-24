@@ -18,13 +18,15 @@ class ResetPasswordByEmailPage extends StatelessWidget {
         Get.put(ResetPasswordByEmailController());
     return BlocListener<ResetPasswordByEmailBloc, ResetPasswordByEmailState>(
       listener: (context, state) {
-        resetPasswordByEmailController.isLoading(false);
         if (state is SentEmailState) {
           showSuccessAlert(
               'На вашу почту отправлено письмо. Следуйте инструкции.');
           Navigator.of(context).pop();
+          resetPasswordByEmailController.isLoading(false);
         } else if (state is ErrorResetPasswordByEmailState) {
-          resetPasswordByEmailController.emailErrorMessage.value = state.message;
+          resetPasswordByEmailController.emailErrorMessage.value =
+              state.message;
+          resetPasswordByEmailController.isLoading(false);
         }
       },
       child: Scaffold(
@@ -55,11 +57,11 @@ class ResetPasswordByEmailPage extends StatelessWidget {
               const SizedBox(height: 20),
               Obx(
                 () => ButtonForForm(
-                  onPressed: () {
-                    resetPasswordByEmailController.sendPhoneNumber(
-                        resetPasswordByEmailController
-                            .emailTextFieldController.text);
-                  },
+                  onPressed: !resetPasswordByEmailController.isLoading.value
+                      ? () => resetPasswordByEmailController.sendEmail(
+                          resetPasswordByEmailController
+                              .emailTextFieldController.text)
+                      : null,
                   text: !resetPasswordByEmailController.isLoading.value
                       ? 'Получить письмо для подтверждения'
                       : null,

@@ -9,10 +9,9 @@ class ResetPasswordByEmailController extends GetxController {
 
   final emailTextFieldController = TextEditingController();
 
-  final isValidate = true.obs;
   final isLoading = false.obs;
 
-  void sendPhoneNumber(String email) {
+  void sendEmail(String email) {
     isLoading(true);
     Get.context!
         .read<ResetPasswordByEmailBloc>()
