@@ -81,15 +81,25 @@ class QRScannerPageController extends GetxController {
 
   void qrCodeHandler(String qrcode) async {
     try {
-      const pattern = 'register?_token=';
-      if (qrcode.contains(pattern)) {
-        final registrationToken = qrcode.split(pattern)[1];
+      const registrationPattern = 'register?_token=';
+      const loginPattern = 'login?_token=';
+      if (qrcode.contains(registrationPattern)) {
+        final registrationToken = qrcode.split(registrationPattern)[1];
         final profilePreview = await _registrationRepository
             .checkRegistrationToken(registrationToken);
         Get.off(() => RegistrationPage(
               registrationToken: registrationToken,
               profilePreview: profilePreview,
             ));
+        return;
+      } else if (qrcode.contains(loginPattern)) {
+        final loginToken = qrcode.split(loginPattern)[1];
+        // final profilePreview = await _registrationRepository
+        //     .checkRegistrationToken(loginPattern);
+        // Get.off(() => RegistrationPage(
+        //   registrationToken: loginPattern,
+        //   profilePreview: profilePreview,
+        // ));
         return;
       }
       showErrorAlert('Неверный QR-код.');

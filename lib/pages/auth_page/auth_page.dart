@@ -98,7 +98,7 @@ class AuthorizationPage extends StatelessWidget {
                               Get.toNamed('/registration/qr');
                             }
                           },
-                          child: const Text('Зарегистрироваться'),
+                          child: const Text('Сканировать QR-код'),
                         ),
                       ],
                     ),
