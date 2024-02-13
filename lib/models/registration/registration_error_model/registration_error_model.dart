@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 
-import '../plain_password/plain_password.dart';
+import '../plain_password_model/plain_password.dart';
 
 part 'registration_error_model.freezed.dart';
 part 'registration_error_model.g.dart';

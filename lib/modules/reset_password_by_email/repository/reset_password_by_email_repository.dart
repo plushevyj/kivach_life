@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import '../../../core/http/request_handler.dart';
 import '../../../core/utils/convert_to.dart';
 import '../../../models/reset_phone/reset_phone_error_model/reset_password_error_model.dart';
+import '../../../models/token_model/token_model.dart';
 
 class ResetPasswordByEmailRepository {
   static final _dio = GetIt.I.get<Dio>();
@@ -13,11 +14,13 @@ class ResetPasswordByEmailRepository {
   }) async {
     final data = {'email_pass_reset[email]': email};
     try {
-      await _dio.post(
-        '/api/reset/email',
-        data: data,
-        options: Options(
-          headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      await handleRequest(
+        () => _dio.post(
+          '/api/reset/email',
+          data: data,
+          options: Options(
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+          ),
         ),
       );
     } on DioException catch (error) {
@@ -36,5 +39,15 @@ class ResetPasswordByEmailRepository {
     } catch (_) {
       rethrow;
     }
+  }
+
+  Future<TokenModel> sendCode({
+    required String token,
+  }) async {
+    final response = await _dio.get(
+      '/api/by_token',
+      queryParameters: {'_token': token},
+    );
+    return ConvertTo<TokenModel>().item(response.data, TokenModel.fromJson);
   }
 }

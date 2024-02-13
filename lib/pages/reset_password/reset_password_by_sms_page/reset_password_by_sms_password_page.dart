@@ -102,7 +102,10 @@ class ResetPage extends StatelessWidget {
               const SizedBox(height: 20),
               TextButton(
                 onPressed: () => Get.offNamed('/reset/email'),
-                child: const Text('Восстановить пароль по e-mail'),
+                child: const Text(
+                  'Восстановить пароль по e-mail',
+                  textAlign: TextAlign.center,
+                ),
               ),
             ],
           ),

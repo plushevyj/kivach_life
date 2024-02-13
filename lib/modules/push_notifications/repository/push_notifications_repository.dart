@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:fk_user_agent/fk_user_agent.dart';
 import 'package:get_it/get_it.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import '/core/http/request_handler.dart';
 
@@ -12,6 +13,7 @@ class PushNotificationsRepository {
   Future<void> setTokenPushNotifications({
     required String token,
   }) async {
+    final appVersion = (await PackageInfo.fromPlatform()).version;
     final data = {'token': token};
     await handleRequest(
       () => _dio.post(
@@ -20,7 +22,8 @@ class PushNotificationsRepository {
         options: Options(
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
-            'User-Agent': FkUserAgent.userAgent ?? 'Unknown',
+            'User-Agent':
+                '${FkUserAgent.userAgent ?? 'Unknown'} KivachLife/$appVersion',
           },
         ),
       ),

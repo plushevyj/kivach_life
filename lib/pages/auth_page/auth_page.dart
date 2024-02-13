@@ -95,7 +95,7 @@ class AuthorizationPage extends StatelessWidget {
                           onPressed: () async {
                             if (await PermissionsHandlerUI.checkPermission(
                                 Permission.camera)) {
-                              Get.toNamed('/registration/qr');
+                              Get.toNamed('/qr');
                             }
                           },
                           child: const Text('Сканировать QR-код'),

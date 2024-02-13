@@ -1,13 +1,17 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:scan/scan.dart';
 
-import '../registration_page/registration_page.dart';
+import '../../../modules/authentication/bloc/authentication_bloc.dart';
+import '../../../modules/authentication/repository/token_repository.dart';
+import '../../../modules/reset_password_by_email/repository/reset_password_by_email_repository.dart';
+import '../registration/registration_page/registration_page.dart';
 import '/widgets/alerts.dart';
 import '../../../modules/registration/repository/registration_repository.dart';
 
@@ -16,6 +20,8 @@ class QRScannerPageController extends GetxController {
   final flashlight = false.obs;
   QRViewController? qrViewController;
   final _registrationRepository = const RegistrationRepository();
+  final _resetPasswordByEmailRepository = ResetPasswordByEmailRepository();
+  final _tokenRepository = const TokenRepository();
   final errorAlertAllow = true.obs;
 
   @override
@@ -94,12 +100,10 @@ class QRScannerPageController extends GetxController {
         return;
       } else if (qrcode.contains(loginPattern)) {
         final loginToken = qrcode.split(loginPattern)[1];
-        // final profilePreview = await _registrationRepository
-        //     .checkRegistrationToken(loginPattern);
-        // Get.off(() => RegistrationPage(
-        //   registrationToken: loginPattern,
-        //   profilePreview: profilePreview,
-        // ));
+        final tokenDto = await _resetPasswordByEmailRepository.sendCode(token: loginToken);
+        await _tokenRepository.saveTokens(token: tokenDto);
+        BlocProvider.of<AuthenticationBloc>(Get.context!)
+            .add(const AuthenticateByToken());
         return;
       }
       showErrorAlert('Неверный QR-код.');

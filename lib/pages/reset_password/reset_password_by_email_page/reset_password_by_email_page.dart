@@ -20,8 +20,8 @@ class ResetPasswordByEmailPage extends StatelessWidget {
       listener: (context, state) {
         if (state is SentEmailState) {
           showSuccessAlert(
-              'На вашу почту отправлено письмо. Следуйте инструкции.');
-          Navigator.of(context).pop();
+              'На вашу почту отправлено письмо с QR-кодом. Отсканируйте его для доступа к вашему аккаунту.');
+          Get.offNamed('/qr');
           resetPasswordByEmailController.isLoading(false);
         } else if (state is ErrorResetPasswordByEmailState) {
           resetPasswordByEmailController.emailErrorMessage.value =
@@ -73,7 +73,10 @@ class ResetPasswordByEmailPage extends StatelessWidget {
               const SizedBox(height: 20),
               TextButton(
                 onPressed: () => Get.offNamed('/reset/sms'),
-                child: const Text('Восстановить пароль по номеру телефона'),
+                child: const Text(
+                  'Восстановить пароль по номеру телефона',
+                  textAlign: TextAlign.center,
+                ),
               ),
             ],
           ),
