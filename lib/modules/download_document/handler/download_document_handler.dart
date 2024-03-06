@@ -87,7 +87,7 @@ class DownloadDocumentHandler {
         );
       }
     } catch (error) {
-      showErrorAlert(error.toString());
+      showErrorAlert('Повторите попытку позже.');
     }
     return '${saveDirectory.path}/$finalFileName';
   }

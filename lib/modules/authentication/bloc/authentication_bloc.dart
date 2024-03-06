@@ -80,7 +80,7 @@ class AuthenticationBloc
       Get.put(AccountController(), permanent: true).profile(profile);
       emit(const Authenticated());
     } catch (error) {
-      emit(AuthenticationError(error.toString()));
+      emit(const AuthenticationError('Повторите попытку позже.'));
       tokenRepository.clearTokens();
       emit(const Unauthenticated());
       _localAuthenticationRepository
