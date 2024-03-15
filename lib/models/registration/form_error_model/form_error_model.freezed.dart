@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'registration_error_model.dart';
+part of 'form_error_model.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,13 +14,13 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-RegistrationErrorModel _$RegistrationErrorModelFromJson(
+FormErrorModel _$RegistrationErrorModelFromJson(
     Map<String, dynamic> json) {
-  return _RegistrationErrorModel.fromJson(json);
+  return _FormErrorModel.fromJson(json);
 }
 
 /// @nodoc
-mixin _$RegistrationErrorModel {
+mixin _$FormErrorModel {
   List<String>? get username => throw _privateConstructorUsedError;
   List<String>? get email => throw _privateConstructorUsedError;
   List<String>? get phone => throw _privateConstructorUsedError;
@@ -29,15 +29,15 @@ mixin _$RegistrationErrorModel {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $RegistrationErrorModelCopyWith<RegistrationErrorModel> get copyWith =>
+  $RegistrationErrorModelCopyWith<FormErrorModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $RegistrationErrorModelCopyWith<$Res> {
-  factory $RegistrationErrorModelCopyWith(RegistrationErrorModel value,
-          $Res Function(RegistrationErrorModel) then) =
-      _$RegistrationErrorModelCopyWithImpl<$Res, RegistrationErrorModel>;
+  factory $RegistrationErrorModelCopyWith(FormErrorModel value,
+          $Res Function(FormErrorModel) then) =
+      _$RegistrationErrorModelCopyWithImpl<$Res, FormErrorModel>;
   @useResult
   $Res call(
       {List<String>? username,
@@ -51,7 +51,7 @@ abstract class $RegistrationErrorModelCopyWith<$Res> {
 
 /// @nodoc
 class _$RegistrationErrorModelCopyWithImpl<$Res,
-        $Val extends RegistrationErrorModel>
+        $Val extends FormErrorModel>
     implements $RegistrationErrorModelCopyWith<$Res> {
   _$RegistrationErrorModelCopyWithImpl(this._value, this._then);
 
@@ -174,7 +174,7 @@ class __$$RegistrationErrorModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$RegistrationErrorModelImpl
     with DiagnosticableTreeMixin
-    implements _RegistrationErrorModel {
+    implements _FormErrorModel {
   const _$RegistrationErrorModelImpl(
       {final List<String>? username,
       final List<String>? email,
@@ -287,15 +287,15 @@ class _$RegistrationErrorModelImpl
   }
 }
 
-abstract class _RegistrationErrorModel implements RegistrationErrorModel {
-  const factory _RegistrationErrorModel(
+abstract class _FormErrorModel implements FormErrorModel {
+  const factory _FormErrorModel(
       {final List<String>? username,
       final List<String>? email,
       final List<String>? phone,
       final PlainPassword? plainPassword,
       final List<String>? agreeTerms}) = _$RegistrationErrorModelImpl;
 
-  factory _RegistrationErrorModel.fromJson(Map<String, dynamic> json) =
+  factory _FormErrorModel.fromJson(Map<String, dynamic> json) =
       _$RegistrationErrorModelImpl.fromJson;
 
   @override

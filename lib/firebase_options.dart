@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyC7dxedYlj__DWYgZG9ieooi3Kb8TbFNtg',
-    appId: '1:138952236791:android:c21110c7c76bc2ce37fdf2',
+    appId: '1:138952236791:android:ad39d8295ecdf4e337fdf2',
     messagingSenderId: '138952236791',
     projectId: 'kivach-test',
     storageBucket: 'kivach-test.appspot.com',

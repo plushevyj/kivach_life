@@ -5,6 +5,8 @@ import 'package:logger/logger.dart';
 
 final _logger = Logger();
 
+const constMessageError = 'Неизвестная ошибка. Повторите попытку позже.';
+
 Future<Response> handleRequest(dynamic request) async {
   try {
     return await request();
@@ -21,8 +23,8 @@ Future<Response> handleRequest(dynamic request) async {
         error.error.runtimeType == HandshakeException) {
       throw 'Ошибка соединения с сервером или отсутствует подключение к интернету';
     }
-    throw error.response?.data['message'] ?? error.error;
+    throw error.response?.data['message'] ?? constMessageError;
   } catch (error) {
-    rethrow;
+    throw constMessageError;
   }
 }

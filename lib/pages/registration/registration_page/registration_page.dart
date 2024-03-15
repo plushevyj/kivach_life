@@ -178,7 +178,7 @@ class RegistrationPage extends StatelessWidget {
                                       showProgressAlert: false,
                                     );
                                     if (path != null) {
-                                      Get.to(DocumentViewPage(
+                                      Get.to(() => DocumentViewPage(
                                         title: 'Пользовательское соглашение',
                                         path: path,
                                       ));
@@ -200,7 +200,7 @@ class RegistrationPage extends StatelessWidget {
                                       showProgressAlert: false,
                                     );
                                     if (path != null) {
-                                      Get.to(DocumentViewPage(
+                                      Get.to(() => DocumentViewPage(
                                         title:
                                             'Политика обработки персональных данных',
                                         path: path,

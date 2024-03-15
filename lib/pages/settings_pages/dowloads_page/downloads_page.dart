@@ -90,7 +90,7 @@ class _FileButton extends StatelessWidget {
       ),
       clipBehavior: Clip.antiAlias,
       onPressed: name.contains(RegExp(r'.pdf|.doc|.docx'))
-          ? () => Get.to(DocumentViewPage(path: path))
+          ? () => Get.to(() => DocumentViewPage(path: path))
           : () {},
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

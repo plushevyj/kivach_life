@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:138952236791:android:c21110c7c76bc2ce37fdf2",
         "android_client_info": {
-          "package_name": "ru.kivach.life"
+          "package_name": "ru.kivach.doctor"
         }
       },
       "oauth_client": [
@@ -43,9 +43,9 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:138952236791:android:d8a068527c18d07037fdf2",
+        "mobilesdk_app_id": "1:138952236791:android:ad39d8295ecdf4e337fdf2",
         "android_client_info": {
-          "package_name": "test.kivach.doctor"
+          "package_name": "ru.kivach.life"
         }
       },
       "oauth_client": [

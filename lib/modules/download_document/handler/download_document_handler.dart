@@ -73,7 +73,7 @@ class DownloadDocumentHandler {
               ['pdf', 'doc', 'docx'].contains(finalFileName.split('.').last)
                   ? TextButton(
                       onPressed: () {
-                        Get.to(DocumentViewPage(
+                        Get.to(() => DocumentViewPage(
                             path: '${saveDirectory?.path}/$finalFileName'));
                         Get.closeCurrentSnackbar();
                       },

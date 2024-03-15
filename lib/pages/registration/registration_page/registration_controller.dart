@@ -8,7 +8,7 @@ import '../../../models/user/user_model.dart';
 import '/widgets/alerts.dart';
 import '/modules/authentication/bloc/authentication_bloc.dart';
 import '../../../core/utils/convert_to.dart';
-import '../../../models/registration/registration_error_model/registration_error_model.dart';
+import '../../../models/registration/form_error_model/form_error_model.dart';
 import '../../../modules/authentication/repository/token_repository.dart';
 import '../../../modules/registration/repository/registration_repository.dart';
 
@@ -136,8 +136,8 @@ class RegistrationController extends GetxController {
           .add(const AuthenticateByToken());
     } on DioException catch (error) {
       if (error.response!.statusCode! == 400) {
-        final message = await ConvertTo<RegistrationErrorModel>().item(
-            error.response?.data['message'], RegistrationErrorModel.fromJson);
+        final message = await ConvertTo<FormErrorModel>().item(
+            error.response?.data['message'], FormErrorModel.fromJson);
         errorTextUsername.value = message.username?.first;
         errorTextEmail.value = message.email?.first;
         errorTextPhone.value = message.phone?.first;

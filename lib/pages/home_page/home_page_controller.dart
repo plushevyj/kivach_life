@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' show ValueNotifier;
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../core/themes/light_theme.dart';
@@ -129,8 +130,12 @@ class HomePageController extends GetxController {
 
   Future<NavigationActionPolicy?> shouldOverrideUrlLoading(
       InAppWebViewController controller, NavigationAction action) async {
+    final appVersion = (await PackageInfo.fromPlatform()).version;
     action.request.headers?.addAll(
-      {'User-Agent': FkUserAgent.userAgent ?? 'Unknown'},
+      {
+        'User-Agent':
+            '${FkUserAgent.userAgent ?? 'Unknown'} KivachLife/$appVersion'
+      },
     );
     if (action.request.url != null) {
       if (action.request.url!.origin ==

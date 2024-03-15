@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:doctor/core/http/request_handler.dart';
 import 'package:get_it/get_it.dart';
 
-import '../../../core/http/request_handler.dart';
 import '../../../core/utils/convert_to.dart';
 import '../../../models/reset_phone/reset_phone_error_model/reset_password_error_model.dart';
 import '../../../models/token_model/token_model.dart';
@@ -14,13 +14,11 @@ class ResetPasswordByEmailRepository {
   }) async {
     final data = {'email_pass_reset[email]': email};
     try {
-      await handleRequest(
-        () => _dio.post(
-          '/api/reset/email',
-          data: data,
-          options: Options(
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-          ),
+      await _dio.post(
+        '/api/reset/email',
+        data: data,
+        options: Options(
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         ),
       );
     } on DioException catch (error) {
@@ -35,9 +33,9 @@ class ResetPasswordByEmailRepository {
           throw resetPasswordError.email!.first;
         }
       }
-      throw 'Неизвестная ошибка';
+      throw constMessageError;
     } catch (_) {
-      rethrow;
+      throw constMessageError;
     }
   }
 

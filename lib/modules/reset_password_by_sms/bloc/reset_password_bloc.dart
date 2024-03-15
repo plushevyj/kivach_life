@@ -45,7 +45,7 @@ class ResetPasswordBloc extends Bloc<ResetPasswordEvent, ResetPasswordState> {
       emit(SuccessNumber(remainingTime: remainingTime));
       emit(const ReadyToSendData());
     } catch (error) {
-      emit(const ErrorResetPasswordState('Повторите попытку позже.'));
+      emit(ErrorResetPasswordState(error.toString()));
     }
   }
 
@@ -68,7 +68,7 @@ class ResetPasswordBloc extends Bloc<ResetPasswordEvent, ResetPasswordState> {
       await _tokenRepository.saveTokens(token: token);
       emit(const SuccessCode());
     } catch (error) {
-      emit(const ErrorResetPasswordState('Повторите попытку позже.'));
+      emit(ErrorResetPasswordState(error.toString()));
     }
   }
 }

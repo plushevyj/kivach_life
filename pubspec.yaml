@@ -3,7 +3,7 @@ description: Мобильное приложение Кивач
 
 publish_to: 'none'
 
-version: 3.3.7+31
+version: 3.3.8+32
 
 environment:
   sdk: '>=3.0.5 <4.0.0'
@@ -50,6 +50,8 @@ dependencies:
   flutter_keyboard_visibility: ^5.4.1
   in_app_update: ^4.2.2
   share_plus: ^7.2.1
+  firebase_crashlytics: ^3.4.9
+  firebase_analytics: ^10.8.0
 
 flutter_localization:
   flutter:

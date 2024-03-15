@@ -23,7 +23,7 @@ class SettingsPage extends StatelessWidget {
         BlocListener<LocalPasswordSettingBloc, LocalPasswordSettingState>(
           listener: (_, state) {
             if (state is ProofedOfIdentity) {
-              Get.to(const NewLocalPasswordPage());
+              Get.to(() => const NewLocalPasswordPage());
             } else if (state is DeletedLocalPassword) {
               settingsPageController.enableLocalPassword(false);
             } else if (state is SuccessfulPasswordChange) {
@@ -129,6 +129,16 @@ class SettingsPage extends StatelessWidget {
                       title: 'Выйти из аккаунта',
                       icon: Icons.logout,
                       onPressed: () => showLogOutAlert(),
+                    ),
+                    _SettingButton(
+                      title: 'Тестовая кнопка для вызова ошибки',
+                      icon: Icons.logout,
+                      onPressed: () {
+                        try {
+                          throw Exception('Test exception 1');
+                        } catch (_) {}
+                        throw Exception('Test exception 2');
+                      },
                     ),
                   ],
                 ),
