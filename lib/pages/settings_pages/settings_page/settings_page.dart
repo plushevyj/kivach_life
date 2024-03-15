@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import '../../../widgets/alerts.dart';
 import '../../../widgets/modal/logout_dialog.dart';
 import '../../home_page/home_page_controller.dart';
-import '../dowloads_page/downloads_page.dart';
+import '../downloads_page/downloads_page.dart';
 import '../new_local_password_page/new_local_password_page.dart';
 import '/modules/local_password_settings/bloc/local_password_settings_bloc.dart';
 import '/core/themes/light_theme.dart';
@@ -129,16 +129,6 @@ class SettingsPage extends StatelessWidget {
                       title: 'Выйти из аккаунта',
                       icon: Icons.logout,
                       onPressed: () => showLogOutAlert(),
-                    ),
-                    _SettingButton(
-                      title: 'Тестовая кнопка для вызова ошибки',
-                      icon: Icons.logout,
-                      onPressed: () {
-                        try {
-                          throw Exception('Test exception 1');
-                        } catch (_) {}
-                        throw Exception('Test exception 2');
-                      },
                     ),
                   ],
                 ),
