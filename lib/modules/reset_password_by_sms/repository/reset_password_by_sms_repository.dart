@@ -22,6 +22,7 @@ class ResetPasswordBySmsRepository {
         ),
       );
     } on DioException catch (error) {
+      logError(error);
       final resetPasswordError = await ConvertTo<ResetPasswordErrorModel>()
           .item(error.response?.data['message'],
               ResetPasswordErrorModel.fromJson);

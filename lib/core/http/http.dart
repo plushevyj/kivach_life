@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:fk_user_agent/fk_user_agent.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../modules/authentication/bloc/authentication_bloc.dart';
 import '../../modules/opening_app/controllers/configuration_of_app_controller.dart';
@@ -17,22 +19,32 @@ class DioClient {
   final baseUrl =
       Get.find<ConfigurationOfAppController>().configuration.value?.BASE_URL;
   DioClient() {
-    _dio
-      ..options.baseUrl = baseUrl!
-      ..options.connectTimeout = const Duration(milliseconds: 10000)
-      ..options.receiveTimeout = const Duration(milliseconds: 10000)
-      ..options.headers = {
-        'Content-Type': 'application/json',
-      }
-      ..interceptors.add(
-        InterceptorsWrapper(
-          onRequest: _onRequestHandler,
-          onError: _throwError,
-        ),
+    var appVersion = '';
+    PackageInfo.fromPlatform()
+      ..then((value) => appVersion = value.version)
+      ..whenComplete(
+        () => _dio
+          ..options.baseUrl = baseUrl!
+          ..options.connectTimeout = const Duration(milliseconds: 10000)
+          ..options.receiveTimeout = const Duration(milliseconds: 10000)
+          ..options.headers = {
+            'Content-Type': 'application/json',
+            'User-Agent':
+                '${FkUserAgent.userAgent ?? 'Unknown'} KivachLife/$appVersion',
+          }
+          ..interceptors.add(
+            InterceptorsWrapper(
+              onRequest: _onRequestHandler,
+              onError: _throwError,
+            ),
+          ),
       );
   }
 
-  void _onRequestHandler(options, handler) async {
+  void _onRequestHandler(
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+  ) async {
     if (options.headers['X-Auth'] == null) {
       final accessTokenFromCache = await _tokenRepository.getAccessToken();
       if (accessTokenFromCache != null) {

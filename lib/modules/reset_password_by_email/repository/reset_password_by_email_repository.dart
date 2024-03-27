@@ -22,6 +22,7 @@ class ResetPasswordByEmailRepository {
         ),
       );
     } on DioException catch (error) {
+      logError(error);
       if (error.response?.data['message'] is String) {
         throw error.response?.data['message'];
       } else {

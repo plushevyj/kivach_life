@@ -43,7 +43,8 @@ class HomePage extends StatelessWidget {
                               preferredContentMode:
                                   UserPreferredContentMode.MOBILE,
                               useShouldOverrideUrlLoading: true,
-                              userAgent: FkUserAgent.userAgent ?? 'Unknown',
+                              userAgent:
+                                  homePageController.userAgent ?? 'Unknown',
                             ),
                             android: AndroidInAppWebViewOptions(
                               builtInZoomControls: false,

@@ -22,7 +22,6 @@ class LoginRepository {
     final data = {'username': username, 'password': password};
     final response =
         await handleRequest(() => _dio.post('/api/login', data: data));
-    print('response = $response');
     return ConvertTo<TokenModel>().item(response.data, TokenModel.fromJson);
   }
 

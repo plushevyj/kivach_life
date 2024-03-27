@@ -1,5 +1,6 @@
+import 'dart:async';
+
 import 'package:fk_user_agent/fk_user_agent.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' show ValueNotifier;
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
@@ -21,18 +22,25 @@ import '/modules/opening_app/controllers/configuration_of_app_controller.dart';
 class HomePageController extends GetxController {
   InAppWebViewController? webViewController;
 
+  late final List<NavbarMenu>? navbar;
+
   final canGoBack = false.obs;
   final isNarrowAppBar = true.obs;
   final progress = 0.0.obs;
+
   final internetConnected = true.obs;
 
   final configController = Get.find<ConfigurationOfAppController>();
+
   final ConfigurationOfApp? appConfiguration =
       Get.find<ConfigurationOfAppController>().configuration.value;
+
   final Profile? profile = Get.find<AccountController>().profile.value;
+
   PullToRefreshController? pullToRefreshController;
 
-  late final List<NavbarMenu>? navbar;
+  String? userAgent;
+
   final ValueNotifier<int?> navBarIndexNotifier = ValueNotifier(0);
 
   @override
@@ -41,13 +49,19 @@ class HomePageController extends GetxController {
         .firstWhereOrNull(
             (navbarModel) => profile!.roles.contains(navbarModel.role))
         ?.menu;
+
     loadFirstBaseSiteRoute();
+
     configController.payloadRoute.listen((route) {
       if (route != null) {
         loadBaseSiteRoute(route: route);
         configController.payloadRoute.value = null;
       }
     });
+
+    final appVersion = (await PackageInfo.fromPlatform()).version;
+    userAgent = '${FkUserAgent.userAgent ?? 'Unknown'} KivachLife/$appVersion';
+
     pullToRefreshController = PullToRefreshController(
       options: PullToRefreshOptions(
         enabled: true,
@@ -62,11 +76,13 @@ class HomePageController extends GetxController {
         }
       },
     );
+
     progress.listen((value) {
       if (value >= 1) {
         progress.value = 0;
       }
     });
+
     super.onInit();
   }
 

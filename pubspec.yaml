@@ -3,7 +3,7 @@ description: Мобильное приложение Кивач
 
 publish_to: 'none'
 
-version: 3.3.8+32
+version: 3.3.9+34
 
 environment:
   sdk: '>=3.0.5 <4.0.0'

@@ -22,8 +22,6 @@ class PushNotificationsRepository {
         options: Options(
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
-            'User-Agent':
-                '${FkUserAgent.userAgent ?? 'Unknown'} KivachLife/$appVersion',
           },
         ),
       ),
