@@ -32,8 +32,7 @@ class HomePageController extends GetxController {
 
   final configController = Get.find<ConfigurationOfAppController>();
 
-  final ConfigurationOfApp? appConfiguration =
-      Get.find<ConfigurationOfAppController>().configuration.value;
+  final ConfigurationOfApp? appConfiguration = Get.find<ConfigurationOfAppController>().configuration.value;
 
   final Profile? profile = Get.find<AccountController>().profile.value;
 
@@ -45,10 +44,8 @@ class HomePageController extends GetxController {
 
   @override
   void onInit() async {
-    navbar = appConfiguration?.NAVBAR
-        .firstWhereOrNull(
-            (navbarModel) => profile!.roles.contains(navbarModel.role))
-        ?.menu;
+    navbar =
+        appConfiguration?.NAVBAR.firstWhereOrNull((navbarModel) => profile!.roles.contains(navbarModel.role))?.menu;
 
     loadFirstBaseSiteRoute();
 
@@ -63,7 +60,7 @@ class HomePageController extends GetxController {
     userAgent = '${FkUserAgent.userAgent ?? 'Unknown'} KivachLife/$appVersion';
 
     pullToRefreshController = PullToRefreshController(
-      options: PullToRefreshOptions(
+      settings: PullToRefreshSettings(
         enabled: true,
         color: KivachColors.green,
       ),
@@ -71,8 +68,7 @@ class HomePageController extends GetxController {
         if (GetPlatform.isAndroid) {
           webViewController?.reload();
         } else if (GetPlatform.isIOS) {
-          webViewController?.loadUrl(
-              urlRequest: URLRequest(url: await webViewController?.getUrl()));
+          webViewController?.loadUrl(urlRequest: URLRequest(url: await webViewController?.getUrl()));
         }
       },
     );
@@ -96,8 +92,7 @@ class HomePageController extends GetxController {
   void loadFirstBaseSiteRoute() async {
     webViewController?.loadUrl(
       urlRequest: URLRequest(
-        url: Uri.parse(
-            '${appConfiguration!.BASE_URL}${configController.payloadRoute.value ?? '/'}'),
+        url: WebUri.uri(Uri.parse('${appConfiguration!.BASE_URL}${configController.payloadRoute.value ?? '/'}')),
         headers: await getHeaders(),
       ),
     );
@@ -106,7 +101,7 @@ class HomePageController extends GetxController {
   void loadBaseSiteRoute({required String route}) {
     webViewController?.loadUrl(
       urlRequest: URLRequest(
-        url: Uri.parse('${appConfiguration!.BASE_URL}$route'),
+        url: WebUri.uri(Uri.parse('${appConfiguration!.BASE_URL}$route')),
       ),
     );
     configController.payloadRoute.value = null;
@@ -127,11 +122,9 @@ class HomePageController extends GetxController {
       if (uri.origin == configController.configuration.value?.BASE_URL) {
         final history = await controller.getCopyBackForwardList();
         final lastRoute = history?.list?.last;
-        final previousRoute = history!.list!.length > 1
-            ? history.list![history.list!.length - 2]
-            : null;
-        final checkProfileRoute = [previousRoute, lastRoute]
-            .any((route) => route?.url?.path.startsWith('/profile') ?? false);
+        final previousRoute = history!.list!.length > 1 ? history.list![history.list!.length - 2] : null;
+        final checkProfileRoute =
+            [previousRoute, lastRoute].any((route) => route?.url?.path.startsWith('/profile') ?? false);
         if (checkProfileRoute) {
           updateProfile();
         }
@@ -148,26 +141,18 @@ class HomePageController extends GetxController {
       InAppWebViewController controller, NavigationAction action) async {
     final appVersion = (await PackageInfo.fromPlatform()).version;
     action.request.headers?.addAll(
-      {
-        'User-Agent':
-            '${FkUserAgent.userAgent ?? 'Unknown'} KivachLife/$appVersion'
-      },
+      {'User-Agent': '${FkUserAgent.userAgent ?? 'Unknown'} KivachLife/$appVersion'},
     );
     if (action.request.url != null) {
-      if (action.request.url!.origin ==
-          configController.configuration.value?.BASE_URL) {
+      if (action.request.url!.origin == configController.configuration.value?.BASE_URL) {
         if (action.request.url!.path == '/login') {
           logOut();
           return NavigationActionPolicy.CANCEL;
         }
       }
       if (action.request.url.toString().startsWith('tel:') ||
-          (action.request.url!
-              .toString()
-              .startsWith('https://apps.apple.com')) ||
-          (action.request.url!
-              .toString()
-              .startsWith('https://play.google.com'))) {
+          (action.request.url!.toString().startsWith('https://apps.apple.com')) ||
+          (action.request.url!.toString().startsWith('https://play.google.com'))) {
         launchUrl(action.request.url!);
         return NavigationActionPolicy.CANCEL;
       }
@@ -187,8 +172,7 @@ class HomePageController extends GetxController {
     progress.value = progressValue.toDouble() / 100;
   }
 
-  void onDownloadStartRequest(InAppWebViewController controller,
-      DownloadStartRequest downloadStartRequest) async {
+  void onDownloadStartRequest(InAppWebViewController controller, DownloadStartRequest downloadStartRequest) async {
     await DownloadDocumentHandler().downloadFile(
       url: downloadStartRequest.url,
       showProgressAlert: true,
