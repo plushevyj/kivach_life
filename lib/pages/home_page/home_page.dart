@@ -15,13 +15,9 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final homePageController = Get.put(HomePageController());
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) => FlutterNativeSplash.remove());
-    return PopScope(
-      canPop: false,
-      onPopInvoked: (didPop) async {
-        homePageController.webViewController?.goBack();
-      },
+    WidgetsBinding.instance.addPostFrameCallback((_) => FlutterNativeSplash.remove());
+    return WillPopScope(
+      onWillPop: () => homePageController.webViewController?.canGoBack().then((value) => !value) ?? Future.value(false),
       child: Obx(
         () => Stack(
           children: [
@@ -31,20 +27,15 @@ class HomePage extends StatelessWidget {
                   children: [
                     Obx(
                       () => Padding(
-                        padding: EdgeInsets.only(
-                            top: homePageController.isNarrowAppBar.value
-                                ? 0
-                                : kToolbarHeight),
+                        padding: EdgeInsets.only(top: homePageController.isNarrowAppBar.value ? 0 : kToolbarHeight),
                         child: InAppWebView(
                           initialOptions: InAppWebViewGroupOptions(
                             crossPlatform: InAppWebViewOptions(
                               useOnDownloadStart: true,
                               supportZoom: false,
-                              preferredContentMode:
-                                  UserPreferredContentMode.MOBILE,
+                              preferredContentMode: UserPreferredContentMode.MOBILE,
                               useShouldOverrideUrlLoading: true,
-                              userAgent:
-                                  homePageController.userAgent ?? 'Unknown',
+                              userAgent: homePageController.userAgent ?? 'Unknown',
                             ),
                             android: AndroidInAppWebViewOptions(
                               builtInZoomControls: false,
@@ -54,8 +45,7 @@ class HomePage extends StatelessWidget {
                               sharedCookiesEnabled: true,
                             ),
                           ),
-                          androidOnPermissionRequest:
-                              (controller, origin, resources) async {
+                          androidOnPermissionRequest: (controller, origin, resources) async {
                             return PermissionRequestResponse(
                               resources: resources,
                               action: PermissionRequestResponseAction.GRANT,
@@ -68,32 +58,24 @@ class HomePage extends StatelessWidget {
                           },
                           onLoadError: (controller, uri, code, message) {
                             if ([-2, -1009].contains(code) ||
-                                [
-                                  'net::ERR_INTERNET_DISCONNECTED',
-                                  'The Internet connection appears to be offline.'
-                                ].contains(message)) {
-                              homePageController.webViewController
-                                  ?.loadData(data: '');
+                                ['net::ERR_INTERNET_DISCONNECTED', 'The Internet connection appears to be offline.']
+                                    .contains(message)) {
+                              homePageController.webViewController?.loadData(data: '');
                               homePageController.internetConnected(false);
                             }
                           },
-                          onLoadHttpError:
-                              (controller, uri, code, message) async {
+                          onLoadHttpError: (controller, uri, code, message) async {
                             if (code == 401 || code == 403) {
                               homePageController.updateProfile();
                               homePageController.loadFirstBaseSiteRoute();
                             }
                           },
-                          pullToRefreshController:
-                              homePageController.pullToRefreshController,
+                          pullToRefreshController: homePageController.pullToRefreshController,
                           onLoadStart: homePageController.onLoadStart,
                           onLoadStop: homePageController.onLoadStop,
-                          shouldOverrideUrlLoading:
-                              homePageController.shouldOverrideUrlLoading,
-                          onProgressChanged:
-                              homePageController.onProgressChanged,
-                          onDownloadStartRequest:
-                              homePageController.onDownloadStartRequest,
+                          shouldOverrideUrlLoading: homePageController.shouldOverrideUrlLoading,
+                          onProgressChanged: homePageController.onProgressChanged,
+                          onDownloadStartRequest: homePageController.onDownloadStartRequest,
                         ),
                       ),
                     ),
@@ -111,9 +93,7 @@ class HomePage extends StatelessWidget {
                     Obx(
                       () => AppBarForLargeScreen(
                         homePageController: homePageController,
-                        width: homePageController.isNarrowAppBar.value
-                            ? Get.width - 60
-                            : Get.width - 5,
+                        width: homePageController.isNarrowAppBar.value ? Get.width - 60 : Get.width - 5,
                       ),
                     ),
                   ],
@@ -127,10 +107,8 @@ class HomePage extends StatelessWidget {
                           backgroundColor: null,
                           currentIndex: currentIndex!,
                           onTap: (index) {
-                            homePageController.navBarIndexNotifier.value =
-                                index;
-                            homePageController.loadBaseSiteRoute(
-                                route: homePageController.navbar![index].route);
+                            homePageController.navBarIndexNotifier.value = index;
+                            homePageController.loadBaseSiteRoute(route: homePageController.navbar![index].route);
                           },
                           enableFeedback: false,
                           selectedIconTheme: const IconThemeData(size: 24),
@@ -166,20 +144,16 @@ class HomePage extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SvgPicture.asset(
-                            'assets/images/onboarding/connection_error.svg'),
+                        SvgPicture.asset('assets/images/onboarding/connection_error.svg'),
                         const Text(
                           'Отсутствует подключение к интернету.',
                           style: TextStyle(fontSize: 14),
                         ),
                         TextButton(
                           style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.white),
-                            foregroundColor:
-                                MaterialStateProperty.all(KivachColors.green),
-                            overlayColor: MaterialStateProperty.all(
-                                KivachColors.green.withOpacity(0.1)),
+                            backgroundColor: MaterialStateProperty.all(Colors.white),
+                            foregroundColor: MaterialStateProperty.all(KivachColors.green),
+                            overlayColor: MaterialStateProperty.all(KivachColors.green.withOpacity(0.1)),
                           ),
                           onPressed: () {
                             homePageController.webViewController?.goBack();
