@@ -44,3 +44,10 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# VSCode
+.vscode/
+
+# FVM Version Cache
+.fvm/
+.fvmrc
