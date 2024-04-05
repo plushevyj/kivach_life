@@ -124,7 +124,7 @@ class HomePageController extends GetxController {
         final lastRoute = history?.list?.last;
         final previousRoute = history!.list!.length > 1 ? history.list![history.list!.length - 2] : null;
         final checkProfileRoute =
-            [previousRoute, lastRoute].any((route) => route?.url?.path.startsWith('/profile') ?? false);
+            [previousRoute, lastRoute].any((route) => route?.url?.path.startsWith('/user/profile') ?? false);
         if (checkProfileRoute) {
           updateProfile();
         }

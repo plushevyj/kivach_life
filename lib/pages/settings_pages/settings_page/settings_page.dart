@@ -121,7 +121,7 @@ class SettingsPage extends StatelessWidget {
                       iconBackgroundColor: Colors.green,
                       onPressed: () {
                         Get.find<HomePageController>()
-                            .loadBaseSiteRoute(route: '/profile');
+                            .loadBaseSiteRoute(route: '/user/profile');
                         Get.back();
                       },
                     ),
