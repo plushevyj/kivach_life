@@ -3,7 +3,7 @@ description: Мобильное приложение Кивач
 
 publish_to: 'none'
 
-version: 3.3.9+34
+version: 3.3.11+37
 
 environment:
   sdk: '>=3.0.5 <4.0.0'
@@ -27,7 +27,7 @@ dependencies:
   qr_code_scanner: ^1.0.1
   flutter_svg: ^2.0.7
   smooth_page_indicator: ^1.1.0
-  logger: ^2.0.1
+  logger: ^2.2.0
   flutter_dotenv: ^5.1.0
   package_info_plus: ^4.1.0
   skeletonizer: ^0.7.0

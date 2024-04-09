@@ -34,7 +34,16 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 
-final logger = Logger();
+final logger = Logger(
+    // filter: CustomLogFilter(),
+    );
+
+// class CustomLogFilter extends LogFilter {
+//   @override
+//   bool shouldLog(LogEvent event) {
+//     return true;
+//   }
+// }
 
 const constMessageError = 'Неизвестная ошибка. Повторите попытку позже.';
 
@@ -87,7 +96,6 @@ void logError(DioException error) {
 
 void logSuccess(Response response) {
   logger.i(
-    '🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢\n'
     'Success response\n'
     'Path: ${response.requestOptions.path}\n'
     'Full uri: ${response.realUri}\n'
@@ -95,7 +103,6 @@ void logSuccess(Response response) {
     'Query parameters: ${response.requestOptions.queryParameters}\n'
     'Request data: ${response.requestOptions.data}\n'
     'Request headers: ${response.requestOptions.headers}\n'
-    'Response data: ${response.data}\n'
-    '🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢',
+    'Response data: ${response.data}\n',
   );
 }

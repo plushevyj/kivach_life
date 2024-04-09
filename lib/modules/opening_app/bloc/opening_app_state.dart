@@ -12,7 +12,12 @@ class OpeningAppInitialState  extends OpeningAppState {
 }
 
 class SuccessConfigurationOfApp extends OpeningAppState {
-  const SuccessConfigurationOfApp();
+  const SuccessConfigurationOfApp({required this.configurationOfApp});
+
+  final ConfigurationOfApp configurationOfApp;
+
+  @override
+  List<Object> get props => [configurationOfApp];
 }
 
 class ErrorConfigurationOfApp extends OpeningAppState {

@@ -66,7 +66,7 @@ class HomePage extends StatelessWidget {
                               homePageController.loadFirstBaseSiteRoute();
                             }
                           },
-                          pullToRefreshController: homePageController.pullToRefreshController,
+                          // pullToRefreshController: homePageController.pullToRefreshController,
                           onLoadStart: homePageController.onLoadStart,
                           onLoadStop: homePageController.onLoadStop,
                           shouldOverrideUrlLoading: homePageController.shouldOverrideUrlLoading,

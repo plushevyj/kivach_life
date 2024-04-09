@@ -18,6 +18,7 @@ import 'modules/authentication/bloc/authentication_bloc.dart';
 import 'modules/in_app_update/bloc/in_app_update_bloc.dart';
 import 'modules/opening_app/bloc/opening_app_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'modules/opening_app/controllers/configuration_of_app_controller.dart';
 import 'modules/push_notifications/firebase/firebase_api.dart';
 import 'modules/reset_password_by_email/bloc/reset_password_by_email_bloc.dart';
 import 'modules/reset_password_by_sms/bloc/reset_password_bloc.dart';
@@ -46,9 +47,7 @@ class App extends StatelessWidget {
             create: (_) =>
                 OpeningAppBloc()..add(const GetConfigurationOfApp())),
         BlocProvider(create: (_) => InAppUpdateBloc()),
-        BlocProvider(
-            create: (_) =>
-                AuthenticationBloc()..add(const AuthenticateByToken())),
+        BlocProvider(create: (_) => AuthenticationBloc()),
         BlocProvider(create: (_) => LocalAuthenticationBloc()),
         BlocProvider(create: (_) => ResetPasswordByEmailBloc()),
         BlocProvider(create: (_) => ResetPasswordBloc()),
@@ -76,12 +75,12 @@ class App extends StatelessWidget {
           return BlocBuilder<OpeningAppBloc, OpeningAppState>(
             builder: (context, state) {
               if (state is SuccessConfigurationOfApp) {
-                if (!GetIt.I.isRegistered<Dio>()) {
-                  GetIt.I.registerSingleton<Dio>(DioClient().dio);
-                }
                 if (FirebaseApi.initialMessage != null) {
                   FirebaseApi.routeFromPayload(FirebaseApi.initialMessage!);
                 }
+                context
+                    .read<AuthenticationBloc>()
+                    .add(const AuthenticateByToken());
                 return BlocListener<AuthenticationBloc, AuthenticationState>(
                   listener: (context, state) async {
                     if (state is Authenticated) {
