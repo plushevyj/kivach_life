@@ -10,6 +10,8 @@ import 'onboarding_greeting_page_controller.dart';
 class GreetingOnboardingPage extends StatelessWidget {
   const GreetingOnboardingPage({super.key});
 
+  static const route = '/onboarding_greeting';
+
   @override
   Widget build(BuildContext context) {
     final onboardingController = Get.put(OnboardingController());

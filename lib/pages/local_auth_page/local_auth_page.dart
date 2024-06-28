@@ -18,6 +18,8 @@ class LocalAuthPage extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
+  static const route = '/local_auth';
+
   @override
   Widget build(BuildContext context) {
     Get.context!
@@ -100,16 +102,15 @@ class LocalAuthPage extends StatelessWidget {
                               .enableDialButtons.value,
                           leftWidget: Text(
                             'ВЫЙТИ',
-                            style: TextStyle(
-                                fontSize: isSmallScreen ? 12 : null),
+                            style:
+                                TextStyle(fontSize: isSmallScreen ? 12 : null),
                           ),
                           leftWidgetAction: () =>
                               showLogOutAlert(isNative: true),
                           rightWidget: state.localAuthenticationSetting.$2
                               ? const Icon(Icons.fingerprint)
                               : null,
-                          rightWidgetAction: state
-                                  .localAuthenticationSetting.$2
+                          rightWidgetAction: state.localAuthenticationSetting.$2
                               ? () => Get.context!
                                   .read<LocalAuthenticationBloc>()
                                   .add(const LogInLocallyUsingBiometrics())

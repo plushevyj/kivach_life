@@ -5,6 +5,8 @@ import 'package:equatable/equatable.dart';
 import 'package:get/get.dart';
 
 import '../../../core/http/http.dart';
+import '../../../pages/auth_page/auth_page.dart';
+import '../../../pages/onboarding_greeting_page/onboarding_greeting_page.dart';
 import '../../account/controllers/account_controller.dart';
 import '../../local_authentication/bloc/local_authentication_bloc.dart';
 import '../../local_authentication/repository/local_authentication_repository.dart';
@@ -38,7 +40,7 @@ class AuthenticationBloc
     final isFirstOpening =
         await firstOpeningOfAppRepository.checkFirstOpening();
     if (isFirstOpening) {
-      await Get.toNamed('/onboarding_greeting');
+      await Get.toNamed(GreetingOnboardingPage.route);
       await firstOpeningOfAppRepository.saveFirstOpeningSetting(false);
     }
     try {
@@ -48,7 +50,7 @@ class AuthenticationBloc
         _localAuthenticationRepository
           ..deleteLocalPassword()
           ..deleteBiometricSetting();
-        throw 'Expired JWT Token';
+        return;
       }
       addAccessTokenInHTTPClient();
       final profile = await loginRepository.getProfile();
@@ -106,5 +108,5 @@ void logOut() {
   Get.delete<AccountController>(force: true);
   Get.context!.read<LocalAuthenticationBloc>().add(const LocallyLogOut());
   Get.context!.read<AuthenticationBloc>().add(const LogOut());
-  Get.offAllNamed('/auth');
+  Get.offAllNamed(AuthorizationPage.route);
 }

@@ -15,6 +15,8 @@ import '/widgets/alerts.dart';
 class AuthorizationPage extends StatelessWidget {
   const AuthorizationPage({Key? key}) : super(key: key);
 
+  static const route = '/auth';
+
   @override
   Widget build(BuildContext context) {
     final authPageController = Get.put(AuthPageController());

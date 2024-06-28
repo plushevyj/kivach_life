@@ -8,6 +8,7 @@ import '/core/themes/light_theme.dart';
 class LoadingPage extends StatefulWidget {
   const LoadingPage({super.key});
 
+  static const route = '/loading';
   @override
   State<LoadingPage> createState() => _LoadingPageState();
 }

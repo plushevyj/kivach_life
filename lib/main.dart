@@ -22,6 +22,9 @@ import 'modules/opening_app/controllers/configuration_of_app_controller.dart';
 import 'modules/push_notifications/firebase/firebase_api.dart';
 import 'modules/reset_password_by_email/bloc/reset_password_by_email_bloc.dart';
 import 'modules/reset_password_by_sms/bloc/reset_password_bloc.dart';
+import 'pages/auth_page/auth_page.dart';
+import 'pages/loading_page.dart';
+import 'pages/local_auth_page/local_auth_page.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
@@ -85,9 +88,9 @@ class App extends StatelessWidget {
                   listener: (context, state) async {
                     if (state is Authenticated) {
                       await FirebaseApi().sendToken();
-                      Get.offNamed('/local_auth');
+                      Get.offNamed(LocalAuthPage.route);
                     } else {
-                      Get.offNamed('/auth');
+                      Get.offNamed(AuthorizationPage.route);
                     }
                   },
                   child: child,
@@ -102,7 +105,7 @@ class App extends StatelessWidget {
             },
           );
         },
-        initialRoute: '/loading',
+        initialRoute: LoadingPage.route,
       ),
     );
   }

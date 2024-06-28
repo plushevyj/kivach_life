@@ -96,7 +96,7 @@ class HomePageController extends GetxController {
     webViewController?.loadUrl(
       urlRequest: URLRequest(
         url: WebUri.uri(Uri.parse(
-            '${appConfiguration!.BASE_URL}${configController.payloadRoute.value ?? navbar![0].route}')),
+            '${appConfiguration!.BASE_URL}${configController.payloadRoute.value ?? navbar?[0].route ?? '/'}')),
         headers: await getHeaders(),
       ),
     );

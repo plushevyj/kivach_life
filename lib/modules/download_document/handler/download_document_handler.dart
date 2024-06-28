@@ -61,6 +61,7 @@ class DownloadDocumentHandler {
               .rename('${saveDirectory.path}/$finalFileName');
         }
       }
+
       if (showProgressAlert) {
         showMessageAlert(
           title: 'Сохранено',

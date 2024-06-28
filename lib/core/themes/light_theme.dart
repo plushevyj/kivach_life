@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-final isSmallScreen = (Get.width <= 400) || (Get.height <= 690);
+// final isSmallScreen = (Get.width <= 400) || (Get.height <= 690);
+// final isSmallScreen = (MediaQuery.of(Get.context!).size.width <= 400) ||
+//     (MediaQuery.of(Get.context!).size.height <= 690);
+const isSmallScreen = true;
 
 const pagePadding = EdgeInsets.symmetric(horizontal: 20);
 
 final onboardingButtonStyle = ButtonStyle(
-  textStyle: MaterialStateProperty.all(
+  textStyle: WidgetStateProperty.all(
     const TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.w500,
     ),
   ),
-  foregroundColor: MaterialStateProperty.all(KivachColors.green),
-  overlayColor: MaterialStateProperty.all(KivachColors.green.withOpacity(0.2)),
+  foregroundColor: WidgetStateProperty.all(KivachColors.green),
+  overlayColor: WidgetStateProperty.all(KivachColors.green.withOpacity(0.2)),
 );
 
 abstract final class KivachColors {
@@ -38,7 +41,7 @@ final lightTheme = ThemeData(
   ),
   iconButtonTheme: IconButtonThemeData(
     style: ButtonStyle(
-      iconColor: MaterialStateProperty.all(Colors.black),
+      iconColor: WidgetStateProperty.all(Colors.black),
     ),
   ),
   inputDecorationTheme: InputDecorationTheme(
@@ -59,23 +62,23 @@ final lightTheme = ThemeData(
   ),
   textButtonTheme: TextButtonThemeData(
     style: ButtonStyle(
-      textStyle: MaterialStateProperty.all(
+      textStyle: WidgetStateProperty.all(
         const TextStyle(fontSize: 16),
       ),
-      foregroundColor: MaterialStateProperty.all(KivachColors.green),
+      foregroundColor: WidgetStateProperty.all(KivachColors.green),
     ),
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ButtonStyle(
-      textStyle: MaterialStateProperty.all(
+      textStyle: WidgetStateProperty.all(
         const TextStyle(fontSize: 16),
       ),
-      backgroundColor: MaterialStateProperty.all(KivachColors.green),
-      foregroundColor: MaterialStateProperty.all(Colors.white),
-      minimumSize: MaterialStateProperty.all(
-        Size(double.infinity, isSmallScreen ? 55 : 60),
+      backgroundColor: WidgetStateProperty.all(KivachColors.green),
+      foregroundColor: WidgetStateProperty.all(Colors.white),
+      minimumSize: WidgetStateProperty.all(
+        const Size(double.infinity, isSmallScreen ? 55 : 60),
       ),
-      shape: MaterialStateProperty.all(
+      shape: WidgetStateProperty.all(
         RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
           side: BorderSide.none,
