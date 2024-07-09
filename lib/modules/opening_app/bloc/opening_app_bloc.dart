@@ -37,10 +37,9 @@ class OpeningAppBloc extends Bloc<OpeningAppEvent, OpeningAppState> {
     try {
       final configuration =
           await _configurationOfAppRepository.getConfigurationOfApp();
-      // while (!GetIt.I.isRegistered<Dio>()) {
+
       GetIt.I.registerSingleton<Dio>(
           DioClient(baseUrl: configuration.BASE_URL).dio);
-      // }
       Get.put(ConfigurationOfAppController(), permanent: true)
           .configuration
           .value = configuration;

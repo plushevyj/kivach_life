@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -10,6 +11,7 @@ import '../../../pages/onboarding_greeting_page/onboarding_greeting_page.dart';
 import '../../account/controllers/account_controller.dart';
 import '../../local_authentication/bloc/local_authentication_bloc.dart';
 import '../../local_authentication/repository/local_authentication_repository.dart';
+import '../../logs/repository/logs_repository.dart';
 import '../../opening_app/repository/first_opening_app_repository.dart';
 import '../repository/login_repository.dart';
 import '../repository/token_repository.dart';
@@ -45,6 +47,13 @@ class AuthenticationBloc
     }
     try {
       final accessToken = await tokenRepository.getAccessToken();
+
+      const LogsRepository().sendLogs(json.encode({
+        'event': 'Get access token from local storage',
+        'accessToken': accessToken,
+        'place': 'lib/modules/authentication/bloc/authentication_bloc.dart:51',
+      }));
+
       if (accessToken == null) {
         emit(const Unauthenticated());
         _localAuthenticationRepository
@@ -76,6 +85,14 @@ class AuthenticationBloc
         username: event.username,
         password: event.password,
       );
+
+      const LogsRepository().sendLogs(json.encode({
+        'event': 'Login by using username',
+        'accessToken': token.token,
+        'refreshToken': token.refresh_token,
+        'place': 'lib/modules/authentication/bloc/authentication_bloc.dart:89',
+      }));
+
       tokenRepository.saveTokens(token: token);
       await addAccessTokenInHTTPClient();
       final profile = await loginRepository.getProfile();
